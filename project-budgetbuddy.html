@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Buddy - Finance Tracker | OMGNoe</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .project-page { padding-top: 80px; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; padding: 20px; color: var(--text-dim); text-decoration: none; font-size: 0.85rem; }
+        .back-link:hover { color: var(--orange); }
+        .back-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .project-hero { text-align: center; padding: 20px 20px 40px; }
+        .project-icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .project-icon svg { width: 40px; height: 40px; stroke: #fff; fill: none; stroke-width: 1.5; }
+        .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+        .badge { padding: 6px 12px; font-size: 0.75rem; border-radius: 6px; background: var(--glass); border: 1px solid var(--glass-border); font-family: 'JetBrains Mono', monospace; }
+        .badge.live { border-color: #10b981; color: #10b981; }
+        .project-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.8rem, 6vw, 2.5rem); margin-bottom: 8px; }
+        .project-tagline { color: var(--orange); font-size: 0.95rem; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; }
+        .project-desc { max-width: 550px; margin: 0 auto 24px; color: var(--text-dim); font-size: 1rem; }
+        .project-btns { display: flex; gap: 12px; justify-content: center; }
+        .screenshots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 24px 20px; max-width: 600px; margin: 0 auto; }
+        .screenshots img { width: 100%; border-radius: 12px; border: 1px solid var(--glass-border); }
+        .project-section { padding: 24px 20px; max-width: 600px; margin: 0 auto 16px; }
+        .project-section h2 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 12px; color: var(--cyan); }
+        .features-list { list-style: none; }
+        .features-list li { display: flex; align-items: center; gap: 12px; padding: 12px 0; font-size: 0.9rem; color: var(--text-dim); border-bottom: 1px solid var(--glass-border); }
+        .features-list li:last-child { border: none; }
+        .features-list svg { width: 20px; height: 20px; stroke: var(--orange); fill: none; stroke-width: 2; flex-shrink: 0; }
+        .tech-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        @media (min-width: 600px) { .screenshots { grid-template-columns: repeat(4, 1fr); max-width: 800px; } }
+    </style>
+</head>
+<body>
+    <div class="cyber-bg"><div class="grid-overlay"></div><div class="scan-line"></div><div class="glow-orb orb1"></div><div class="glow-orb orb2"></div></div>
+    <nav><div class="nav-inner"><a href="index.html" class="logo"><img src="assets/logo.png" alt="OMGNoe"></a><ul class="nav-links"><li><a href="index.html#apps">Apps</a></li><li><a href="index.html#contact">Contact</a></li></ul><button class="menu-btn" id="menuBtn"><span></span><span></span><span></span></button></div></nav>
+    <div class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="index.html#apps">Apps</a></div>
+
+    <main class="project-page">
+        <a href="index.html#apps" class="back-link"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back to Projects</a>
+        <section class="project-hero">
+            <div class="project-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <div class="badges"><span class="badge">iOS</span><span class="badge live">App Store</span></div>
+            <h1 class="project-title">Budget Buddy</h1>
+            <p class="project-tagline">// PERSONAL FINANCE TRACKER</p>
+            <p class="project-desc">Take control of your finances. Track income and expenses, set payment reminders, and plan your budget with ease.</p>
+            <div class="project-btns"><a href="https://apps.apple.com/us/app/my-budget-buddy/id6745560702" target="_blank" class="btn btn-primary">App Store</a></div>
+        </section>
+        <div class="screenshots">
+            <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/00/92/ec/0092ecf4-47c0-a6bb-5e64-98cfb9eb137b/1.png/230x499bb.webp" alt="Screenshot">
+            <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/0b/f6/b9/0bf6b97e-1146-7309-091f-55e0a2d8dbf3/2.png/230x499bb.webp" alt="Screenshot">
+            <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/58/85/a1/5885a1d4-4074-145b-8e00-85f196d548c0/3.png/230x499bb.webp" alt="Screenshot">
+            <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/52/aa/08/52aa0855-da10-4a51-5eb9-723afbe8e1e7/4.png/230x499bb.webp" alt="Screenshot">
+        </div>
+        <section class="project-section glass">
+            <h2>Features</h2>
+            <ul class="features-list">
+                <li><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>Monthly income & expense tracking</li>
+                <li><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Payment reminders</li>
+                <li><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Financial overview dashboard</li>
+                <li><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Budget planning & categorization</li>
+            </ul>
+        </section>
+        <section class="project-section glass">
+            <h2>Tech Stack</h2>
+            <div class="tech-list"><span class="tech-tag glass">Swift</span><span class="tech-tag glass">SwiftUI</span><span class="tech-tag glass">Core Data</span><span class="tech-tag glass">iOS</span></div>
+        </section>
+    </main>
+    <footer><p>© 2025 OMGNoe · <a href="https://tta.lu">TTA.lu</a></p></footer>
+    <script src="script.js"></script>
+</body>
+</html>

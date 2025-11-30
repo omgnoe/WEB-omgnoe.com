@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>TTADev - Development Division | ThinkingXP</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="development.css">
+</head>
+<body>
+    <!-- Audio Elements -->
+    <audio id="sound-logon" preload="auto">
+        <source src="../assets/sounds/logon.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sound-logoff" preload="auto">
+        <source src="../assets/sounds/logoff.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="sound-shutdown" preload="auto">
+        <source src="../assets/sounds/shutdown.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Desktop -->
+    <div class="xp-desktop">
+        <!-- Desktop Icons -->
+        <div class="desktop-icons">
+            <!-- README File -->
+            <div class="desktop-icon" ondblclick="openWindow('readme-window')">
+                <div class="icon-image">
+                    <img src="../assets/gui/icons/Generic Text Document.png" alt="README" draggable="false">
+                </div>
+                <span class="icon-label">README.txt</span>
+            </div>
+
+            <!-- Websites Folder -->
+            <div class="desktop-icon" ondblclick="openWindow('websites-window')">
+                <div class="icon-image">
+                    <img src="../assets/gui/icons/Folder Closed.png" alt="Websites" draggable="false">
+                </div>
+                <span class="icon-label">Websites</span>
+            </div>
+
+            <!-- Apps Folder -->
+            <div class="desktop-icon" ondblclick="openWindow('apps-window')">
+                <div class="icon-image">
+                    <img src="../assets/gui/icons/Folder Closed.png" alt="Apps" draggable="false">
+                </div>
+                <span class="icon-label">Apps</span>
+            </div>
+
+            <!-- Skills Program -->
+            <div class="desktop-icon" ondblclick="openWindow('skills-window')">
+                <div class="icon-image">
+                    <img src="../assets/gui/icons/BAT.png" alt="Skills" draggable="false">
+                </div>
+                <span class="icon-label">Skills.bat</span>
+            </div>
+
+            <!-- Ongoing Projects -->
+            <div class="desktop-icon" ondblclick="openWindow('projects-window')">
+                <div class="icon-image">
+                    <img src="../assets/gui/icons/BAT.png" alt="Ongoing Projects" draggable="false">
+                </div>
+                <span class="icon-label">OngoingProjects.bat</span>
+            </div>
+
+            <!-- Recycle Bin -->
+            <div class="desktop-icon recycle-bin" ondblclick="openWindow('recycle-window')">
+                <div class="icon-image">
+                    <img src="../assets/gui/icons/Recycle Bin (empty).png" alt="Recycle Bin" draggable="false">
+                </div>
+                <span class="icon-label">Recycle Bin</span>
+            </div>
+        </div>
+
+        <!-- README Window -->
+        <div id="readme-window" class="xp-window hidden" style="width: 500px; height: 400px; top: 60px; left: 120px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'readme-window')" ontouchstart="startDrag(event, 'readme-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/gui/icons/Generic Text Document.png" alt="" class="titlebar-icon">
+                    <span>README.txt - Notepad</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('readme-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('readme-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('readme-window')">×</button>
+                </div>
+            </div>
+            <div class="window-content readme-content">
+                <pre class="readme-text">TTADev - Development Division
+=============================
+
+Welcome to the Development Division of TheThinkingAgency!
+
+This desktop showcases our portfolio of mobile and web applications.
+
+FOLDERS:
+--------
+• Websites - Our web development projects
+• Apps - Mobile applications we've built
+
+IMPORTANT NOTE - WEBSITE VIEWING:
+----------------------------------
+Some websites may not load in the embedded browser due to security 
+restrictions (X-Frame-Options, CSP policies). This is a security 
+feature of those websites, not an error.
+
+If a website doesn't load:
+1. Click the "Open External" button (arrow icon) in the browser toolbar
+2. The website will open in a new browser tab
+3. Alternatively, you can visit the websites directly:
+   - https://www.barbertruck.lu
+   - https://www.o2nails.lu
+   - https://www.nexa.lu
+   - https://www.absaar.com
+
+OUR APPLICATIONS:
+-----------------
+• Budget Buddy - Personal finance planning app
+• SellOutAI - AI-powered selling assistant
+• Eurorecup Pointage - Employee time tracking system
+
+For more information or inquiries, use the "Contact Us" option 
+in the Start Menu.
+
+Thank you for visiting!
+TheThinkingAgency Team
+</pre>
+            </div>
+        </div>
+
+        <!-- Websites Window -->
+        <div id="websites-window" class="xp-window hidden" style="width: 550px; top: 80px; left: 150px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'websites-window')" ontouchstart="startDrag(event, 'websites-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/gui/icons/Folder Closed.png" alt="" class="titlebar-icon">
+                    <span>Websites</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('websites-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('websites-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('websites-window')">×</button>
+                </div>
+            </div>
+            <div class="window-toolbar">
+                <button class="toolbar-btn">
+                    <svg viewBox="0 0 16 16"><path d="M10 2L4 8l6 6" stroke="#333" fill="none" stroke-width="2"/></svg>
+                    Back
+                </button>
+                <button class="toolbar-btn disabled">
+                    <svg viewBox="0 0 16 16"><path d="M6 2l6 6-6 6" stroke="#999" fill="none" stroke-width="2"/></svg>
+                    Forward
+                </button>
+                <button class="toolbar-btn">
+                    <img src="../assets/gui/icons/Folder Closed.png" alt="" style="width:16px;height:16px;">
+                    Folders
+                </button>
+            </div>
+            <div class="window-addressbar">
+                <span class="address-label">Address</span>
+                <div class="address-input">
+                    <img src="../assets/gui/icons/Folder Closed.png" alt="" class="address-icon">
+                    <span>C:\TTADev\Websites</span>
+                </div>
+            </div>
+            <div class="window-content folder-content">
+                <div class="folder-item" ondblclick="openWebsite('https://www.barbertruck.lu')">
+                    <div class="item-icon">
+                        <img src="../assets/gui/desktop/projects.webp" alt="Website" draggable="false">
+                    </div>
+                    <span class="item-label">barbertruck.lu</span>
+                </div>
+                <div class="folder-item" ondblclick="openWebsite('https://www.o2nails.lu')">
+                    <div class="item-icon">
+                        <img src="../assets/gui/desktop/projects.webp" alt="Website" draggable="false">
+                    </div>
+                    <span class="item-label">o2nails.lu</span>
+                </div>
+                <div class="folder-item" ondblclick="openWebsite('https://www.nexa.lu')">
+                    <div class="item-icon">
+                        <img src="../assets/gui/desktop/projects.webp" alt="Website" draggable="false">
+                    </div>
+                    <span class="item-label">nexa.lu</span>
+                </div>
+                <div class="folder-item" ondblclick="openWebsite('https://www.absaar.com')">
+                    <div class="item-icon">
+                        <img src="../assets/gui/desktop/projects.webp" alt="Website" draggable="false">
+                    </div>
+                    <span class="item-label">absaar.com</span>
+                </div>
+            </div>
+            <div class="window-statusbar"><span>4 objects</span></div>
+        </div>
+
+        <!-- Apps Window -->
+        <div id="apps-window" class="xp-window hidden" style="width: 550px; top: 100px; left: 200px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'apps-window')" ontouchstart="startDrag(event, 'apps-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/gui/icons/Folder Closed.png" alt="" class="titlebar-icon">
+                    <span>Apps</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('apps-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('apps-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('apps-window')">×</button>
+                </div>
+            </div>
+            <div class="window-toolbar">
+                <button class="toolbar-btn">
+                    <svg viewBox="0 0 16 16"><path d="M10 2L4 8l6 6" stroke="#333" fill="none" stroke-width="2"/></svg>
+                    Back
+                </button>
+                <button class="toolbar-btn disabled">
+                    <svg viewBox="0 0 16 16"><path d="M6 2l6 6-6 6" stroke="#999" fill="none" stroke-width="2"/></svg>
+                    Forward
+                </button>
+            </div>
+            <div class="window-addressbar">
+                <span class="address-label">Address</span>
+                <div class="address-input">
+                    <img src="../assets/gui/icons/Folder Closed.png" alt="" class="address-icon">
+                    <span>C:\TTADev\Apps</span>
+                </div>
+            </div>
+            <div class="window-content folder-content">
+                <div class="folder-item app-item" ondblclick="openWindow('budgetbuddy-window')">
+                    <div class="item-icon">
+                        <img src="../assets/appicons/budgetbuddy.png" alt="Budget Buddy" draggable="false">
+                    </div>
+                    <span class="item-label">Budget Buddy</span>
+                    <span class="item-desc">iOS</span>
+                </div>
+                <div class="folder-item app-item" ondblclick="openWindow('selloutai-window')">
+                    <div class="item-icon">
+                        <img src="../assets/appicons/selloutai.png" alt="SellOutAI" draggable="false">
+                    </div>
+                    <span class="item-label">SellOutAI</span>
+                    <span class="item-desc">iOS</span>
+                </div>
+                <div class="folder-item app-item" ondblclick="openWindow('eurorecup-window')">
+                    <div class="item-icon">
+                        <img src="../assets/appicons/eurorecup.png" alt="Eurorecup" draggable="false">
+                    </div>
+                    <span class="item-label">Eurorecup Pointage</span>
+                    <span class="item-desc">iOS & Android</span>
+                </div>
+            </div>
+            <div class="window-statusbar"><span>3 objects</span></div>
+        </div>
+
+        <!-- Skills Window (CMD Style) -->
+        <div id="skills-window" class="xp-window cmd-window hidden" style="width: 650px; height: 500px; top: 100px; left: 250px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'skills-window')" ontouchstart="startDrag(event, 'skills-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/gui/icons/BAT.png" alt="" class="titlebar-icon">
+                    <span>Skills.bat</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('skills-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('skills-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('skills-window'); resetCmd()">×</button>
+                </div>
+            </div>
+            <div class="cmd-content" id="cmd-output"></div>
+        </div>
+
+        <!-- Ongoing Projects Window (CMD Style) -->
+        <div id="projects-window" class="xp-window cmd-window hidden" style="width: 650px; height: 400px; top: 120px; left: 280px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'projects-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/gui/icons/BAT.png" alt="" class="titlebar-icon">
+                    <span>OngoingProjects.bat</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('projects-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('projects-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('projects-window')">×</button>
+                </div>
+            </div>
+            <div class="cmd-content">
+                <div class="cmd-window" style="padding: 12px;">
+                    <div style="color: #00ff00; margin-bottom: 10px;">C:\TTADev\OngoingProjects&gt; run</div>
+                    <div style="color: #ffffff; margin-bottom: 8px;">Loading ongoing projects database...</div>
+                    <div style="margin-bottom: 16px; color: #c0c0c0;">═══════════════════════════════════════════════</div>
+                    
+                    <div style="color: #00ffff; font-weight: bold; margin-bottom: 12px;">TTADev - Active Projects [Q4 2025]</div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <span style="color: #ffff00;">►</span>
+                        <span style="color: #00ff00;"> Barbertruck App</span>
+                        <div style="margin-left: 20px; color: #c0c0c0;">
+                            Platform: iOS & Android<br>
+                            Status: <span style="color: #ffff00;">In Development</span><br>
+                            Tech: Flutter, Dart
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <span style="color: #ffff00;">►</span>
+                        <span style="color: #00ff00;"> AIGrading App</span>
+                        <div style="margin-left: 20px; color: #c0c0c0;">
+                            Platform: iOS & Android<br>
+                            Status: <span style="color: #ffff00;">In Development</span><br>
+                            Tech: Flutter, AI/ML
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <span style="color: #ffff00;">►</span>
+                        <span style="color: #00ff00;"> QuantX</span>
+                        <div style="margin-left: 20px; color: #c0c0c0;">
+                            Platform: Web<br>
+                            Status: <span style="color: #ffff00;">In Development</span><br>
+                            Tech: React, Node.js
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <span style="color: #ffff00;">►</span>
+                        <span style="color: #00ff00;"> Medidoc</span>
+                        <div style="margin-left: 20px; color: #c0c0c0;">
+                            Platform: Web & Mobile App<br>
+                            Status: <span style="color: #ffff00;">In Development</span><br>
+                            Tech: Full Stack
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <span style="color: #ffff00;">►</span>
+                        <span style="color: #00ff00;"> Payonix App</span>
+                        <div style="margin-left: 20px; color: #c0c0c0;">
+                            Platform: Mobile App<br>
+                            Status: <span style="color: #ffff00;">In Development</span><br>
+                            Tech: Flutter, Dart
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 16px; color: #c0c0c0;">═══════════════════════════════════════════════</div>
+                    <div style="color: #00ff00; margin-top: 8px;">Total Active Projects: 5</div>
+                    <div style="color: #c0c0c0; margin-top: 4px;">Last Updated: November 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Buddy Window -->
+        <div id="budgetbuddy-window" class="xp-window app-details-window hidden" style="width: 700px; height: 550px; top: 70px; left: 180px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'budgetbuddy-window')" ontouchstart="startDrag(event, 'budgetbuddy-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/appicons/budgetbuddy.png" alt="" class="titlebar-icon">
+                    <span>Budget Buddy</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('budgetbuddy-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('budgetbuddy-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('budgetbuddy-window')">×</button>
+                </div>
+            </div>
+            <div class="window-content app-details-content">
+                <div class="app-header">
+                    <div class="app-icon-large">
+                        <img src="../assets/appicons/budgetbuddy.png" alt="Budget Buddy" draggable="false">
+                    </div>
+                    <div class="app-info">
+                        <h2>Budget Buddy</h2>
+                        <p class="app-platforms">📱 iOS only</p>
+                        <p class="app-link">
+                            <a href="https://apps.apple.com/us/app/my-budget-buddy/id6745560702" target="_blank">View on App Store →</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="app-description">
+                    <h3>About</h3>
+                    <p>Budget Buddy is your personal finance planning companion. Plan your monthly income and expenses with ease. Get the perfect financial overview and always know when payments are due. Take control of your finances and never miss a payment again.</p>
+                    
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li>Monthly income and expense tracking</li>
+                        <li>Payment due date reminders</li>
+                        <li>Clear financial overview</li>
+                        <li>Budget planning tools</li>
+                        <li>Expense categorization</li>
+                    </ul>
+                </div>
+                
+                <div class="app-tech">
+                    <h3>Technologies</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Swift</span>
+                        <span class="tech-tag">SwiftUI</span>
+                        <span class="tech-tag">iOS</span>
+                        <span class="tech-tag">Core Data</span>
+                    </div>
+                </div>
+
+                <div class="app-screenshots">
+                    <h3>Screenshots</h3>
+                    <div class="screenshots-container">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/00/92/ec/0092ecf4-47c0-a6bb-5e64-98cfb9eb137b/1.png/230x499bb.webp" alt="Screenshot 1" class="app-screenshot">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/0b/f6/b9/0bf6b97e-1146-7309-091f-55e0a2d8dbf3/2.png/230x499bb.webp" alt="Screenshot 2" class="app-screenshot">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/58/85/a1/5885a1d4-4074-145b-8e00-85f196d548c0/3.png/230x499bb.webp" alt="Screenshot 3" class="app-screenshot">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/52/aa/08/52aa0855-da10-4a51-5eb9-723afbe8e1e7/4.png/230x499bb.webp" alt="Screenshot 4" class="app-screenshot">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SellOutAI Window -->
+        <div id="selloutai-window" class="xp-window app-details-window hidden" style="width: 700px; height: 550px; top: 90px; left: 200px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'selloutai-window')" ontouchstart="startDrag(event, 'selloutai-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/appicons/selloutai.png" alt="" class="titlebar-icon">
+                    <span>SellOutAI</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('selloutai-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('selloutai-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('selloutai-window')">×</button>
+                </div>
+            </div>
+            <div class="window-content app-details-content">
+                <div class="app-header">
+                    <div class="app-icon-large">
+                        <img src="../assets/appicons/selloutai.png" alt="SellOutAI" draggable="false">
+                    </div>
+                    <div class="app-info">
+                        <h2>SellOutAI</h2>
+                        <p class="app-platforms">📱 iOS only</p>
+                        <p class="app-link">
+                            <a href="https://apps.apple.com/us/app/selloutai/id6751592448" target="_blank">View on App Store →</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="app-description">
+                    <h3>About</h3>
+                    <p>SellOutAI is your AI-powered selling assistant. Simply photograph a product and let artificial intelligence analyze its market value, generate an optimized title, and create a compelling description. Perfect for selling on eBay, Vinted, and other marketplaces.</p>
+                    
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li>AI-powered product photography analysis</li>
+                        <li>Automatic market value estimation</li>
+                        <li>Smart title generation</li>
+                        <li>Compelling product descriptions</li>
+                        <li>Optimized for eBay, Vinted, and more</li>
+                        <li>Sell faster with AI assistance</li>
+                    </ul>
+                </div>
+                
+                <div class="app-tech">
+                    <h3>Technologies</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Swift</span>
+                        <span class="tech-tag">SwiftUI</span>
+                        <span class="tech-tag">iOS</span>
+                        <span class="tech-tag">AI/ML</span>
+                        <span class="tech-tag">Vision</span>
+                    </div>
+                </div>
+
+                <div class="app-screenshots">
+                    <h3>Screenshots</h3>
+                    <div class="screenshots-container">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/15/d2/c0/15d2c089-a0da-837d-1b66-a3944611ad3a/1.png/230x499bb.webp" alt="Screenshot 1" class="app-screenshot">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/56/1c/07/561c0722-097d-9508-6e4d-80e88d6e0e2a/2.png/230x499bb.webp" alt="Screenshot 2" class="app-screenshot">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/fb/e9/e7/fbe9e75d-1dfe-f19f-93de-36a6f8f8358d/3.png/230x499bb.webp" alt="Screenshot 3" class="app-screenshot">
+                        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/d0/c9/fb/d0c9fbee-6090-1551-8738-50289406f221/4.png/230x499bb.webp" alt="Screenshot 4" class="app-screenshot">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Eurorecup Window -->
+        <div id="eurorecup-window" class="xp-window app-details-window hidden" style="width: 650px; height: 450px; top: 110px; left: 220px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'eurorecup-window')" ontouchstart="startDrag(event, 'eurorecup-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/appicons/eurorecup.png" alt="" class="titlebar-icon">
+                    <span>Eurorecup Pointage</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('eurorecup-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('eurorecup-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('eurorecup-window')">×</button>
+                </div>
+            </div>
+            <div class="window-content app-details-content">
+                <div class="app-header">
+                    <div class="app-icon-large">
+                        <img src="../assets/appicons/eurorecup.png" alt="Eurorecup Pointage" draggable="false">
+                    </div>
+                    <div class="app-info">
+                        <h2>Eurorecup Pointage</h2>
+                        <p class="app-platforms">📱 iOS & Android</p>
+                        <p class="app-status">🔒 Private - Employee Access Only</p>
+                    </div>
+                </div>
+                
+                <div class="app-description">
+                    <h3>About</h3>
+                    <p>Eurorecup Pointage is a professional time tracking and attendance management system designed specifically for employees. Clock in and out of work shifts (fiche de travail) with ease and access construction site information instantly.</p>
+                    
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li>Easy clock-in/clock-out functionality</li>
+                        <li>Work shift tracking (fiche de travail)</li>
+                        <li>Construction site information access</li>
+                        <li>Employee-only secure access</li>
+                        <li>Real-time attendance management</li>
+                        <li>Available on both iOS and Android</li>
+                    </ul>
+
+                    <p class="note"><strong>Note:</strong> This application is privately listed on both the App Store and Google Play Store. Access is restricted to authorized Eurorecup employees only.</p>
+                </div>
+                
+                <div class="app-tech">
+                    <h3>Technologies</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Dart</span>
+                        <span class="tech-tag">iOS</span>
+                        <span class="tech-tag">Android</span>
+                        <span class="tech-tag">REST API</span>
+                        <span class="tech-tag">GPS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Browser Window -->
+        <div id="browser-window" class="xp-window hidden" style="width: 850px; height: 600px; top: 40px; left: 80px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'browser-window')" ontouchstart="startDrag(event, 'browser-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/gui/desktop/projects.webp" alt="" class="titlebar-icon">
+                    <span id="browser-title">Internet Explorer</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('browser-window')">_</button>
+                    <button class="btn-maximize" onclick="maximizeWindow('browser-window')">□</button>
+                    <button class="btn-close" onclick="closeWindow('browser-window')">×</button>
+                </div>
+            </div>
+            <div class="browser-toolbar">
+                <button class="browser-btn" onclick="closeWindow('browser-window')">
+                    <svg viewBox="0 0 16 16"><path d="M10 2L4 8l6 6" stroke="#333" fill="none" stroke-width="2"/></svg>
+                </button>
+                <button class="browser-btn disabled">
+                    <svg viewBox="0 0 16 16"><path d="M6 2l6 6-6 6" stroke="#999" fill="none" stroke-width="2"/></svg>
+                </button>
+                <button class="browser-btn" onclick="refreshBrowser()">
+                    <svg viewBox="0 0 16 16"><path d="M14 8A6 6 0 1 1 8 2" stroke="#333" fill="none" stroke-width="2"/><path d="M14 2v6h-6" stroke="#333" fill="none" stroke-width="2"/></svg>
+                </button>
+                <button class="browser-btn" onclick="openExternal()" title="Open in new tab">
+                    <svg viewBox="0 0 16 16"><path d="M5 3h8v8M13 3L5 11" stroke="#333" fill="none" stroke-width="2"/></svg>
+                </button>
+                <div class="browser-address">
+                    <span id="browser-url">about:blank</span>
+                </div>
+                <button class="browser-go">Go</button>
+            </div>
+            <div class="browser-content">
+                <iframe id="browser-iframe" src="about:blank" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+            </div>
+            <div class="browser-statusbar">
+                <span>Done</span>
+            </div>
+        </div>
+
+        <!-- Contact Us Window -->
+        <div id="contact-window" class="xp-window hidden" style="width: 500px; height: 420px; top: 100px; left: 300px;">
+            <div class="window-titlebar" onmousedown="startDrag(event, 'contact-window')" ontouchstart="startDrag(event, 'contact-window')">
+                <div class="titlebar-left">
+                    <img src="../assets/gui/taskbar/welcome.webp" alt="" class="titlebar-icon">
+                    <span>Contact Us - New Message</span>
+                </div>
+                <div class="titlebar-buttons">
+                    <button class="btn-minimize" onclick="minimizeWindow('contact-window')">_</button>
+                    <button class="btn-close" onclick="closeWindow('contact-window')">×</button>
+                </div>
+            </div>
+            <div class="window-content contact-form-content">
+                <div class="mail-toolbar">
+                    <button class="mail-btn" onclick="sendContactMail()">
+                        <svg viewBox="0 0 16 16" style="width: 16px; height: 16px;">
+                            <path d="M15 2L1 8l4 2 2 4z" fill="#333"/>
+                        </svg>
+                        Send
+                    </button>
+                </div>
+                <div class="mail-form">
+                    <div class="mail-field">
+                        <label>To:</label>
+                        <input type="text" value="info@tta.lu" readonly>
+                    </div>
+                    <div class="mail-field">
+                        <label>Subject:</label>
+                        <input type="text" id="contact-subject" placeholder="Enter subject">
+                    </div>
+                    <div class="mail-field-textarea">
+                        <label>Message:</label>
+                        <textarea id="contact-message" placeholder="Type your message here..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Taskbar -->
+        <div class="xp-taskbar">
+            <button class="start-button" onclick="toggleStartMenu()">
+                <img src="../assets/gui/taskbar/start-button.webp" alt="Start" draggable="false">
+            </button>
+
+            <div class="quick-launch">
+                <div class="quick-icon" onclick="openWindow('readme-window')" title="README.txt">
+                    <img src="../assets/gui/icons/Generic Text Document.png" alt="README" draggable="false">
+                </div>
+                <div class="quick-icon" onclick="openWindow('skills-window')" title="Skills.bat">
+                    <img src="../assets/gui/icons/BAT.png" alt="Skills" draggable="false">
+                </div>
+                <div class="quick-icon" onclick="openWindow('websites-window')" title="Websites">
+                    <img src="../assets/gui/desktop/projects.webp" alt="Websites" draggable="false">
+                </div>
+            </div>
+
+            <div class="taskbar-tasks" id="taskbar-tasks"></div>
+
+            <div class="system-tray">
+                <div class="tray-icons">
+                    <div class="tray-icon" title="Toggle Sound" onclick="toggleSound()" style="cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="white">
+                            <path d="M8 3L5 6H2v4h3l3 3V3z"/>
+                            <path d="M11 5.5c.5.5.5 1.5 0 2M12 4c1 1 1 3 0 4"/>
+                        </svg>
+                    </div>
+                    <img src="../assets/gui/taskbar/crt.webp" alt="CRT" class="tray-icon" title="CRT Effect" onclick="toggleCRT()">
+                    <img src="../assets/gui/taskbar/fullscreen.webp" alt="Fullscreen" class="tray-icon" title="Fullscreen" onclick="toggleFullscreen()">
+                </div>
+                <div class="tray-time" id="taskbar-time"></div>
+            </div>
+        </div>
+
+        <!-- Start Menu -->
+        <div id="start-menu" class="start-menu hidden">
+            <div class="start-menu-header">
+                <div class="user-avatar">
+                    <img src="../assets/gui/boot/dev.png" alt="TTADev" draggable="false">
+                </div>
+                <span class="user-name">TTADev</span>
+            </div>
+            <div class="start-menu-content">
+                <div class="start-menu-left">
+                    <div class="menu-item" onclick="openWindow('readme-window'); toggleStartMenu();">
+                        <img src="../assets/gui/icons/Generic Text Document.png" alt="" class="menu-icon" draggable="false">
+                        <span>README</span>
+                    </div>
+                    <div class="menu-item" onclick="openWindow('websites-window'); toggleStartMenu();">
+                        <img src="../assets/gui/icons/Folder Closed.png" alt="" class="menu-icon" draggable="false">
+                        <span>Websites</span>
+                    </div>
+                    <div class="menu-item" onclick="openWindow('apps-window'); toggleStartMenu();">
+                        <img src="../assets/gui/icons/Folder Closed.png" alt="" class="menu-icon" draggable="false">
+                        <span>Apps</span>
+                    </div>
+                    <div class="menu-item" onclick="openWindow('skills-window'); toggleStartMenu();">
+                        <img src="../assets/gui/icons/BAT.png" alt="" class="menu-icon" draggable="false">
+                        <span>Skills.bat</span>
+                    </div>
+                    <div class="menu-item" onclick="openWindow('projects-window'); toggleStartMenu();">
+                        <img src="../assets/gui/icons/BAT.png" alt="" class="menu-icon" draggable="false">
+                        <span>Ongoing Projects</span>
+                    </div>
+                    <div class="menu-separator"></div>
+                    <div class="menu-item" onclick="openWindow('contact-window'); toggleStartMenu();">
+                        <img src="../assets/gui/taskbar/welcome.webp" alt="" class="menu-icon" draggable="false">
+                        <span>Contact Us</span>
+                    </div>
+                </div>
+                <div class="start-menu-right">
+                    <div class="menu-item-right" onclick="logOffSystem()">
+                        <img src="../assets/gui/start-menu/logoff.webp" alt="" class="menu-icon-right">
+                        <span>Log Off</span>
+                    </div>
+                    <div class="menu-item-right" onclick="restartSystem()">
+                        <img src="../assets/gui/start-menu/restart.webp" alt="" class="menu-icon-right">
+                        <span>Restart</span>
+                    </div>
+                </div>
+            </div>
+            <div class="start-menu-footer">
+                <button class="shutdown-btn" onclick="logOffSystem()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10" stroke="#fff" fill="none" stroke-width="2"/>
+                    </svg>
+                    Log Off
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="crt-effect"></div>
+    <div class="crt-scanline"></div>
+    <div class="crt-vignette"></div>
+
+    <script src="development.js"></script>
+</body>
+</html>

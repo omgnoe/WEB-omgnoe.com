@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoChat - Zero-Knowledge Messenger | OMGNoe</title>
+    <meta name="description" content="EchoChat - The most secure messenger with zero-knowledge architecture. E2E encryption, no data storage, no metadata.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .project-page { padding-top: 80px; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; padding: 20px; color: var(--text-dim); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .back-link:hover { color: var(--orange); }
+        .back-link svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .project-hero { text-align: center; padding: 20px 20px 40px; }
+        .project-icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 20px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea, #764ba2); }
+        .project-icon svg { width: 40px; height: 40px; stroke: #fff; fill: none; stroke-width: 1.5; }
+        .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+        .badge { padding: 6px 12px; font-size: 0.75rem; border-radius: 6px; background: var(--glass); border: 1px solid var(--glass-border); font-family: 'JetBrains Mono', monospace; }
+        .badge.live { border-color: #10b981; color: #10b981; }
+        .project-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.8rem, 6vw, 2.5rem); margin-bottom: 8px; }
+        .project-tagline { color: var(--orange); font-size: 0.95rem; margin-bottom: 16px; font-family: 'JetBrains Mono', monospace; }
+        .project-desc { max-width: 550px; margin: 0 auto 24px; color: var(--text-dim); font-size: 1rem; line-height: 1.6; }
+        .project-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .project-section { padding: 24px 20px; max-width: 700px; margin: 0 auto 16px; }
+        .project-section h2 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 12px; color: var(--cyan); }
+        .project-section p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; }
+        .highlight { padding: 16px; background: rgba(255,107,0,0.08); border-left: 3px solid var(--orange); border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 0.9rem; }
+        .highlight.green { background: rgba(16,185,129,0.08); border-color: #10b981; }
+        .features-grid { display: grid; gap: 12px; margin-top: 16px; }
+        .feature-item { padding: 16px; display: flex; gap: 12px; align-items: flex-start; }
+        .feature-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.2); flex-shrink: 0; }
+        .feature-icon svg { width: 20px; height: 20px; stroke: var(--cyan); fill: none; stroke-width: 2; }
+        .feature-item h4 { font-size: 0.95rem; margin-bottom: 4px; }
+        .feature-item p { font-size: 0.8rem; color: var(--text-dim); margin: 0; }
+        .tech-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        @media (min-width: 600px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <div class="cyber-bg"><div class="grid-overlay"></div><div class="scan-line"></div><div class="glow-orb orb1"></div><div class="glow-orb orb2"></div></div>
+
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="logo"><img src="assets/logo.png" alt="OMGNoe"></a>
+            <ul class="nav-links"><li><a href="index.html#apps">Apps</a></li><li><a href="index.html#contact">Contact</a></li></ul>
+            <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <div class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="index.html#apps">Apps</a><a href="index.html#contact">Contact</a></div>
+
+    <main class="project-page">
+        <a href="index.html#apps" class="back-link"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back to Projects</a>
+
+        <section class="project-hero">
+            <div class="project-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+            <div class="badges">
+                <span class="badge">iOS</span>
+                <span class="badge">Android</span>
+                <span class="badge">Open Source</span>
+                <span class="badge live">Live</span>
+            </div>
+            <h1 class="project-title">EchoChat</h1>
+            <p class="project-tagline">// ZERO-KNOWLEDGE ENCRYPTED MESSENGER</p>
+            <p class="project-desc">Privacy isn't a feature – it's the foundation. No message storage, no metadata, no server logs. Your conversations exist only on your device.</p>
+            <div class="project-btns">
+                <a href="https://tta.lu/echochat.html" target="_blank" class="btn btn-primary">Official Page <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+                <a href="https://github.com/omgnoe/echochat" target="_blank" class="btn btn-secondary">GitHub</a>
+            </div>
+        </section>
+
+        <section class="project-section glass">
+            <h2>The Problem</h2>
+            <p>Most "secure" messengers still store metadata: who communicated when with whom, IP addresses, device IDs. This data can be seized, hacked, or requested by authorities. Even if messages are encrypted – metadata often reveals more than the content itself.</p>
+        </section>
+
+        <section class="project-section glass">
+            <h2>The Solution</h2>
+            <p>EchoChat was built from the ground up with zero-knowledge principles. The server sees only encrypted blobs – never plaintext. No phone number or email required. Sessions auto-expire after 3 days.</p>
+            <div class="highlight">Server doesn't know: Your messages, name, contacts, IP, online status</div>
+            <div class="highlight green">Server only knows: Encrypted packets, temporary tokens (deleted after 3 days)</div>
+        </section>
+
+        <section class="project-section">
+            <h2>Features</h2>
+            <div class="features-grid">
+                <div class="feature-item glass">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+                    <div><h4>E2E Encryption</h4><p>X25519 + AES-256-GCM military-grade encryption</p></div>
+                </div>
+                <div class="feature-item glass">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+                    <div><h4>Zero-Knowledge</h4><p>Server sees only encrypted blobs</p></div>
+                </div>
+                <div class="feature-item glass">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                    <div><h4>Anonymous</h4><p>No phone, no email required</p></div>
+                </div>
+                <div class="feature-item glass">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                    <div><h4>Auto-Expire</h4><p>Sessions expire after 3 days</p></div>
+                </div>
+                <div class="feature-item glass">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h.01M7 12h.01M7 17h.01M12 7h.01M12 12h.01M12 17h.01M17 7h.01M17 12h.01M17 17h.01"/></svg></div>
+                    <div><h4>QR Sharing</h4><p>Add friends instantly via QR code</p></div>
+                </div>
+                <div class="feature-item glass">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+                    <div><h4>EU Server</h4><p>GDPR protected infrastructure</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="project-section glass">
+            <h2>Tech Stack</h2>
+            <div class="tech-list">
+                <span class="tech-tag glass">Flutter</span>
+                <span class="tech-tag glass">Dart</span>
+                <span class="tech-tag glass">Node.js</span>
+                <span class="tech-tag glass">WebSocket</span>
+                <span class="tech-tag glass">X25519</span>
+                <span class="tech-tag glass">AES-256-GCM</span>
+            </div>
+        </section>
+
+        <section class="project-section glass">
+            <h2>Download</h2>
+            <p>Full documentation and download at <a href="https://tta.lu/echochat.html" target="_blank" style="color:var(--orange)">tta.lu/echochat.html</a></p>
+        </section>
+    </main>
+
+    <footer><p>© 2025 OMGNoe · <a href="https://tta.lu">TTA.lu</a></p></footer>
+    <script src="script.js"></script>
+</body>
+</html>
