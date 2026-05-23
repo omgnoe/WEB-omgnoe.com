@@ -14,6 +14,9 @@ dependencies:
   react-dom:
     specifier: 19.2.4
     version: 19.2.4(react@19.2.4)
+  simple-icons:
+    specifier: ^16.20.0
+    version: 16.20.0
 
 devDependencies:
   '@tailwindcss/postcss':
@@ -3278,6 +3281,11 @@ packages:
       side-channel-map: 1.0.1
       side-channel-weakmap: 1.0.2
     dev: true
+
+  /simple-icons@16.20.0:
+    resolution: {integrity: sha512-2b7Xu+Zy+iwLiuLSAcWuxnM1ETNFy7JmxWSjh0Y/A8P3KGjFFcokbpWbUf/IivMNbR9WuZ/QQlirh5bGh3Q2vA==}
+    engines: {node: '>=0.12.18'}
+    dev: false
 
   /source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
