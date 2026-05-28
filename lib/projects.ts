@@ -22,6 +22,32 @@ export type WorkItem = {
 
 export const projects: WorkItem[] = [
   {
+    slug: "boxbee",
+    name: "BoxBee",
+    tagline: "AI mail client, made in Luxembourg",
+    description:
+      "An AI-powered email client for professionals — summaries, language-aware reply drafts and a daily brief. Native on Mac, Windows and iOS, hosted entirely in the EU.",
+    body: [
+      "BoxBee is an AI-powered email client built for professionals. It summarises every mail in seconds, drafts replies in the language the message arrived in, auto-tags the inbox by priority and serves a Daily Brief every morning so the day starts with the picture, not the pile.",
+      "It runs natively on Mac and Windows via Electron and on iPhone & iPad via a Swift/SwiftUI app, works with any IMAP provider (Gmail, iCloud, Outlook, custom domains) and is built around BeeCrypted — passwordless end-to-end encrypted mail between BoxBee users. Made in Luxembourg, hosted in the EU, with no US CloudAct exposure.",
+    ],
+    tags: ["Electron", "SwiftUI", "Next.js", "Fastify", "Prisma", "AI / LLM", "IMAP", "Stripe"],
+    role: ["Full product", "Desktop + iOS", "AI / LLM", "Billing"],
+    highlights: [
+      "AI summaries, reply drafts and daily briefs — language-aware, tone-matching, EU-hosted inference.",
+      "BeeCrypted: passwordless end-to-end encrypted mail between BoxBee users.",
+      "Universal IMAP — Gmail, iCloud, Outlook, custom domains, all in one app.",
+      "Native apps on three platforms: Mac & Windows via Electron, iPhone & iPad via SwiftUI.",
+      "Apple-notarised on macOS, code-signed on Windows, auto-updating from boxbee.co releases.",
+      "Hybrid billing: Stripe Web subscriptions + Apple In-App Purchase, unified into one license model.",
+      "EU-only hosting, no US CloudAct exposure — your mail stays where it belongs.",
+    ],
+    accent: "#FFB800",
+    kind: "personal",
+    logo: "/work/boxbee.svg",
+    url: "https://boxbee.co",
+  },
+  {
     slug: "salonify",
     name: "Salonify",
     tagline: "Booking & POS platform for salons",
