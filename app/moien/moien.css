@@ -1,0 +1,167 @@
+/* Moien — recruiting / recorder microsite. App-matching Duolingo style. */
+
+.moien-root {
+  --m-blue: #5bb9e8;
+  --m-blue-deep: #2e86c1;
+  --m-red: #e30613;
+  --m-red-deep: #a8000f;
+  --m-gold: #ffd93d;
+  --m-gold-deep: #c8a415;
+  --m-cream: #fff8e7;
+  --m-soft: #fefbf3;
+  --m-green: #58cc02;
+  --m-green-deep: #3f9602;
+  --m-ink: #1a2332;
+  --m-muted: #6b7280;
+  --m-line: #e7e3d6;
+
+  font-family: var(--font-baloo), system-ui, sans-serif;
+  color: var(--m-ink);
+  background: var(--m-cream);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.moien-root * {
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+/* ── Buttons (Duolingo 3D press) ───────────────────────────── */
+.m-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  border: none;
+  border-radius: 16px;
+  padding: 0.95rem 1.6rem;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.06s ease, filter 0.15s ease;
+  text-decoration: none;
+}
+.m-btn:active { transform: translateY(2px); }
+.m-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.m-btn-green { background: var(--m-green); color: #fff; box-shadow: 0 4px 0 var(--m-green-deep); }
+.m-btn-green:active { box-shadow: 0 2px 0 var(--m-green-deep); }
+.m-btn-blue { background: var(--m-blue); color: #fff; box-shadow: 0 4px 0 var(--m-blue-deep); }
+.m-btn-blue:active { box-shadow: 0 2px 0 var(--m-blue-deep); }
+.m-btn-red { background: var(--m-red); color: #fff; box-shadow: 0 4px 0 var(--m-red-deep); }
+.m-btn-red:active { box-shadow: 0 2px 0 var(--m-red-deep); }
+.m-btn-gold { background: var(--m-gold); color: var(--m-ink); box-shadow: 0 4px 0 var(--m-gold-deep); }
+.m-btn-gold:active { box-shadow: 0 2px 0 var(--m-gold-deep); }
+.m-btn-ghost {
+  background: #fff;
+  color: var(--m-blue-deep);
+  border: 2px solid var(--m-line);
+  box-shadow: 0 4px 0 var(--m-line);
+}
+.m-btn-ghost:active { box-shadow: 0 2px 0 var(--m-line); }
+.m-btn-lg { font-size: 1.2rem; padding: 1.1rem 2rem; }
+.m-btn-block { width: 100%; }
+
+/* ── Cards ─────────────────────────────────────────────────── */
+.m-card {
+  background: #fff;
+  border: 2px solid var(--m-line);
+  border-radius: 22px;
+  box-shadow: 0 6px 0 rgba(26, 35, 50, 0.05);
+}
+
+.m-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #fff;
+  border: 2px solid var(--m-line);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.m-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(91, 185, 232, 0.14);
+  color: var(--m-blue-deep);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+/* ── Phone mockup ──────────────────────────────────────────── */
+.m-phone {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1320 / 2868;
+  background: #0c0c0d;
+  border-radius: 42px;
+  padding: 9px;
+  box-shadow: 0 24px 60px -18px rgba(26, 35, 50, 0.45), 0 0 0 2px rgba(0,0,0,0.06);
+}
+.m-phone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 34px;
+  display: block;
+}
+.m-phone::after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34%;
+  height: 22px;
+  background: #0c0c0d;
+  border-radius: 0 0 16px 16px;
+  z-index: 2;
+}
+
+/* ── Sky gradient header ───────────────────────────────────── */
+.m-sky {
+  background: linear-gradient(180deg, #cff0ff 0%, #e9f7ff 45%, var(--m-cream) 100%);
+}
+
+/* ── Hill divider ──────────────────────────────────────────── */
+.m-section { padding: 3.2rem 1.25rem; }
+.m-wrap { max-width: 1080px; margin: 0 auto; }
+.m-narrow { max-width: 640px; margin: 0 auto; }
+
+.m-h1 { font-size: clamp(2.2rem, 8vw, 3.4rem); font-weight: 800; line-height: 1.02; letter-spacing: -0.01em; }
+.m-h2 { font-size: clamp(1.7rem, 6vw, 2.4rem); font-weight: 800; line-height: 1.08; }
+.m-lead { font-size: clamp(1.05rem, 3.6vw, 1.25rem); color: var(--m-muted); font-weight: 600; }
+
+/* recorder pulse */
+@keyframes m-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.45); }
+  70% { box-shadow: 0 0 0 22px rgba(227, 6, 19, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(227, 6, 19, 0); }
+}
+.m-recording { animation: m-pulse 1.4s infinite; }
+
+@keyframes m-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.m-bob { animation: m-bob 3s ease-in-out infinite; }
+
+.m-grid-units {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.85rem;
+}
+
+.m-progressbar { height: 14px; background: #ece8da; border-radius: 999px; overflow: hidden; }
+.m-progressbar > div { height: 100%; background: var(--m-green); border-radius: 999px; transition: width 0.3s ease; }
