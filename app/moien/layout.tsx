@@ -17,8 +17,8 @@ export const metadata: Metadata = {
     "Moien ass déi nei App fir Lëtzebuergesch ze léieren. Maach mat: hëllef der App eng Stëmm ze ginn — huel A1.1-Wierder op, direkt am Browser. Merci!",
   alternates: { canonical: SITE },
   icons: {
-    icon: "/moien/appicon-180.png",
-    apple: "/moien/appicon-180.png",
+    icon: "/moien/appicon-180.png?v=2",
+    apple: "/moien/appicon-180.png?v=2",
   },
   openGraph: {
     type: "website",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Moien — Léier Lëtzebuergesch. Gëff der App deng Stëmm.",
     description:
       "Hëllef Moien, déi cutste App fir Lëtzebuergesch ze léieren. Huel Wierder op — direkt am Browser, an e puer Minutten.",
-    images: ["/moien/appicon.png"],
+    images: ["/moien/appicon.png?v=2"],
   },
   robots: { index: true, follow: true },
 };

@@ -75,7 +75,7 @@ export default function AdminPage() {
       <main className="m-section" style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>
         <form onSubmit={login} className="m-card" style={{ padding: "1.6rem", width: "min(92vw, 380px)" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/moien/appicon.png" alt="" width={48} height={48} style={{ borderRadius: 12, margin: "0 auto", display: "block" }} />
+          <img src="/moien/appicon.png?v=2" alt="" width={48} height={48} style={{ borderRadius: 12, margin: "0 auto", display: "block" }} />
           <h1 style={{ fontWeight: 800, fontSize: "1.4rem", textAlign: "center", marginTop: "0.8rem" }}>Moien Admin</h1>
           <p style={{ color: "var(--m-muted)", fontWeight: 600, textAlign: "center", fontSize: "0.9rem", marginTop: "0.2rem" }}>Audio-Beiträg verwalten</p>
           <input

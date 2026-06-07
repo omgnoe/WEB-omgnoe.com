@@ -28,7 +28,7 @@ export default function MoienLanding() {
         <div className="m-wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.6rem 1.25rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/moien/appicon-mark.png" alt="Moien" width={38} height={38} style={{ borderRadius: 10 }} />
+            <img src="/moien/appicon.png?v=2" alt="Moien" width={38} height={38} style={{ borderRadius: 10 }} />
             <span style={{ fontWeight: 800, fontSize: "1.3rem", color: "var(--m-blue-deep)" }}>Moien</span>
           </div>
           <Link href="/moien/record" className="m-btn m-btn-green" style={{ padding: "0.6rem 1.1rem", fontSize: "0.95rem" }}>
@@ -161,7 +161,7 @@ export default function MoienLanding() {
         <div className="m-wrap">
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/moien/appicon-mark.png" alt="Moien" width={32} height={32} style={{ borderRadius: 8 }} />
+            <img src="/moien/appicon.png?v=2" alt="Moien" width={32} height={32} style={{ borderRadius: 8 }} />
             <span style={{ fontWeight: 800, fontSize: "1.1rem" }}>Moien</span>
           </div>
           <p style={{ opacity: 0.7, fontWeight: 600, marginTop: "0.6rem", fontSize: "0.9rem" }}>

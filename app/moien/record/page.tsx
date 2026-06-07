@@ -317,7 +317,7 @@ function TopNav() {
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
       <Link href="/moien" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", color: "var(--m-ink)" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/moien/appicon-mark.png" alt="Moien" width={34} height={34} style={{ borderRadius: 9 }} />
+        <img src="/moien/appicon.png?v=2" alt="Moien" width={34} height={34} style={{ borderRadius: 9 }} />
         <span style={{ fontWeight: 800, fontSize: "1.2rem", color: "var(--m-blue-deep)" }}>Moien</span>
       </Link>
     </div>
