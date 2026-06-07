@@ -19,6 +19,14 @@ const FEATURES: { icon: string; title: string; text: string }[] = [
   { icon: "culture_music", title: "Echt Lëtzebuergesch Audio", text: "Wierder vun echte Lëtzebuerger Stëmmen — net Roboter-TTS." },
 ];
 
+const SCREENS: { img: string; cap: string }[] = [
+  { img: "learn", cap: "🗺️ Däi Léier-Pfad" },
+  { img: "stats", cap: "🔥 Streaks, XP & Ligaen" },
+  { img: "culture", cap: "🇱🇺 Kultur entdecken" },
+  { img: "cuisine", cap: "🍲 Lëtzebuerger Iessen" },
+  { img: "welcome", cap: "👋 Moien soen" },
+];
+
 export default function MoienLanding() {
   const totalUnits = MOIEN_UNITS.length;
   return (
@@ -31,8 +39,16 @@ export default function MoienLanding() {
             <img src="/moien/appicon.png?v=2" alt="Moien" width={38} height={38} style={{ borderRadius: 10 }} />
             <span style={{ fontWeight: 800, fontSize: "1.3rem", color: "var(--m-blue-deep)" }}>Moien</span>
           </div>
-          <Link href="/moien/record" className="m-btn m-btn-green" style={{ padding: "0.6rem 1.1rem", fontSize: "0.95rem" }}>
-            🎙️ Maach mat
+          <Link
+            href="/moien/record"
+            className="m-btn m-btn-green"
+            style={{ padding: "0.55rem 1.15rem", fontSize: "0.95rem", borderRadius: 999, gap: "0.45rem" }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor" />
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            Maach mat
           </Link>
         </div>
       </header>
@@ -73,21 +89,28 @@ export default function MoienLanding() {
       </section>
 
       {/* App showcase */}
-      <section id="app" className="m-section">
-        <div className="m-wrap">
-          <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-            <span className="m-chip">📱 D'App</span>
+      <section id="app" className="m-section" style={{ paddingInline: 0 }}>
+        <div className="m-wrap" style={{ paddingInline: "1.25rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "1.6rem" }}>
+            <span className="m-chip">📱 D&apos;App</span>
             <h2 className="m-h2" style={{ marginTop: "0.8rem" }}>Léieren, dat sech wéi e Spill ufillt</h2>
           </div>
-          <div style={{ display: "flex", gap: "1.5rem", justifyContent: "center", flexWrap: "wrap", alignItems: "flex-start" }}>
-            <div className="m-phone"> {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/moien/screens/welcome.png" alt="Moien Welcome" />
-            </div>
-            <div className="m-phone" style={{ marginTop: "1.4rem" }}> {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/moien/screens/learn.png" alt="Moien Léier-Pfad" />
-            </div>
-          </div>
+        </div>
 
+        {/* swipeable screenshot carousel */}
+        <div className="m-carousel">
+          {SCREENS.map((s) => (
+            <div key={s.img} className="m-slide">
+              <div className="m-phone"> {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/moien/screens/${s.img}.png`} alt={s.cap} loading="lazy" />
+              </div>
+              <span className="m-slide-cap">{s.cap}</span>
+            </div>
+          ))}
+        </div>
+        <p className="m-swipe-hint">← wësch fir méi ze gesinn →</p>
+
+        <div className="m-wrap" style={{ paddingInline: "1.25rem" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem", marginTop: "2.4rem" }}>
             {FEATURES.map((f) => (
               <div key={f.title} className="m-card" style={{ padding: "1.2rem" }}>
@@ -136,6 +159,7 @@ export default function MoienLanding() {
               ["1", "Wiel eng Unit", "Sich der eng Lëscht aus — z.B. „Begréissungen“ oder „Zuelen“."],
               ["2", "Lies & huel op", "E Wuert gëtt gewisen, du dréckst op opniehmen a sees et."],
               ["3", "Schéck of", "Mat engem Klick gëtt et geschéckt. Merci! 🎉"],
+              ["4", "Du gëss Deel vu Moien", "Deng Stëmm kënnt an d'App a léiert Dausende Lëtzebuergesch."],
             ].map(([n, t, d]) => (
               <div key={n} className="m-card" style={{ padding: "1.1rem" }}>
                 <div style={{ width: 38, height: 38, borderRadius: 999, background: "var(--m-blue)", color: "#fff", display: "grid", placeItems: "center", fontWeight: 800, fontSize: "1.1rem" }}>{n}</div>

@@ -116,17 +116,39 @@
   border-radius: 34px;
   display: block;
 }
-.m-phone::after {
-  content: "";
-  position: absolute;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 34%;
-  height: 22px;
-  background: #0c0c0d;
-  border-radius: 0 0 16px 16px;
-  z-index: 2;
+
+/* ── Screenshot carousel (CSS scroll-snap, swipeable) ──────── */
+.m-carousel {
+  display: flex;
+  gap: 1.1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5rem 1.25rem 1.4rem;
+  scrollbar-width: none;
+}
+.m-carousel::-webkit-scrollbar { display: none; }
+.m-slide {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.m-slide .m-phone { max-width: 230px; }
+.m-slide-cap {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--m-ink);
+  text-align: center;
+}
+.m-swipe-hint {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--m-muted);
 }
 
 /* ── Sky gradient header ───────────────────────────────────── */
