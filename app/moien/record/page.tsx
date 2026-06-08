@@ -220,7 +220,7 @@ export default function RecordPage() {
     }
     const ord = buildOrder(u, counts);
     if (ord.length === 0) {
-      setError(`„${u.titleLb}“ ass scho komplett — all d'Wierder hunn ${MAX_PER_ITEM} Opnamen. Merci! Wiel eng aner Unit.`);
+      setError(`„${u.titleLb}“ ass scho komplett, all d'Wierder hunn ${MAX_PER_ITEM} Opnamen. Merci! Wiel eng aner Unit.`);
       return;
     }
     localStorage.setItem("moien_contrib_name", name.trim());
@@ -264,7 +264,7 @@ export default function RecordPage() {
               placeholder="z.B. Anne aus Esch"
               style={inputStyle}
             />
-            {nameLocked && <p style={{ color: "var(--m-green-deep)", fontWeight: 700, fontSize: "0.82rem", marginTop: "0.4rem" }}>✓ Gespäichert — du kanns direkt lass leeën.</p>}
+            {nameLocked && <p style={{ color: "var(--m-green-deep)", fontWeight: 700, fontSize: "0.82rem", marginTop: "0.4rem" }}>✓ Gespäichert, du kanns direkt lass leeën.</p>}
           </div>
 
           {error && <p style={errStyle}>{error}</p>}
@@ -404,7 +404,7 @@ function CountBadge({ count }: { count: number }) {
   let bg: string;
   let color: string;
   if (count === 0) {
-    label = `Nach keng Opnam — dëst Wuert gëtt gebraucht 🙌 (0/${MAX_PER_ITEM})`;
+    label = `Nach keng Opnam, dëst Wuert gëtt gebraucht 🙌 (0/${MAX_PER_ITEM})`;
     bg = "rgba(227,6,19,0.08)";
     color = "var(--m-red-deep)";
   } else if (count < TARGET_PER_ITEM) {

@@ -14,9 +14,9 @@ const CAST: { img: string; name: string; role: string }[] = [
 
 const FEATURES: { icon: string; title: string; text: string }[] = [
   { icon: "ui_lightbulb", title: "7 Sektiounen, A1 bis B2", text: "E komplette Wee vun de éischte Wierder bis zum Sproochentest." },
-  { icon: "streak", title: "Streaks & Liga", text: "Léier all Dag e bëssen — mat XP, Streaks an 10 Ligaen." },
-  { icon: "culture_food", title: "Kultur agebaut", text: "Iessen, Mythen, Feste & Geschicht — Sprooch mat Séil." },
-  { icon: "culture_music", title: "Echt Lëtzebuergesch Audio", text: "Wierder vun echte Lëtzebuerger Stëmmen — net Roboter-TTS." },
+  { icon: "streak", title: "Streaks & Liga", text: "Léier all Dag e bëssen, mat XP, Streaks an 10 Ligaen." },
+  { icon: "culture_food", title: "Kultur agebaut", text: "Iessen, Mythen, Feste & Geschicht. Sprooch mat Séil." },
+  { icon: "culture_music", title: "Echt Lëtzebuergesch Audio", text: "Wierder vun echte Lëtzebuerger Stëmmen, net Roboter-TTS." },
 ];
 
 const SCREENS: { img: string; cap: string }[] = [
@@ -62,7 +62,7 @@ export default function MoienLanding() {
             Léier <span style={{ color: "var(--m-blue-deep)" }}>Lëtzebuergesch</span><br />op déi schéinste Manéier
           </h1>
           <p className="m-lead" style={{ marginTop: "1rem", maxWidth: 540, marginInline: "auto" }}>
-            Moien ass déi nei, spilleresch App fir Lëtzebuergesch ze léieren — mat Léiwchen a senge Frënn. A <strong>du</strong> kanns hëllefen, hir Stëmm ze ginn.
+            Moien ass déi nei, spilleresch App fir Lëtzebuergesch ze léieren, mat Léiwchen a senge Frënn. A <strong>du</strong> kanns hëllefen, hir Stëmm ze ginn.
           </p>
           <div style={{ display: "flex", gap: "0.8rem", justifyContent: "center", flexWrap: "wrap", marginTop: "1.6rem" }}>
             <Link href="/moien/record" className="m-btn m-btn-green m-btn-lg">🎙️ Huel Wierder op</Link>
@@ -151,12 +151,12 @@ export default function MoienLanding() {
           <span className="m-chip" style={{ background: "rgba(227,6,19,0.1)", color: "var(--m-red-deep)" }}>❤️ Maach mat</span>
           <h2 className="m-h2" style={{ marginTop: "0.8rem" }}>Gëff der App deng Stëmm</h2>
           <p className="m-lead" style={{ marginTop: "0.8rem" }}>
-            Eng Sproochapp brauch echt Stëmmen. Hëllef Moien, andeems du e puer Lëtzebuergesch Wierder opphëlls — direkt hei am Browser, ouni eppes z&apos;installéieren. All Stëmm hëlleft, datt méi Leit Lëtzebuergesch léieren.
+            Eng Sproochapp brauch echt Stëmmen. Hëllef Moien, andeems du e puer Lëtzebuergesch Wierder opphëlls, direkt hei am Browser, ouni eppes z&apos;installéieren. All Stëmm hëlleft, datt méi Leit Lëtzebuergesch léieren.
           </p>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", marginTop: "1.8rem", textAlign: "left" }}>
             {[
-              ["1", "Wiel eng Unit", "Sich der eng Lëscht aus — z.B. „Begréissungen“ oder „Zuelen“."],
+              ["1", "Wiel eng Unit", "Sich der eng Lëscht aus, z.B. „Begréissungen“ oder „Zuelen“."],
               ["2", "Lies & huel op", "E Wuert gëtt gewisen, du dréckst op opniehmen a sees et."],
               ["3", "Schéck of", "Mat engem Klick gëtt et geschéckt. Merci! 🎉"],
               ["4", "Du gëss Deel vu Moien", "Deng Stëmm kënnt an d'App a léiert Dausende Lëtzebuergesch."],
@@ -171,10 +171,10 @@ export default function MoienLanding() {
 
           <div style={{ marginTop: "2rem" }}>
             <Link href="/moien/record" className="m-btn m-btn-green m-btn-lg m-btn-block" style={{ maxWidth: 360, marginInline: "auto" }}>
-              🎙️ Lass — huel Wierder op
+              🎙️ Lass, huel Wierder op
             </Link>
             <p style={{ color: "var(--m-muted)", fontWeight: 600, fontSize: "0.85rem", marginTop: "0.8rem" }}>
-              Brauch e Mikro. Dauert sou laang wéi s du wëlls — och 2 Minutten hëllefen.
+              Brauch e Mikro. Dauert sou laang wéi s du wëlls, och 2 Minutten hëllefen.
             </p>
           </div>
         </div>
