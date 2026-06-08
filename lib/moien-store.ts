@@ -89,6 +89,17 @@ export async function listSubmissions(): Promise<Submission[]> {
   return out;
 }
 
+/** Number of recordings per item, keyed by `${unitId}#${itemIndex}`. */
+export async function countsByItem(): Promise<Record<string, number>> {
+  const subs = await listSubmissions();
+  const counts: Record<string, number> = {};
+  for (const s of subs) {
+    const key = `${s.unitId}#${s.itemIndex}`;
+    counts[key] = (counts[key] || 0) + 1;
+  }
+  return counts;
+}
+
 export async function getSubmission(id: string): Promise<Submission | null> {
   if (!/^[a-f0-9]{18}$/.test(id)) return null;
   try {

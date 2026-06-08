@@ -6,6 +6,29 @@ import { MOIEN_UNITS, type MoienUnit } from "@/lib/moien-words";
 
 type RecState = "idle" | "recording" | "review" | "sending";
 
+// How many recordings per word we consider "enough". Below this, the word is
+// still surfaced to contributors so coverage spreads instead of piling up on
+// the first few items of every unit.
+const TARGET_PER_ITEM = 3;
+
+function itemKey(unitId: string, itemIndex: number): string {
+  return `${unitId}#${itemIndex}`;
+}
+
+// Order item indices so the least-recorded words come first. This is the
+// "suggestion" mechanism: contributors are steered to the gaps, so we stop
+// collecting the same early words over and over.
+function buildOrder(u: MoienUnit, counts: Record<string, number>): number[] {
+  return u.items
+    .map((_, i) => i)
+    .sort((a, b) => {
+      const ca = counts[itemKey(u.id, a)] || 0;
+      const cb = counts[itemKey(u.id, b)] || 0;
+      if (ca !== cb) return ca - cb;
+      return a - b;
+    });
+}
+
 function pickMime(): string {
   if (typeof MediaRecorder === "undefined") return "";
   const candidates = [
@@ -29,7 +52,9 @@ export default function RecordPage() {
   const [name, setName] = useState("");
   const [nameLocked, setNameLocked] = useState(false);
   const [unit, setUnit] = useState<MoienUnit | null>(null);
-  const [idx, setIdx] = useState(0);
+  const [order, setOrder] = useState<number[]>([]);
+  const [pos, setPos] = useState(0);
+  const [counts, setCounts] = useState<Record<string, number>>({});
   const [sent, setSent] = useState<Set<number>>(new Set());
   const [recState, setRecState] = useState<RecState>("idle");
   const [seconds, setSeconds] = useState(0);
@@ -51,6 +76,23 @@ export default function RecordPage() {
       setNameLocked(true);
     }
   }, []);
+
+  // load how many recordings each word already has
+  const loadCounts = useCallback(async () => {
+    try {
+      const res = await fetch("/api/moien/counts", { cache: "no-store" });
+      if (res.ok) {
+        const data = await res.json();
+        setCounts(data.counts || {});
+      }
+    } catch {
+      /* coverage is best-effort; recording still works without it */
+    }
+  }, []);
+
+  useEffect(() => {
+    loadCounts();
+  }, [loadCounts]);
 
   const stopStream = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop());
@@ -117,6 +159,7 @@ export default function RecordPage() {
 
   async function sendRec() {
     if (!blobRef.current || !unit) return;
+    const itemIndex = order[pos];
     setRecState("sending");
     setError(null);
     try {
@@ -124,14 +167,19 @@ export default function RecordPage() {
       const ext = (blobRef.current.type.includes("mp4") || blobRef.current.type.includes("aac")) ? "m4a" : "webm";
       fd.append("audio", blobRef.current, `rec.${ext}`);
       fd.append("unitId", unit.id);
-      fd.append("itemIndex", String(idx));
-      fd.append("text", unit.items[idx]);
+      fd.append("itemIndex", String(itemIndex));
+      fd.append("text", unit.items[itemIndex]);
       fd.append("contributor", name || "Anonym");
       const res = await fetch("/api/moien/contribute", { method: "POST", body: fd });
       if (!res.ok) throw new Error("upload failed");
       const next = new Set(sent);
-      next.add(idx);
+      next.add(itemIndex);
       setSent(next);
+      // reflect the new recording locally so the badge updates immediately
+      setCounts((c) => {
+        const key = itemKey(unit.id, itemIndex);
+        return { ...c, [key]: (c[key] || 0) + 1 };
+      });
       advance();
     } catch {
       setError("Schécken huet net geklappt. Probéier nach eng Kéier.");
@@ -142,11 +190,11 @@ export default function RecordPage() {
   function advance() {
     resetRec();
     if (!unit) return;
-    if (idx + 1 >= unit.items.length) {
+    if (pos + 1 >= order.length) {
       setDone(true);
       stopStream();
     } else {
-      setIdx((i) => i + 1);
+      setPos((p) => p + 1);
     }
   }
 
@@ -163,7 +211,8 @@ export default function RecordPage() {
     localStorage.setItem("moien_contrib_name", name.trim());
     setNameLocked(true);
     setUnit(u);
-    setIdx(0);
+    setOrder(buildOrder(u, counts));
+    setPos(0);
     setSent(new Set());
     setDone(false);
     resetRec();
@@ -205,15 +254,35 @@ export default function RecordPage() {
 
           {error && <p style={errStyle}>{error}</p>}
 
-          <h2 style={{ fontWeight: 800, fontSize: "1.2rem", marginTop: "2rem", marginBottom: "0.8rem" }}>Wiel eng Unit</h2>
+          <h2 style={{ fontWeight: 800, fontSize: "1.2rem", marginTop: "2rem", marginBottom: "0.3rem" }}>Wiel eng Unit</h2>
+          <p style={{ color: "var(--m-muted)", fontWeight: 700, fontSize: "0.85rem", marginBottom: "0.8rem" }}>
+            Units mat de meeschte feelende Wierder bréngen am meeschten. Mir weisen der ëmmer fir d&apos;Wierder un, déi nach Opnamen brauchen.
+          </p>
           <div className="m-grid-units">
-            {MOIEN_UNITS.map((u, i) => (
-              <button key={u.id} className="m-card" onClick={() => openUnit(u)} style={unitCardStyle}>
-                <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "var(--m-blue-deep)" }}>UNIT {i + 1}</span>
-                <span style={{ fontWeight: 800, fontSize: "1.02rem", lineHeight: 1.1, marginTop: "0.2rem" }}>{u.titleLb}</span>
-                <span style={{ fontSize: "0.8rem", color: "var(--m-muted)", fontWeight: 700, marginTop: "0.4rem" }}>{u.items.length} Wierder</span>
-              </button>
-            ))}
+            {MOIEN_UNITS.map((u, i) => {
+              const needed = u.items.filter((_, j) => (counts[itemKey(u.id, j)] || 0) < TARGET_PER_ITEM).length;
+              const complete = needed === 0;
+              return (
+                <button key={u.id} className="m-card" onClick={() => openUnit(u)} style={unitCardStyle}>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "var(--m-blue-deep)" }}>UNIT {i + 1}</span>
+                  <span style={{ fontWeight: 800, fontSize: "1.02rem", lineHeight: 1.1, marginTop: "0.2rem" }}>{u.titleLb}</span>
+                  <span style={{ fontSize: "0.8rem", color: "var(--m-muted)", fontWeight: 700, marginTop: "0.4rem" }}>{u.items.length} Wierder</span>
+                  <span
+                    style={{
+                      fontSize: "0.74rem",
+                      fontWeight: 800,
+                      marginTop: "0.35rem",
+                      padding: "0.18rem 0.5rem",
+                      borderRadius: 999,
+                      background: complete ? "rgba(0,154,90,0.12)" : "rgba(0,107,224,0.1)",
+                      color: complete ? "var(--m-green-deep)" : "var(--m-blue-deep)",
+                    }}
+                  >
+                    {complete ? "✓ Komplett" : `${needed} brauchen nach Opnamen`}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </main>
@@ -239,9 +308,11 @@ export default function RecordPage() {
     );
   }
 
-  const total = unit.items.length;
-  const progress = Math.round(((idx) / total) * 100);
-  const current = unit.items[idx];
+  const total = order.length;
+  const progress = Math.round((pos / total) * 100);
+  const curIndex = order[pos] ?? 0;
+  const current = unit.items[curIndex];
+  const curCount = counts[itemKey(unit.id, curIndex)] || 0;
 
   return (
     <main className="m-section" style={{ minHeight: "100vh" }}>
@@ -249,7 +320,7 @@ export default function RecordPage() {
         <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
           <button onClick={leaveUnit} className="m-btn m-btn-ghost" style={{ padding: "0.5rem 0.9rem", fontSize: "0.85rem" }}>✕</button>
           <div className="m-progressbar" style={{ flex: 1 }}><div style={{ width: `${progress}%` }} /></div>
-          <span style={{ fontWeight: 800, fontSize: "0.85rem", color: "var(--m-muted)" }}>{idx + 1}/{total}</span>
+          <span style={{ fontWeight: 800, fontSize: "0.85rem", color: "var(--m-muted)" }}>{pos + 1}/{total}</span>
         </div>
 
         <div style={{ textAlign: "center", marginTop: "0.6rem" }}>
@@ -261,6 +332,7 @@ export default function RecordPage() {
           <p style={{ fontSize: "clamp(1.6rem, 7vw, 2.4rem)", fontWeight: 800, lineHeight: 1.15, marginTop: "0.6rem", color: "var(--m-ink)" }}>
             {current}
           </p>
+          <CountBadge count={curCount} />
         </div>
 
         {error && <p style={errStyle}>{error}</p>}
@@ -310,6 +382,41 @@ function fmt(s: number) {
   const m = Math.floor(s / 60);
   const ss = s % 60;
   return `${m}:${ss.toString().padStart(2, "0")}`;
+}
+
+function CountBadge({ count }: { count: number }) {
+  let label: string;
+  let bg: string;
+  let color: string;
+  if (count === 0) {
+    label = "Nach keng Opnam — dëst Wuert gëtt gebraucht 🙌";
+    bg = "rgba(227,6,19,0.08)";
+    color = "var(--m-red-deep)";
+  } else if (count < TARGET_PER_ITEM) {
+    label = `${count} ${count === 1 ? "Opnam" : "Opnamen"} scho do · nach gebraucht`;
+    bg = "rgba(0,107,224,0.1)";
+    color = "var(--m-blue-deep)";
+  } else {
+    label = `✓ ${count} Opnamen · genuch, mee gär méi`;
+    bg = "rgba(0,154,90,0.12)";
+    color = "var(--m-green-deep)";
+  }
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        marginTop: "0.9rem",
+        padding: "0.32rem 0.8rem",
+        borderRadius: 999,
+        fontWeight: 800,
+        fontSize: "0.8rem",
+        background: bg,
+        color,
+      }}
+    >
+      {label}
+    </span>
+  );
 }
 
 function TopNav() {
