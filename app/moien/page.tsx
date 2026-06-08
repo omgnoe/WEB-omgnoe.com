@@ -151,7 +151,7 @@ export default function MoienLanding() {
           <span className="m-chip" style={{ background: "rgba(227,6,19,0.1)", color: "var(--m-red-deep)" }}>❤️ Maach mat</span>
           <h2 className="m-h2" style={{ marginTop: "0.8rem" }}>Gëff der App deng Stëmm</h2>
           <p className="m-lead" style={{ marginTop: "0.8rem" }}>
-            Eng Sproochapp brauch echt Stëmmen. Hëllef Moien, andeems du e puer Lëtzebuergesch Wierder oppwëlls — direkt hei am Browser, ouni eppes z&apos;installéieren. All Stëmm hëlleft, datt méi Leit Lëtzebuergesch léieren.
+            Eng Sproochapp brauch echt Stëmmen. Hëllef Moien, andeems du e puer Lëtzebuergesch Wierder opphëlls — direkt hei am Browser, ouni eppes z&apos;installéieren. All Stëmm hëlleft, datt méi Leit Lëtzebuergesch léieren.
           </p>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", marginTop: "1.8rem", textAlign: "left" }}>
