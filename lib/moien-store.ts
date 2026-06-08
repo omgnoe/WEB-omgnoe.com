@@ -89,6 +89,17 @@ export async function listSubmissions(): Promise<Submission[]> {
   return out;
 }
 
+// Hard cap of recordings per word. At this count the word is closed:
+// the recorder hides it and the API rejects further uploads.
+// Keep in sync with MAX_PER_ITEM in app/moien/record/page.tsx.
+export const MAX_PER_ITEM = 5;
+
+/** How many recordings a single item already has. */
+export async function countForItem(unitId: string, itemIndex: number): Promise<number> {
+  const subs = await listSubmissions();
+  return subs.filter((s) => s.unitId === unitId && s.itemIndex === itemIndex).length;
+}
+
 /** Number of recordings per item, keyed by `${unitId}#${itemIndex}`. */
 export async function countsByItem(): Promise<Record<string, number>> {
   const subs = await listSubmissions();

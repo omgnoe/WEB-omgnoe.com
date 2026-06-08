@@ -6,10 +6,12 @@ import { MOIEN_UNITS, type MoienUnit } from "@/lib/moien-words";
 
 type RecState = "idle" | "recording" | "review" | "sending";
 
-// How many recordings per word we consider "enough". Below this, the word is
-// still surfaced to contributors so coverage spreads instead of piling up on
-// the first few items of every unit.
+// How many recordings per word we consider "enough" (drives the colour hint).
 const TARGET_PER_ITEM = 3;
+// Hard cap: once a word reaches this many recordings it is closed — removed
+// from the recording list and rejected server-side. Keep in sync with the
+// MAX_PER_ITEM in lib/moien-store.ts.
+const MAX_PER_ITEM = 5;
 
 function itemKey(unitId: string, itemIndex: number): string {
   return `${unitId}#${itemIndex}`;
@@ -21,6 +23,7 @@ function itemKey(unitId: string, itemIndex: number): string {
 function buildOrder(u: MoienUnit, counts: Record<string, number>): number[] {
   return u.items
     .map((_, i) => i)
+    .filter((i) => (counts[itemKey(u.id, i)] || 0) < MAX_PER_ITEM)
     .sort((a, b) => {
       const ca = counts[itemKey(u.id, a)] || 0;
       const cb = counts[itemKey(u.id, b)] || 0;
@@ -171,6 +174,13 @@ export default function RecordPage() {
       fd.append("text", unit.items[itemIndex]);
       fd.append("contributor", name || "Anonym");
       const res = await fetch("/api/moien/contribute", { method: "POST", body: fd });
+      if (res.status === 409) {
+        // word filled up (reached the cap) while recording — mark it closed
+        // locally and move on without counting this as a sent recording
+        setCounts((c) => ({ ...c, [itemKey(unit.id, itemIndex)]: MAX_PER_ITEM }));
+        advance();
+        return;
+      }
       if (!res.ok) throw new Error("upload failed");
       const next = new Set(sent);
       next.add(itemIndex);
@@ -208,10 +218,15 @@ export default function RecordPage() {
       setError("Gëff w.e.g. däin Numm (oder Spëtznumm) un.");
       return;
     }
+    const ord = buildOrder(u, counts);
+    if (ord.length === 0) {
+      setError(`„${u.titleLb}“ ass scho komplett — all d'Wierder hunn ${MAX_PER_ITEM} Opnamen. Merci! Wiel eng aner Unit.`);
+      return;
+    }
     localStorage.setItem("moien_contrib_name", name.trim());
     setNameLocked(true);
     setUnit(u);
-    setOrder(buildOrder(u, counts));
+    setOrder(ord);
     setPos(0);
     setSent(new Set());
     setDone(false);
@@ -260,10 +275,10 @@ export default function RecordPage() {
           </p>
           <div className="m-grid-units">
             {MOIEN_UNITS.map((u, i) => {
-              const needed = u.items.filter((_, j) => (counts[itemKey(u.id, j)] || 0) < TARGET_PER_ITEM).length;
+              const needed = u.items.filter((_, j) => (counts[itemKey(u.id, j)] || 0) < MAX_PER_ITEM).length;
               const complete = needed === 0;
               return (
-                <button key={u.id} className="m-card" onClick={() => openUnit(u)} style={unitCardStyle}>
+                <button key={u.id} className="m-card" onClick={() => openUnit(u)} style={{ ...unitCardStyle, opacity: complete ? 0.6 : 1 }}>
                   <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "var(--m-blue-deep)" }}>UNIT {i + 1}</span>
                   <span style={{ fontWeight: 800, fontSize: "1.02rem", lineHeight: 1.1, marginTop: "0.2rem" }}>{u.titleLb}</span>
                   <span style={{ fontSize: "0.8rem", color: "var(--m-muted)", fontWeight: 700, marginTop: "0.4rem" }}>{u.items.length} Wierder</span>
@@ -389,15 +404,15 @@ function CountBadge({ count }: { count: number }) {
   let bg: string;
   let color: string;
   if (count === 0) {
-    label = "Nach keng Opnam — dëst Wuert gëtt gebraucht 🙌";
+    label = `Nach keng Opnam — dëst Wuert gëtt gebraucht 🙌 (0/${MAX_PER_ITEM})`;
     bg = "rgba(227,6,19,0.08)";
     color = "var(--m-red-deep)";
   } else if (count < TARGET_PER_ITEM) {
-    label = `${count} ${count === 1 ? "Opnam" : "Opnamen"} scho do · nach gebraucht`;
+    label = `${count}/${MAX_PER_ITEM} Opnamen · nach gebraucht`;
     bg = "rgba(0,107,224,0.1)";
     color = "var(--m-blue-deep)";
   } else {
-    label = `✓ ${count} Opnamen · genuch, mee gär méi`;
+    label = `✓ ${count}/${MAX_PER_ITEM} Opnamen · gär nach e puer`;
     bg = "rgba(0,154,90,0.12)";
     color = "var(--m-green-deep)";
   }

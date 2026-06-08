@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { saveSubmission, extForMime } from "@/lib/moien-store";
+import { saveSubmission, extForMime, countForItem, MAX_PER_ITEM } from "@/lib/moien-store";
 import { MOIEN_UNITS } from "@/lib/moien-words";
 
 export const runtime = "nodejs";
@@ -33,6 +33,15 @@ export async function POST(req: NextRequest) {
   if (!Number.isInteger(itemIndex) || itemIndex < 0 || itemIndex >= unit.items.length) {
     return NextResponse.json({ error: "bad itemIndex" }, { status: 400 });
   }
+  // Enforce the per-word cap: once a word has enough recordings it is closed.
+  const existing = await countForItem(unit.id, itemIndex);
+  if (existing >= MAX_PER_ITEM) {
+    return NextResponse.json(
+      { error: "item full", max: MAX_PER_ITEM },
+      { status: 409 }
+    );
+  }
+
   // Trust the manifest text over client-supplied text.
   const canonicalText = unit.items[itemIndex];
   const mime = file.type || "application/octet-stream";
