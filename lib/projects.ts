@@ -120,51 +120,6 @@ export const projects: WorkItem[] = [
     url: "https://doctomap.lu",
   },
   {
-    slug: "echochat",
-    name: "EchoChat",
-    tagline: "Anonymous, encrypted messaging",
-    description:
-      "Zero-knowledge messenger with military-grade end-to-end encryption. No accounts, no trace — connect instantly with session codes. Simple. Secure. Anonymous.",
-    body: [
-      "EchoChat is a zero-knowledge messenger built around privacy: end-to-end encryption, no accounts and no stored history. Two people connect instantly with a session code or QR.",
-      "There is nothing to trace — messages never touch a readable server store. Simple, secure and anonymous, shipped to iOS and Android.",
-    ],
-    tags: ["Flutter", "E2E Encryption", "Zero-Knowledge", "iOS", "Android"],
-    role: ["Full product", "Mobile", "Cryptography"],
-    highlights: [
-      "End-to-end encryption — the server never sees readable message content.",
-      "Zero-knowledge by design: no accounts, no phone numbers, no stored history.",
-      "Instant pairing via one-time session codes or QR — connect and talk in seconds.",
-      "Single Flutter codebase shipped to both iOS and Android.",
-    ],
-    accent: "#22d3ee",
-    kind: "personal",
-    logo: "/work/echochat.webp",
-  },
-  {
-    slug: "rookiejobs",
-    name: "RookieJobs",
-    tagline: "Your first real job, no experience required",
-    description:
-      "A job board for beginners, career changers and graduates — verified beginner-friendly listings, transparent salaries and honest descriptions. Onboarding guaranteed.",
-    body: [
-      "RookieJobs is a job board for people starting out — beginners, career changers and graduates. Every listing is verified beginner-friendly, with transparent salaries and honest descriptions.",
-      "Employers post through a dashboard where each listing clears a trust check before going live, and applicants get a clean search and application experience.",
-    ],
-    tags: ["Next.js", "Job Board", "Search", "Marketplace"],
-    role: ["Full product", "Marketplace", "Dashboards"],
-    highlights: [
-      "Every listing clears a 3-box trust check before going live — quality over quantity.",
-      "Beginner-friendly filters, transparent salaries and honest job descriptions.",
-      "Separate employer dashboard and applicant experience with fast faceted search.",
-      "Multi-language, SEO-first architecture for organic discovery.",
-    ],
-    accent: "#10b981",
-    kind: "personal",
-    logo: "/work/rookiejobs.svg",
-    url: "https://rookiejobs.com",
-  },
-  {
     slug: "sellout-ai",
     name: "SellOut AI",
     tagline: "Snap it. Analyze it. Sell it.",
