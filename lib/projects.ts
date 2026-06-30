@@ -164,7 +164,7 @@ export const clients: WorkItem[] = [
     accent: "#e11d2a",
     kind: "client",
     url: "https://absaar.com",
-    shot: "/work/clients/absaar.png",
+    shot: "/work/clients/absaar-v2.png",
   },
   {
     slug: "barbertruck",
@@ -230,7 +230,7 @@ export const clients: WorkItem[] = [
     accent: "#4f46e5",
     kind: "client",
     url: "https://dspimmo.lu",
-    shot: "/work/clients/dspimmo.png",
+    shot: "/work/clients/dspimmo-v2.png",
   },
   {
     slug: "homecenter",
