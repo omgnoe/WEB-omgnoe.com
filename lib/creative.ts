@@ -6,18 +6,19 @@ export type TrustedLogo = {
   h: number;
 };
 
+/** All raster logos are normalised to a transparent 520x200 canvas. */
 export const trustedBy: TrustedLogo[] = [
-  { name: "Wolt", src: "/trusted/wolt.png", h: 32 },
-  { name: "Le Gouvernement du Grand-Duché de Luxembourg", src: "/trusted/gouvernement.jpg", h: 40 },
-  { name: "OGBL", src: "/trusted/ogbl.svg", h: 34 },
-  { name: "SaniSure", src: "/trusted/sanisure.png", h: 46 },
-  { name: "Cepa asbl", src: "/trusted/cepa.png", h: 44 },
-  { name: "LTPS", src: "/trusted/ltps.jpg", h: 46 },
-  { name: "Vinoteca Luxembourg", src: "/trusted/vinoteca.jpg", h: 34 },
-  { name: "Promopharm", src: "/trusted/promopharm.webp", h: 30 },
-  { name: "Dynapharm", src: "/trusted/dynapharm.png", h: 26 },
-  { name: "Luxtex", src: "/trusted/luxtex.png", h: 32 },
-  { name: "DSP", src: "/trusted/dsp.png", h: 42 },
+  { name: "Wolt", src: "/trusted/wolt.png", h: 56 },
+  { name: "Le Gouvernement du Grand-Duché de Luxembourg", src: "/trusted/gouvernement.png", h: 56 },
+  { name: "OGBL", src: "/trusted/ogbl.svg", h: 36 },
+  { name: "SaniSure", src: "/trusted/sanisure.png", h: 56 },
+  { name: "Cepa asbl", src: "/trusted/cepa.png", h: 56 },
+  { name: "LTPS", src: "/trusted/ltps.png", h: 56 },
+  { name: "Vinoteca Luxembourg", src: "/trusted/vinoteca.png", h: 56 },
+  { name: "Promopharm", src: "/trusted/promopharm.png", h: 56 },
+  { name: "Dynapharm", src: "/trusted/dynapharm.png", h: 56 },
+  { name: "Luxtex", src: "/trusted/luxtex.png", h: 56 },
+  { name: "DSP", src: "/trusted/dsp.png", h: 56 },
 ];
 
 /** Ad & social designs (Salonify campaigns) for the creative strip. */
