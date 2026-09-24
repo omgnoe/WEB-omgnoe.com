@@ -26,6 +26,12 @@ export async function POST(req: NextRequest) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
+  // Reject oversized payloads before parsing.
+  const len = Number(req.headers.get("content-length") ?? 0);
+  if (len > 32_000) {
+    return NextResponse.json({ ok: false, error: "Payload too large." }, { status: 413 });
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await req.json();

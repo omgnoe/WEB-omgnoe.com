@@ -67,7 +67,7 @@ export default function Home() {
             <p className="kicker">Noe Nei · Full-stack developer · Luxembourg</p>
             <h1 className="font-display mt-5 max-w-2xl text-[2.6rem] font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-[3.9rem]">
               Apps, websites and the systems that{" "}
-              <span className="underline-swipe whitespace-nowrap">keep them running.</span>
+              <span className="underline-swipe sm:whitespace-nowrap">keep them running.</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">

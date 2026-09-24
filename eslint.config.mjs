@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // macOS AppleDouble sidecars (repo lives on an exFAT volume locally)
+    "**/._*",
   ]),
 ]);
 

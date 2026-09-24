@@ -12,6 +12,8 @@ const FILTERS: { key: Filter; label: string }[] = [
   { key: "client", label: "Client work" },
 ];
 
+const MOBILE_LIMIT = 6;
+
 export default function WorkGrid({
   items,
   showTagFilter = true,
@@ -21,6 +23,7 @@ export default function WorkGrid({
 }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [tag, setTag] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   const tags = useMemo(() => {
     const counts = new Map<string, number>();
@@ -75,10 +78,23 @@ export default function WorkGrid({
       </div>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {visible.map((i) => (
-          <WorkCard key={i.slug} item={i} />
+        {visible.map((i, idx) => (
+          <div
+            key={i.slug}
+            className={idx >= MOBILE_LIMIT && !showAll ? "hidden sm:block" : undefined}
+          >
+            <WorkCard item={i} />
+          </div>
         ))}
       </div>
+
+      {!showAll && visible.length > MOBILE_LIMIT && (
+        <div className="mt-6 text-center sm:hidden">
+          <button type="button" onClick={() => setShowAll(true)} className="btn btn-ghost w-full">
+            Show all {visible.length} projects
+          </button>
+        </div>
+      )}
 
       {visible.length === 0 && (
         <p className="mt-10 text-center text-muted">Nothing matches this combination yet.</p>

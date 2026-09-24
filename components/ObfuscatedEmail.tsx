@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /**
  * Email is never present as plain text or a mailto: in the static HTML.
@@ -15,16 +15,19 @@ type Props = {
   label?: string;
 };
 
-export default function ObfuscatedEmail({ className, label }: Props) {
-  const [addr, setAddr] = useState<string | null>(null);
+const subscribe = () => () => {};
+const getClientAddr = (): string | null => {
+  try {
+    return `${atob(U)}@${atob(D)}`;
+  } catch {
+    return null;
+  }
+};
+const getServerAddr = (): string | null => null;
 
-  useEffect(() => {
-    try {
-      setAddr(`${atob(U)}@${atob(D)}`);
-    } catch {
-      /* noop */
-    }
-  }, []);
+export default function ObfuscatedEmail({ className, label }: Props) {
+  // Assembled only in the browser; static HTML never contains the address.
+  const addr = useSyncExternalStore(subscribe, getClientAddr, getServerAddr);
 
   if (!addr) {
     // Pre-hydration / no-JS: human-readable but bot-hostile placeholder.
