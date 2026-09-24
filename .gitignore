@@ -46,3 +46,7 @@ next-env.d.ts
 # macOS/LaCie AppleDouble sidecars
 ._*
 **/._*
+
+# macOS AppleDouble sidecars (exFAT volume)
+._*
+.DS_Store

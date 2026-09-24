@@ -1,68 +1,54 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import WorkCard from "@/components/WorkCard";
-import { projects, clients } from "@/lib/projects";
+import Reveal from "@/components/Reveal";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
+import WorkGrid from "@/components/WorkGrid";
+import { allWork } from "@/lib/projects";
 
 const SITE = "https://omgnoe.com";
 
 export const metadata: Metadata = {
-  title: "Work — products & client projects",
+  title: "Work: own products & client projects",
   description:
-    "Selected work by Noe Nei — products built end-to-end (Salonify, Luxpos, Doctomap, EchoChat, RookieJobs, SellOut AI) and client websites, shops and platforms across Luxembourg & Europe.",
+    "The full portfolio of Noe Nei: own products built and operated end to end (Salonify, LUXPOS, BoxBee, Doctomap, DepotGest, TTA) and client websites, shops and platforms across Luxembourg and Europe.",
   alternates: { canonical: `${SITE}/work` },
   openGraph: {
     type: "website",
     url: `${SITE}/work`,
-    title: "Work — Noe Nei",
+    title: "Work | Noe Nei",
     description:
-      "Products built end-to-end and client websites, shops and platforms across Luxembourg & Europe.",
+      "Own products and client websites, shops and platforms across Luxembourg and Europe.",
   },
 };
 
 export default function WorkIndex() {
   return (
     <main className="relative">
-      <header className="sticky top-0 z-50 border-b border-line bg-bg/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-          <Link href="/" className="flex items-center" aria-label="omgnoe — home">
-            <Image src="/omgnoe-logo.png" alt="omgnoe" width={144} height={34} className="h-6 w-auto" />
-          </Link>
-          <Link href="/" className="text-sm text-muted transition-colors hover:text-fg">
-            ← Home
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
-      <section className="bg-aura relative overflow-hidden">
-        <div className="bg-grid absolute inset-0" />
-        <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
-          <p className="font-mono text-xs uppercase tracking-widest text-muted">All work</p>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-            <span className="chrome">Products &amp; client projects</span>
+      <section className="stage relative overflow-hidden">
+        <div className="dots absolute inset-0" />
+        <div className="mx-auto max-w-6xl px-5 pb-12 pt-14 sm:pt-20">
+          <p className="kicker rise">Portfolio</p>
+          <h1 className="font-display rise mt-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
+            Things I&apos;ve built
+            <br />
+            <span className="underline-swipe">and actually shipped.</span>
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-muted">
-            Things I&apos;ve designed, built and shipped — my own products and work delivered for
-            clients across Luxembourg and Europe.
+          <p className="rise mt-6 max-w-xl text-lg text-muted">
+            Own products I operate every day, and work delivered for clients across
+            Luxembourg and Europe. Filter by type or technology.
           </p>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-5 pb-20">
-        <h2 className="mb-8 text-2xl font-semibold tracking-tight">Products</h2>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p) => (
-            <WorkCard key={p.slug} item={p} />
-          ))}
-        </div>
-
-        <h2 className="mb-8 mt-20 text-2xl font-semibold tracking-tight">Client work</h2>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {clients.map((c) => (
-            <WorkCard key={c.slug} item={c} />
-          ))}
-        </div>
+        <Reveal>
+          <WorkGrid items={allWork} />
+        </Reveal>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

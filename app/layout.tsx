@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { services } from "@/lib/services";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const instrument = Instrument_Sans({
+  variable: "--font-instrument",
   subsets: ["latin"],
 });
 
@@ -17,24 +24,28 @@ const SITE = "https://omgnoe.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: "Noe Nei — Developer building digital products | Luxembourg",
+    default: "Noe Nei | Apps, websites & IT from Luxembourg",
     template: "%s | Noe Nei",
   },
   description:
-    "Noe Nei is a full-stack developer and founder from Luxembourg. I build web platforms, mobile apps and AI automations end-to-end — and ship them. Available for projects.",
+    "Noe Nei is a full-stack developer and founder from Luxembourg. iOS and Android apps, websites, app publishing, cybersecurity, hosting and IT management. Built end to end, then kept running.",
   keywords: [
     "Noe Nei",
     "developer Luxembourg",
     "freelance developer Luxembourg",
     "full-stack developer",
     "web developer Luxembourg",
-    "app developer",
+    "app developer Luxembourg",
+    "iOS app development Luxembourg",
+    "Android app development",
+    "app publishing",
+    "IT support Luxembourg",
+    "cybersecurity Luxembourg",
+    "managed hosting Luxembourg",
     "Next.js developer",
     "Flutter developer",
-    "React developer",
     "hire developer",
     "software engineer Luxembourg",
-    "AI automation developer",
     "SaaS developer",
     "Luxembourg",
   ],
@@ -45,16 +56,16 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE,
     siteName: "Noe Nei",
-    title: "Noe Nei — Developer building digital products",
+    title: "Noe Nei | Apps, websites & IT from Luxembourg",
     description:
-      "Full-stack developer & founder from Luxembourg. Web platforms, mobile apps, AI automations — built and shipped.",
+      "Full-stack developer and founder from Luxembourg. Apps, websites, cybersecurity, hosting and IT management. Built end to end, then kept running.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Noe Nei — Developer building digital products",
+    title: "Noe Nei | Apps, websites & IT from Luxembourg",
     description:
-      "Full-stack developer & founder from Luxembourg. Web platforms, mobile apps, AI automations — built and shipped.",
+      "Full-stack developer and founder from Luxembourg. Apps, websites, cybersecurity, hosting and IT management.",
     creator: "@omgnoe",
   },
   robots: {
@@ -76,7 +87,7 @@ const personJsonLd = {
   image: `${SITE}/me/noe.jpg`,
   jobTitle: "Software Developer",
   description:
-    "Full-stack developer and founder building web platforms, mobile apps and AI automations.",
+    "Full-stack developer and founder building apps, websites and infrastructure from Luxembourg.",
   address: {
     "@type": "PostalAddress",
     addressCountry: "LU",
@@ -84,8 +95,12 @@ const personJsonLd = {
   },
   knowsAbout: [
     "Web development",
-    "Mobile app development",
-    "Full-stack engineering",
+    "iOS app development",
+    "Android app development",
+    "App Store publishing",
+    "Cybersecurity",
+    "Managed hosting",
+    "IT support",
     "Next.js",
     "Flutter",
     "AI automation",
@@ -94,17 +109,18 @@ const personJsonLd = {
   ],
   worksFor: {
     "@type": "Organization",
-    name: "Independent",
+    name: "TTA Technologies",
+    url: "https://tta.lu",
   },
-  makesOffer: {
+  makesOffer: services.map((s) => ({
     "@type": "Offer",
     itemOffered: {
       "@type": "Service",
-      name: "Software development",
-      description:
-        "Web platforms, mobile apps and AI automations built end-to-end.",
+      name: s.title,
+      description: s.short,
+      url: `${SITE}/services/${s.slug}`,
     },
-  },
+  })),
 };
 
 export default function RootLayout({
@@ -115,7 +131,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${bricolage.variable} ${instrument.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <script

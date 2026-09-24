@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { allWork } from "@/lib/projects";
+import { services } from "@/lib/services";
 
 const SITE = "https://omgnoe.com";
 
@@ -13,9 +14,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const servicePages = services.map((s) => ({
+    url: `${SITE}/services/${s.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.9,
+  }));
+
   return [
     { url: SITE, lastModified: now, changeFrequency: "monthly", priority: 1 },
+    { url: `${SITE}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE}/work`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    ...servicePages,
     ...work,
   ];
 }

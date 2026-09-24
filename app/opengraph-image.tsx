@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Noe Nei — Developer building digital products";
+export const alt = "Noe Nei | Apps, websites & IT from Luxembourg";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -14,11 +14,12 @@ export default function OgImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#060606",
+          background: "#f2efe8",
           backgroundImage:
-            "radial-gradient(60% 60% at 80% 0%, rgba(124,58,237,0.35), transparent 70%), radial-gradient(50% 50% at 0% 100%, rgba(34,211,238,0.18), transparent 70%)",
+            "radial-gradient(60% 60% at 85% 0%, rgba(255,90,31,0.16), transparent 70%), radial-gradient(rgba(23,20,16,0.07) 2px, transparent 2px)",
+          backgroundSize: "100% 100%, 34px 34px",
           padding: 80,
-          color: "#f4f4f5",
+          color: "#171410",
           fontFamily: "sans-serif",
         }}
       >
@@ -27,9 +28,9 @@ export default function OgImage() {
             style={{
               width: 56,
               height: 56,
-              borderRadius: 14,
-              background: "#fff",
-              color: "#060606",
+              borderRadius: 16,
+              background: "#171410",
+              color: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -39,7 +40,7 @@ export default function OgImage() {
           >
             n
           </div>
-          <div style={{ fontSize: 28, color: "#8a8a92" }}>omgnoe.com</div>
+          <div style={{ fontSize: 28, color: "#716c61" }}>omgnoe.com</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -47,16 +48,26 @@ export default function OgImage() {
             style={{
               display: "flex",
               flexDirection: "column",
-              fontSize: 76,
+              fontSize: 74,
               fontWeight: 700,
               letterSpacing: -2,
               lineHeight: 1.05,
             }}
           >
-            <span>Building digital</span>
-            <span>products that ship.</span>
+            <span>Apps, websites and the</span>
+            <span style={{ display: "flex" }}>
+              systems that&nbsp;
+              <span
+                style={{
+                  borderBottom: "10px solid #ff5a1f",
+                  paddingBottom: 2,
+                }}
+              >
+                keep them running.
+              </span>
+            </span>
           </div>
-          <div style={{ marginTop: 28, fontSize: 32, color: "#8a8a92" }}>
+          <div style={{ marginTop: 30, fontSize: 30, color: "#716c61" }}>
             Noe Nei · Full-stack developer & founder · Luxembourg
           </div>
         </div>

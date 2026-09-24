@@ -3,6 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
+import Reveal from "@/components/Reveal";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
+import WorkCard from "@/components/WorkCard";
 import { allWork, getWork } from "@/lib/projects";
 
 const SITE = "https://omgnoe.com";
@@ -20,7 +24,7 @@ export async function generateMetadata({
   const w = getWork(slug);
   if (!w) return {};
 
-  const title = `${w.name} — ${w.tagline}`;
+  const title = `${w.name}: ${w.tagline}`;
   const url = `${SITE}/work/${w.slug}`;
   const image = w.shot ?? "/opengraph-image";
 
@@ -44,6 +48,15 @@ export async function generateMetadata({
   };
 }
 
+function hostOf(url?: string) {
+  if (!url) return null;
+  try {
+    return new URL(url).host.replace(/^www\./, "");
+  } catch {
+    return null;
+  }
+}
+
 export default async function CaseStudy({
   params,
 }: {
@@ -54,15 +67,18 @@ export default async function CaseStudy({
   if (!w) notFound();
 
   const others = allWork.filter((o) => o.slug !== w.slug && o.kind === w.kind).slice(0, 3);
+  const own = w.kind === "personal";
+  const host = hostOf(w.url);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: w.name,
-    headline: `${w.name} — ${w.tagline}`,
+    headline: `${w.name}: ${w.tagline}`,
     description: w.description,
     url: `${SITE}/work/${w.slug}`,
     ...(w.url ? { sameAs: w.url } : {}),
+    ...(w.shot ? { image: `${SITE}${w.shot}` } : {}),
     creator: { "@type": "Person", name: "Noe Nei", url: SITE },
     keywords: w.tags.join(", "),
   };
@@ -79,97 +95,98 @@ export default async function CaseStudy({
 
   return (
     <main className="relative">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <SiteHeader />
 
-      {/* NAV */}
-      <header className="sticky top-0 z-50 border-b border-line bg-bg/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5">
-          <Link href="/" className="flex items-center" aria-label="omgnoe — home">
-            <Image src="/omgnoe-logo.png" alt="omgnoe" width={144} height={34} className="h-6 w-auto" />
-          </Link>
-          <Link href="/work" className="text-sm text-muted transition-colors hover:text-fg">
-            ← All work
-          </Link>
-        </div>
-      </header>
+      <article className="stage relative overflow-hidden">
+        <div className="dots absolute inset-0" />
+        <div className="mx-auto max-w-5xl px-5 pb-16 pt-14 sm:pt-16">
+          <nav className="rise flex items-center gap-2 text-xs text-muted" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-ink">Home</Link>
+            <span>/</span>
+            <Link href="/work" className="hover:text-ink">Work</Link>
+            <span>/</span>
+            <span className="text-ink">{w.name}</span>
+          </nav>
 
-      <article className="bg-aura relative overflow-hidden">
-        <div className="bg-grid absolute inset-0" />
-        <div className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
           {/* header */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="rise mt-8 flex flex-wrap items-center gap-2.5">
             <span
-              className="rounded-full px-3 py-1 text-xs font-medium"
-              style={{ background: `${w.accent}1f`, color: w.accent }}
+              className={`pill !text-[0.7rem] font-semibold uppercase tracking-wide ${
+                own ? "!border-transparent !bg-accent !text-white" : "!bg-card text-muted"
+              }`}
             >
-              {w.kind === "client" ? "Client work" : "Product"}
+              {own ? "Own product" : "Client work"}
             </span>
             {w.role.map((r) => (
-              <span key={r} className="rounded-full border border-line px-3 py-1 text-xs text-white/60">
+              <span key={r} className="pill pill-muted">
                 {r}
               </span>
             ))}
           </div>
 
-          <div className="mt-6 flex items-center gap-4">
-            {w.kind !== "client" && w.logo && (
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-line bg-bg-soft">
-                <Image src={w.logo} alt={`${w.name} logo`} fill sizes="56px" className="object-contain p-2" />
+          <div className="rise mt-6 flex items-center gap-5">
+            {w.logo && (
+              <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-3xl border border-line bg-card shadow-card">
+                <Image src={w.logo} alt={`${w.name} logo`} width={64} height={64} className="h-10 w-10 object-contain" />
               </div>
             )}
             <div>
-              <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{w.name}</h1>
-              <p className="mt-1 text-lg" style={{ color: w.accent }}>
+              <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">{w.name}</h1>
+              <p className="mt-1 text-lg font-medium" style={{ color: w.accent }}>
                 {w.tagline}
               </p>
             </div>
           </div>
 
           {/* visual */}
-          {w.shot ? (
-            <div className="glass mt-10 overflow-hidden rounded-2xl p-2">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
-                <Image
-                  src={w.shot}
-                  alt={`${w.name} — screenshot`}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 1000px"
-                  className="object-cover object-top"
-                />
+          {w.shot && (
+            <Reveal className="mt-10">
+              <div className="card card-lg overflow-hidden p-2.5 shadow-pop">
+                <div className="overflow-hidden rounded-[1.6rem] border border-line">
+                  <div className="browser-bar">
+                    <span className="browser-dot" />
+                    <span className="browser-dot" />
+                    <span className="browser-dot" />
+                    {host && <span className="ml-2 font-mono text-[0.7rem] text-muted">{host}</span>}
+                  </div>
+                  <div className="shot-frame relative aspect-[16/10]">
+                    <Image
+                      src={w.shot}
+                      alt={`${w.name} website screenshot`}
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 1000px"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          ) : null}
+            </Reveal>
+          )}
 
           {/* body */}
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1.6fr_1fr]">
-            <div className="space-y-5 text-lg leading-relaxed text-muted">
+          <div className="mt-12 grid gap-10 lg:grid-cols-[1.6fr_1fr]">
+            <Reveal className="space-y-5 text-lg leading-relaxed text-muted">
               {w.body.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
-            </div>
+            </Reveal>
 
-            <aside className="space-y-6">
-              <div className="glass rounded-2xl p-5">
-                <p className="text-xs uppercase tracking-widest text-white/40">Scope</p>
-                <div className="mt-3 flex flex-wrap gap-2">
+            <Reveal delay={100}>
+              <aside className="card sticky top-24 p-6">
+                <p className="kicker">Scope</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
                   {w.role.map((r) => (
-                    <span key={r} className="rounded-full border border-line px-2.5 py-1 text-xs text-white/70">
+                    <span key={r} className="pill !py-1 !text-[0.72rem]">
                       {r}
                     </span>
                   ))}
                 </div>
-                <p className="mt-5 text-xs uppercase tracking-widest text-white/40">Stack</p>
-                <div className="mt-3 flex flex-wrap gap-2">
+                <p className="kicker mt-6">Stack</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
                   {w.tags.map((t) => (
-                    <span key={t} className="rounded-full border border-line px-2.5 py-1 text-xs text-white/70">
+                    <span key={t} className="pill pill-muted !py-1 !text-[0.72rem]">
                       {t}
                     </span>
                   ))}
@@ -179,75 +196,76 @@ export default async function CaseStudy({
                     href={w.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
+                    className="btn btn-ink mt-7 w-full"
                   >
-                    Visit live site ↗
+                    Visit live site
+                    <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" aria-hidden>
+                      <path d="M6 3h7v7M13 3L3 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </a>
                 )}
-              </div>
-            </aside>
+              </aside>
+            </Reveal>
           </div>
 
           {/* under the hood */}
           {w.highlights && w.highlights.length > 0 && (
-            <div className="mt-16">
-              <h2 className="text-sm font-mono uppercase tracking-widest text-muted">
-                Under the hood
-              </h2>
+            <Reveal className="mt-16">
+              <p className="kicker">Under the hood</p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {w.highlights.map((h, i) => (
-                  <li key={i} className="glass flex items-start gap-3 rounded-2xl p-4">
-                    <span
-                      className="mt-1.5 h-2 w-2 shrink-0 rounded-full"
-                      style={{ background: w.accent }}
-                    />
-                    <span className="text-sm leading-relaxed text-white/80">{h}</span>
+                  <li key={i} className="card flex items-start gap-3 p-5">
+                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: w.accent }} />
+                    <span className="text-sm leading-relaxed">{h}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           )}
         </div>
       </article>
 
       {/* more work */}
       {others.length > 0 && (
-        <section className="mx-auto max-w-5xl px-5 py-20">
-          <h2 className="mb-8 text-2xl font-semibold tracking-tight">More {w.kind === "client" ? "client work" : "products"}</h2>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {others.map((o) => (
-              <Link
-                key={o.slug}
-                href={`/work/${o.slug}`}
-                className="glass glass-hover group rounded-2xl p-5"
-              >
-                <div className="flex items-center gap-2 text-sm font-medium" style={{ color: o.accent }}>
-                  {o.name}
-                </div>
-                <p className="mt-1 text-xs text-muted">{o.tagline}</p>
-              </Link>
-            ))}
+        <section className="border-t border-line bg-paper-deep/50">
+          <div className="mx-auto max-w-6xl px-5 py-16">
+            <h2 className="font-display mb-8 text-2xl font-bold tracking-tight">
+              More {w.kind === "client" ? "client work" : "products"}
+            </h2>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {others.map((o, i) => (
+                <Reveal key={o.slug} delay={i * 80}>
+                  <WorkCard item={o} />
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
       )}
 
       {/* CTA */}
-      <section className="border-t border-line">
-        <div className="mx-auto max-w-3xl px-5 py-20 text-center">
-          <h2 className="text-3xl font-semibold tracking-tight">
-            <span className="chrome">Have a project like this?</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-lg text-muted">
-            I build websites, platforms, shops and apps end-to-end. Tell me what you have in mind.
-          </p>
-          <div className="mt-7">
-            <ObfuscatedEmail
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-bg transition-transform hover:scale-[1.03]"
-              label="Email me →"
+      <section className="px-3 pt-16 sm:px-5">
+        <Reveal>
+          <div className="card-night relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-16 text-center">
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{ background: "radial-gradient(55% 70% at 50% 120%, rgba(255,90,31,0.3), transparent 70%)" }}
             />
+            <h2 className="font-display relative text-3xl font-bold text-white sm:text-4xl">
+              Have a project like this?
+            </h2>
+            <p className="relative mx-auto mt-4 max-w-lg text-white/65">
+              I build websites, platforms, shops and apps end to end. Tell me what you
+              have in mind.
+            </p>
+            <div className="relative mt-7">
+              <ObfuscatedEmail className="btn btn-accent !px-7 !py-3.5" label="Email me" />
+            </div>
           </div>
-        </div>
+        </Reveal>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }
