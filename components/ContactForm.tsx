@@ -3,13 +3,30 @@
 import { useState, type FormEvent } from "react";
 
 const SERVICES = [
-  "Website or shop",
+  "Website",
+  "Online shop",
   "iOS / Android app",
+  "Web platform / SaaS",
   "App publishing",
   "IT help & support",
   "Cybersecurity",
   "Hosting & IT management",
   "Something else",
+];
+
+const BUDGETS = [
+  "Not sure yet",
+  "Under 2.500 EUR",
+  "2.500 to 10.000 EUR",
+  "10.000 to 25.000 EUR",
+  "25.000 EUR or more",
+];
+
+const TIMELINES = [
+  "As soon as possible",
+  "Within 1 to 3 months",
+  "In 3 months or later",
+  "Flexible",
 ];
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -92,6 +109,17 @@ export default function ContactForm() {
           />
         </label>
         <label className="block">
+          <span className="mb-1.5 block text-xs font-medium text-white/60">Phone</span>
+          <input
+            name="phone"
+            type="tel"
+            maxLength={40}
+            autoComplete="tel"
+            className="cf-input"
+            placeholder="+352 ... (optional)"
+          />
+        </label>
+        <label className="block">
           <span className="mb-1.5 block text-xs font-medium text-white/60">Company</span>
           <input name="company" maxLength={120} autoComplete="organization" className="cf-input" placeholder="Optional" />
         </label>
@@ -99,6 +127,26 @@ export default function ContactForm() {
           <span className="mb-1.5 block text-xs font-medium text-white/60">I need</span>
           <select name="service" className="cf-input" defaultValue={SERVICES[0]}>
             {SERVICES.map((s) => (
+              <option key={s} value={s} className="text-ink">
+                {s}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block">
+          <span className="mb-1.5 block text-xs font-medium text-white/60">Budget</span>
+          <select name="budget" className="cf-input" defaultValue={BUDGETS[0]}>
+            {BUDGETS.map((s) => (
+              <option key={s} value={s} className="text-ink">
+                {s}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="mb-1.5 block text-xs font-medium text-white/60">Timeline</span>
+          <select name="timeline" className="cf-input" defaultValue={TIMELINES[0]}>
+            {TIMELINES.map((s) => (
               <option key={s} value={s} className="text-ink">
                 {s}
               </option>
@@ -116,7 +164,7 @@ export default function ContactForm() {
           maxLength={4000}
           rows={4}
           className="cf-input resize-y"
-          placeholder="What do you want to build or fix? A few sentences are enough."
+          placeholder="What do you want to build or fix? Goals, current situation, links. The more detail, the better my answer."
         />
       </label>
 

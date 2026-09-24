@@ -41,7 +41,10 @@ export async function POST(req: NextRequest) {
   const name = String(body.name ?? "").trim().slice(0, 120);
   const email = String(body.email ?? "").trim().slice(0, 200);
   const company = String(body.company ?? "").trim().slice(0, 120);
+  const phone = String(body.phone ?? "").trim().slice(0, 40);
   const service = String(body.service ?? "").trim().slice(0, 80);
+  const budget = String(body.budget ?? "").trim().slice(0, 60);
+  const timeline = String(body.timeline ?? "").trim().slice(0, 60);
   const message = String(body.message ?? "").trim().slice(0, 4000);
 
   if (!name || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
@@ -75,8 +78,11 @@ export async function POST(req: NextRequest) {
     "",
     `<b>Name:</b> ${esc(name)}`,
     `<b>Email:</b> ${esc(email)}`,
+    phone ? `<b>Phone:</b> ${esc(phone)}` : null,
     company ? `<b>Company:</b> ${esc(company)}` : null,
-    service ? `<b>Interested in:</b> ${esc(service)}` : null,
+    service ? `<b>Needs:</b> ${esc(service)}` : null,
+    budget ? `<b>Budget:</b> ${esc(budget)}` : null,
+    timeline ? `<b>Timeline:</b> ${esc(timeline)}` : null,
     "",
     `<b>Message:</b>`,
     esc(message),
