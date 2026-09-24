@@ -239,6 +239,21 @@ body {
 .marquee:hover {
   animation-play-state: paused;
 }
+.marquee-slow {
+  animation-duration: 60s;
+}
+
+/* Trusted-by logo strip: calm by default, colour on hover */
+.trusted-logo {
+  filter: grayscale(1);
+  opacity: 0.65;
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+.trusted-logo:hover {
+  filter: none;
+  opacity: 1;
+  transform: scale(1.05);
+}
 
 /* ── Scroll reveal ────────────────────────────────────────── */
 .reveal {

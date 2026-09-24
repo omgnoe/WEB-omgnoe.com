@@ -24,6 +24,7 @@ import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import WorkGrid from "@/components/WorkGrid";
+import { designShots, trustedBy } from "@/lib/creative";
 import { allWork, projects, stack } from "@/lib/projects";
 import { services } from "@/lib/services";
 
@@ -226,6 +227,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* I WORKED WITH */}
+      <section className="mx-auto max-w-6xl overflow-hidden px-5 pb-20">
+        <Reveal>
+          <div className="card card-lg overflow-hidden py-10">
+            <p className="kicker text-center">I worked with</p>
+            <div className="marquee marquee-slow mt-8 items-center gap-4">
+              {[0, 1].map((n) => (
+                <div key={n} className="flex shrink-0 items-center gap-4 pr-4" aria-hidden={n === 1}>
+                  {trustedBy.map((t) => (
+                    <span
+                      key={`${n}-${t.name}`}
+                      title={t.name}
+                      className="flex h-20 w-44 shrink-0 items-center justify-center rounded-2xl border border-line bg-paper/60 px-6"
+                    >
+                      <img
+                        src={t.src}
+                        alt={`${t.name} logo`}
+                        loading="lazy"
+                        style={{ maxHeight: t.h }}
+                        className="trusted-logo max-w-full w-auto"
+                      />
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <p className="mt-8 text-center text-xs text-muted">and many more across Luxembourg and Europe</p>
+          </div>
+        </Reveal>
+      </section>
+
       {/* WORK */}
       <section id="work" className="border-y border-line bg-paper-deep/50">
         <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
@@ -243,6 +275,52 @@ export default function Home() {
             <WorkGrid items={allWork} />
           </Reveal>
         </div>
+      </section>
+
+      {/* CREATIVE: digital & graphic design (kept low-key, reference-driven) */}
+      <section id="creative" className="overflow-hidden py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-5">
+          <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="kicker">Also in the toolbox</p>
+              <h2 className="font-display mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
+                Digital & graphic design
+              </h2>
+              <p className="mt-3 max-w-xl text-sm text-muted">
+                Campaigns, social ads and brand graphics I have designed alongside the
+                code. A few references:
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {["Graphic design", "Digital design", "Campaigns", "Social ads"].map((t) => (
+                <span key={t} className="pill pill-muted">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Slow marquee of ad designs */}
+        <Reveal>
+          <div className="marquee-slow marquee items-stretch gap-4 px-5">
+            {[0, 1].map((n) => (
+              <div key={n} className="flex shrink-0 items-stretch gap-4" aria-hidden={n === 1}>
+                {designShots.map((d) => (
+                  <div key={`${n}-${d}`} className="card overflow-hidden !rounded-2xl p-1.5">
+                    <img
+                      src={d}
+                      alt="Social ad design by Noe Nei"
+                      loading="lazy"
+                      className="h-48 w-48 rounded-xl object-cover sm:h-56 sm:w-56"
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
       </section>
 
       {/* ABOUT + STACK */}
