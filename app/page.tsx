@@ -228,26 +228,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* I WORKED WITH */}
-      <section className="mx-auto max-w-6xl overflow-hidden px-5 pb-20">
+      {/* I WORKED WITH: full-bleed band */}
+      <section className="overflow-hidden pb-20">
         <Reveal>
-          <div className="card card-lg overflow-hidden py-10">
+          <div className="border-y border-line bg-card/70 py-10 backdrop-blur">
             <p className="kicker text-center">I worked with</p>
-            <div className="marquee marquee-slow mt-8 items-center gap-4">
+            <div className="marquee marquee-slow mt-8 w-max items-center">
               {[0, 1].map((n) => (
-                <div key={n} className="flex shrink-0 items-center gap-4 pr-4" aria-hidden={n === 1}>
+                <div key={n} className="flex shrink-0 items-center gap-3 pr-3 sm:gap-4 sm:pr-4" aria-hidden={n === 1}>
                   {trustedBy.map((t) => (
                     <span
                       key={`${n}-${t.name}`}
                       title={t.name}
-                      className="flex h-20 w-44 shrink-0 items-center justify-center rounded-2xl border border-line bg-paper/60 px-6"
+                      className="flex h-16 w-36 shrink-0 items-center justify-center rounded-2xl border border-line bg-paper/60 px-5 sm:h-20 sm:w-48 sm:px-7"
                     >
                       <img
                         src={t.src}
                         alt={`${t.name} logo`}
                         loading="lazy"
                         style={{ maxHeight: t.h }}
-                        className="trusted-logo max-w-full w-auto"
+                        className="trusted-logo max-h-10 w-auto max-w-full sm:max-h-none"
                       />
                     </span>
                   ))}
