@@ -34,11 +34,6 @@ export default function SiteFooter() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link href="/#creative" className="text-muted transition-colors hover:text-ink">
-                  Digital & graphic design
-                </Link>
-              </li>
             </ul>
           </div>
 

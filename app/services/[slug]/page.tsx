@@ -260,10 +260,13 @@ export default async function ServicePage({
               Let&apos;s talk about {s.name}.
             </h2>
             <p className="relative mx-auto mt-4 max-w-md text-white/65">
-              One email is enough. You describe the goal, I reply with a plan.
+              One message is enough. You describe the goal, I reply with a plan.
             </p>
-            <div className="relative mt-7">
-              <ObfuscatedEmail className="btn btn-accent !px-7 !py-3.5" label="Email me" />
+            <div className="relative mt-7 flex flex-wrap items-center justify-center gap-3">
+              <Link href="/#contact" className="btn btn-accent !px-7 !py-3.5">
+                Send an inquiry
+              </Link>
+              <ObfuscatedEmail className="btn !bg-white/10 !text-white/85 font-mono !text-sm hover:!bg-white/15" />
             </div>
           </div>
         </Reveal>

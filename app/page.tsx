@@ -18,13 +18,14 @@ import {
   siHetzner,
   siAnthropic,
 } from "simple-icons";
+import ContactForm from "@/components/ContactForm";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import Reveal from "@/components/Reveal";
 import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import WorkGrid from "@/components/WorkGrid";
-import { designShots, trustedBy } from "@/lib/creative";
+import { trustedBy } from "@/lib/creative";
 import { allWork, projects, stack } from "@/lib/projects";
 import { services } from "@/lib/services";
 
@@ -277,52 +278,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CREATIVE: digital & graphic design (kept low-key, reference-driven) */}
-      <section id="creative" className="overflow-hidden py-20 sm:py-24">
-        <div className="mx-auto max-w-6xl px-5">
-          <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="kicker">Also in the toolbox</p>
-              <h2 className="font-display mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
-                Digital & graphic design
-              </h2>
-              <p className="mt-3 max-w-xl text-sm text-muted">
-                Campaigns, social ads and brand graphics I have designed alongside the
-                code. A few references:
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {["Graphic design", "Digital design", "Campaigns", "Social ads"].map((t) => (
-                <span key={t} className="pill pill-muted">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-
-        {/* Slow marquee of ad designs */}
-        <Reveal>
-          <div className="marquee-slow marquee items-stretch gap-4 px-5">
-            {[0, 1].map((n) => (
-              <div key={n} className="flex shrink-0 items-stretch gap-4" aria-hidden={n === 1}>
-                {designShots.map((d) => (
-                  <div key={`${n}-${d}`} className="card overflow-hidden !rounded-2xl p-1.5">
-                    <img
-                      src={d}
-                      alt="Social ad design by Noe Nei"
-                      loading="lazy"
-                      className="h-48 w-48 rounded-xl object-cover sm:h-56 sm:w-56"
-                    />
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </Reveal>
-
-      </section>
-
       {/* ABOUT + STACK */}
       <section id="about" className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
@@ -446,29 +401,34 @@ export default function Home() {
       {/* CONTACT */}
       <section id="contact" className="px-3 sm:px-5">
         <Reveal>
-          <div className="card-night relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-20 text-center sm:py-24">
+          <div className="card-night relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-14 sm:px-10 sm:py-16">
             <div
               className="pointer-events-none absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(55% 60% at 50% 110%, rgba(255,90,31,0.35), transparent 70%)",
+                  "radial-gradient(55% 60% at 20% 110%, rgba(255,90,31,0.3), transparent 70%)",
               }}
             />
-            <p className="kicker relative !text-white/50">Contact</p>
-            <h2 className="font-display relative mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              Let&apos;s build something.
-            </h2>
-            <p className="relative mx-auto mt-5 max-w-xl text-lg text-white/65">
-              An app, a website, a platform, or IT that finally works: tell me what you
-              have in mind and I&apos;ll tell you how I&apos;d build it.
-            </p>
-            <div className="relative mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <ObfuscatedEmail className="btn btn-accent !px-7 !py-3.5" label="Email me" />
-              <ObfuscatedEmail className="btn !bg-white/10 !text-white/85 font-mono !text-sm hover:!bg-white/15" />
+            <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
+              <div>
+                <p className="kicker !text-white/50">Contact</p>
+                <h2 className="font-display mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+                  Let&apos;s build something.
+                </h2>
+                <p className="mt-5 max-w-md text-lg text-white/65">
+                  An app, a website, a platform, or IT that finally works: tell me what
+                  you have in mind and I&apos;ll tell you how I&apos;d build it.
+                </p>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <ObfuscatedEmail className="btn !bg-white/10 !text-white/85 font-mono !text-sm hover:!bg-white/15" />
+                </div>
+                <p className="mt-6 text-xs text-white/40">
+                  Usually replies within a day · English, Deutsch, Français,
+                  Lëtzebuergesch
+                </p>
+              </div>
+              <ContactForm />
             </div>
-            <p className="relative mt-6 text-xs text-white/40">
-              Usually replies within a day · English, Deutsch, Français, Lëtzebuergesch
-            </p>
           </div>
         </Reveal>
       </section>
