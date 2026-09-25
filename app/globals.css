@@ -243,6 +243,15 @@ body {
   animation-duration: 60s;
 }
 
+/* Hide scrollbars on manually scrollable strips */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Trusted-by logo strip: calm by default, colour on hover */
 .trusted-logo {
   filter: grayscale(1);

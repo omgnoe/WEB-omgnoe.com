@@ -26,6 +26,7 @@ import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import WorkGrid from "@/components/WorkGrid";
 import { trustedBy } from "@/lib/creative";
+import AutoScrollRow from "@/components/AutoScrollRow";
 import { allWork, projects, stack } from "@/lib/projects";
 import { services } from "@/lib/services";
 
@@ -233,7 +234,7 @@ export default function Home() {
         <Reveal>
           <div className="border-y border-line bg-card/70 py-10 backdrop-blur">
             <p className="kicker text-center">I worked with</p>
-            <div className="marquee marquee-slow mt-8 w-max items-center">
+            <AutoScrollRow className="mt-8 items-center">
               {[0, 1].map((n) => (
                 <div key={n} className="flex shrink-0 items-center gap-3 pr-3 sm:gap-4 sm:pr-4" aria-hidden={n === 1}>
                   {trustedBy.map((t) => (
@@ -253,7 +254,7 @@ export default function Home() {
                   ))}
                 </div>
               ))}
-            </div>
+            </AutoScrollRow>
             <p className="mt-8 text-center text-xs text-muted">and many more across Luxembourg and Europe</p>
           </div>
         </Reveal>

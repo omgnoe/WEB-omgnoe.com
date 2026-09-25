@@ -18,6 +18,8 @@ export type WorkItem = {
   logo?: string;
   /** Screenshot asset. */
   shot?: string;
+  /** Extra screenshots for the case-study gallery. */
+  gallery?: { src: string; alt: string; kind?: "web" | "app" }[];
 };
 
 export const projects: WorkItem[] = [
@@ -47,6 +49,11 @@ export const projects: WorkItem[] = [
     logo: "/work/boxbee.svg",
     shot: "/work/shots/boxbee.png",
     url: "https://boxbee.co",
+    gallery: [
+      { src: "/work/shots/gallery/boxbee-features.png", alt: "BoxBee features overview page" },
+      { src: "/work/shots/gallery/boxbee-inbox.png", alt: "BoxBee smart inbox feature page" },
+      { src: "/work/shots/gallery/boxbee-brief.png", alt: "BoxBee daily brief feature page" },
+    ],
   },
   {
     slug: "salonify",
@@ -72,6 +79,17 @@ export const projects: WorkItem[] = [
     logo: "/work/salonify.svg",
     shot: "/work/shots/salonify.png",
     url: "https://salonify.eu",
+    gallery: [
+      { src: "/work/shots/gallery/salonify-marketplace.png", alt: "Salonify marketplace home" },
+      { src: "/work/shots/gallery/salonify-app-calendar.png", alt: "Salonify Business app team calendar", kind: "app" },
+      { src: "/work/shots/gallery/salonify-search.png", alt: "Salonify search with live results" },
+      { src: "/work/shots/gallery/salonify-app-bookings.png", alt: "Salonify Business app bookings", kind: "app" },
+      { src: "/work/shots/gallery/salonify-app-customer-home.png", alt: "Salonify customer app home", kind: "app" },
+      { src: "/work/shots/gallery/salonify-business.png", alt: "Salonify for business landing page" },
+      { src: "/work/shots/gallery/salonify-app-customers.png", alt: "Salonify Business app customer list", kind: "app" },
+      { src: "/work/shots/gallery/salonify-app-customer-search.png", alt: "Salonify customer app search", kind: "app" },
+      { src: "/work/shots/gallery/salonify-pricing.png", alt: "Salonify pricing page" },
+    ],
   },
   {
     slug: "luxpos",
@@ -98,6 +116,14 @@ export const projects: WorkItem[] = [
     logo: "/work/luxpos.svg",
     shot: "/work/shots/luxpos.png",
     url: "https://luxpos.lu",
+    gallery: [
+      { src: "/work/shots/gallery/luxpos-loyalty.png", alt: "LUXPOS loyalty cards in Apple and Google Wallet" },
+      { src: "/work/shots/gallery/luxpos-app-dashboard.png", alt: "LUXPOS Loyalty app dashboard with join QR code", kind: "app" },
+      { src: "/work/shots/gallery/luxpos-accounting.png", alt: "LUXPOS accounting page" },
+      { src: "/work/shots/gallery/luxpos-app-members.png", alt: "LUXPOS Loyalty app members with points", kind: "app" },
+      { src: "/work/shots/gallery/luxpos-pricing.png", alt: "LUXPOS pricing page" },
+      { src: "/work/shots/gallery/luxpos-app-campaign.png", alt: "LUXPOS Loyalty app campaigns", kind: "app" },
+    ],
   },
   {
     slug: "doctomap",
@@ -123,6 +149,11 @@ export const projects: WorkItem[] = [
     logo: "/work/doctomap.png",
     shot: "/work/shots/doctomap.png",
     url: "https://doctomap.lu",
+    gallery: [
+      { src: "/work/shots/gallery/doctomap-search.png", alt: "Doctomap doctor search with live availability" },
+      { src: "/work/shots/gallery/doctomap-specialties.png", alt: "Doctomap specialties directory" },
+      { src: "/work/shots/gallery/doctomap-doctors.png", alt: "Doctomap page for doctors" },
+    ],
   },
   {
     slug: "tta",
@@ -335,6 +366,14 @@ export const clients: WorkItem[] = [
     url: "https://dynapharm.lu",
     logo: "/work/clients/icons/dynapharm.png",
     shot: "/work/shots/dynapharm.png",
+    gallery: [
+      { src: "/work/shots/gallery/dynapharm-deliveries.png", alt: "Dynapharm live delivery tracking with driver routes on a map" },
+      { src: "/work/shots/gallery/dynapharm-stockview.png", alt: "Dynapharm 3D live warehouse view with zones and racks" },
+      { src: "/work/shots/gallery/dynapharm-admin.png", alt: "Dynapharm back office overview with orders and sign-ups" },
+      { src: "/work/shots/gallery/dynapharm-orders.png", alt: "Dynapharm order management" },
+      { src: "/work/shots/gallery/dynapharm-products.png", alt: "Dynapharm product catalogue with bin locations and stock" },
+      { src: "/work/shots/gallery/dynapharm-shop.png", alt: "Dynapharm gated B2B webshop" },
+    ],
   },
   {
     slug: "hevert",
