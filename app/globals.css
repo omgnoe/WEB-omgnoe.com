@@ -252,6 +252,19 @@ body {
   display: none;
 }
 
+/* Click-and-drag scrolling */
+.drag-scrollable {
+  cursor: grab;
+}
+.drag-scrollable.drag-scrolling {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+.drag-scrollable.drag-scrolling * {
+  cursor: grabbing;
+}
+
 /* Trusted-by logo strip: calm by default, colour on hover */
 .trusted-logo {
   filter: grayscale(1);
@@ -273,7 +286,8 @@ body {
 }
 .reveal.in {
   opacity: 1;
-  transform: translateY(0);
+  /* none (not translateY(0)) so revealed blocks stop being a containing block for position:fixed children */
+  transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal {

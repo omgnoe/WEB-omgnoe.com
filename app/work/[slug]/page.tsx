@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import CaseGallery from "@/components/CaseGallery";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import Reveal from "@/components/Reveal";
 import SiteFooter from "@/components/SiteFooter";
@@ -213,25 +214,7 @@ export default async function CaseStudy({
             <Reveal className="mt-16">
               <p className="kicker">Gallery</p>
               <h2 className="font-display mt-3 text-2xl font-bold tracking-tight">A closer look</h2>
-              <div className="no-scrollbar -mx-5 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2">
-                {w.gallery.map((g) => (
-                  <figure
-                    key={g.src}
-                    className={`relative shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-card shadow-card ${
-                      g.kind === "app" ? "aspect-[9/19.5] h-80 sm:h-[26rem]" : "aspect-[16/10] h-56 sm:h-72"
-                    }`}
-                  >
-                    <Image
-                      src={g.src}
-                      alt={g.alt}
-                      fill
-                      sizes="(max-width: 640px) 90vw, 480px"
-                      className="object-cover object-top"
-                    />
-                  </figure>
-                ))}
-              </div>
-              <p className="mt-3 text-xs text-muted sm:hidden">Swipe for more</p>
+              <CaseGallery items={w.gallery} accent={w.accent} host={host} />
             </Reveal>
           )}
 
