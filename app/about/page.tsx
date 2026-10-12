@@ -13,9 +13,11 @@ import {
   education,
   languages,
   lessons,
-  pressUrl,
+  pressGroups,
   roles,
   skillGroups,
+  spellCount,
+  storyProducts,
 } from "@/lib/story";
 
 const SITE = "https://omgnoe.com";
@@ -69,8 +71,9 @@ export default function AboutPage() {
       sameAs: [
         "https://www.linkedin.com/in/noe-nei",
         "https://github.com/omgnoe",
-        pressUrl,
+        ...pressGroups.flatMap((g) => g.items.map((a) => a.href).filter((h): h is string => !!h)),
       ],
+      award: "1st Public's Prize, #OurLuxembourg, Ministere de l'economie, June 2018",
     },
   };
 
@@ -112,8 +115,9 @@ export default function AboutPage() {
               that turned me into a developer.
             </p>
             <p className="mt-4 max-w-xl leading-relaxed text-muted">
-              It is a long read. If you only want the facts, the CV starts
-              further down.
+              It is a long read, and the parts that can be checked are linked to
+              their sources. If you only want the facts, the CV starts further
+              down.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -166,7 +170,7 @@ export default function AboutPage() {
           <Reveal className="mb-12">
             <p className="kicker">The story</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Eleven chapters, in order.
+              {spellCount(chapters.length)} chapters, in order.
             </h2>
           </Reveal>
 
@@ -180,8 +184,9 @@ export default function AboutPage() {
             <ol className="space-y-5">
               {chapters.map((ch, i) => {
                 const dark = ch.tone === "dark";
+                const num = String(i + 1).padStart(2, "0");
                 return (
-                  <Reveal as="li" key={ch.n} delay={(i % 3) * 60} className="relative sm:pl-12">
+                  <Reveal as="li" key={ch.title} delay={(i % 3) * 60} className="relative sm:pl-12">
                     {/* node */}
                     <span
                       aria-hidden
@@ -200,7 +205,7 @@ export default function AboutPage() {
                             dark ? "text-lime-300" : "text-accent"
                           }`}
                         >
-                          {ch.n}
+                          {num}
                         </span>
                         <span
                           className={`font-mono text-[0.68rem] uppercase tracking-[0.22em] ${
@@ -234,45 +239,62 @@ export default function AboutPage() {
                       {ch.shots && <StoryShots shots={ch.shots} dark={dark} />}
 
                       {ch.pull && (
-                        <p
-                          className={`font-display mt-6 border-l-2 pl-5 text-lg font-semibold leading-snug ${
-                            dark
-                              ? "border-lime-300 text-white"
-                              : "border-accent text-ink"
+                        <blockquote
+                          className={`mt-6 border-l-2 pl-5 ${
+                            dark ? "border-lime-300" : "border-accent"
                           }`}
                         >
-                          {ch.pull}
-                        </p>
+                          <p
+                            className={`font-display text-lg font-semibold leading-snug ${
+                              dark ? "text-white" : "text-ink"
+                            }`}
+                          >
+                            {ch.pull}
+                          </p>
+                          {ch.pullCite && (
+                            <cite
+                              className={`mt-2 block font-mono text-[0.62rem] uppercase not-italic tracking-[0.14em] ${
+                                dark ? "text-white/40" : "text-muted"
+                              }`}
+                            >
+                              {ch.pullCite}
+                            </cite>
+                          )}
+                        </blockquote>
                       )}
 
-                      {ch.n === "09" && (
-                        <a
-                          href={pressUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn btn-ghost mt-6 !py-2.5 text-sm"
-                        >
-                          Read the article in the Luxembourg Times
-                          <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" aria-hidden>
-                            <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </a>
+                      {ch.links && (
+                        <div className="mt-6 flex flex-wrap gap-2.5">
+                          {ch.links.map((l) => (
+                            <a
+                              key={l.href}
+                              href={l.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`btn !py-2.5 text-sm ${
+                                dark
+                                  ? "!bg-white/10 !text-white/85 hover:!bg-white/15"
+                                  : "btn-ghost"
+                              }`}
+                            >
+                              {l.label}
+                              <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" aria-hidden>
+                                <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </a>
+                          ))}
+                        </div>
                       )}
 
-                      {ch.n === "11" && (
+                      {ch.products && (
                         <div className="mt-6 flex flex-wrap gap-2">
-                          {[
-                            { slug: "luxpos", name: "LUXPOS" },
-                            { slug: "salonify", name: "Salonify" },
-                            { slug: "boxbee", name: "BoxBee" },
-                            { slug: "doctomap", name: "Doctomap" },
-                          ].map((p) => (
+                          {storyProducts.map((pr) => (
                             <Link
-                              key={p.slug}
-                              href={`/work/${p.slug}`}
+                              key={pr.slug}
+                              href={`/work/${pr.slug}`}
                               className="pill !py-1.5 font-semibold transition-colors hover:border-line-strong"
                             >
-                              {p.name}
+                              {pr.name}
                             </Link>
                           ))}
                         </div>
@@ -425,22 +447,75 @@ export default function AboutPage() {
                   <li key={c.title} className="px-6 py-4 sm:px-8">
                     <p className="font-semibold leading-tight">{c.title}</p>
                     <p className="mt-1 text-sm text-muted">{c.org}</p>
-                    <a
-                      href={c.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 inline-flex items-center gap-1.5 font-mono text-[0.7rem] font-semibold text-accent hover:text-accent-deep"
-                    >
-                      {c.hrefLabel}
-                      <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" aria-hidden>
-                        <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </a>
+                    <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
+                      {c.links.map((l) => (
+                        <a
+                          key={l.href}
+                          href={l.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] font-semibold text-accent hover:text-accent-deep"
+                        >
+                          {l.label}
+                          <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" aria-hidden>
+                            <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </a>
+                      ))}
+                    </div>
                   </li>
                 ))}
               </ul>
             </Reveal>
           </div>
+
+          {/* Press */}
+          {pressGroups.map((g, gi) => (
+            <Reveal key={g.label} className="mt-14" delay={gi * 80}>
+              <h3 className="kicker mb-2">{g.label}</h3>
+              <p className="mb-6 max-w-xl text-sm text-muted">{g.blurb}</p>
+              <ul className="card divide-y divide-line overflow-hidden">
+                {g.items.map((a) => {
+                  const inner = (
+                    <>
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-accent">
+                          {a.outlet}
+                        </span>
+                        <span className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-muted">
+                          {a.date}
+                        </span>
+                      </div>
+                      <p className="mt-1.5 font-semibold leading-snug">{a.title}</p>
+                      <p className="mt-1 text-sm text-muted">{a.note}</p>
+                    </>
+                  );
+                  return (
+                    <li key={a.title}>
+                      {a.href ? (
+                        <a
+                          href={a.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group block px-6 py-5 transition-colors hover:bg-paper sm:px-8"
+                        >
+                          {inner}
+                          <span className="mt-2 inline-flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted transition-colors group-hover:text-ink">
+                            Open
+                            <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" aria-hidden>
+                              <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </span>
+                        </a>
+                      ) : (
+                        <div className="px-6 py-5 sm:px-8">{inner}</div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </Reveal>
+          ))}
         </div>
       </section>
 

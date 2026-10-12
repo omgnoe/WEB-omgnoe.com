@@ -1,6 +1,9 @@
 /**
  * Long-form about / CV content for /about.
  * Prose lives here (not in JSX) so apostrophes stay readable and unescaped.
+ *
+ * Chapters are numbered from their position in the array, so inserting one
+ * anywhere renumbers the rest automatically. Nothing keys off a fixed number.
  */
 
 export type Shot = {
@@ -19,21 +22,26 @@ export type Ranking = {
   entries: { pos: number; name: string; mine?: boolean }[];
 };
 
+export type Link = { href: string; label: string };
+
 export type Chapter = {
-  n: string;
   period: string;
   title: string;
   body: string[];
   /** Renders the chapter on the dark card. Used once, for the low point. */
   tone?: "dark";
   pull?: string;
+  pullCite?: string;
   shots?: Shot[];
   ranking?: Ranking;
+  /** External sources, rendered as buttons under the body. */
+  links?: Link[];
+  /** Appends links to the products this chapter produced. */
+  products?: boolean;
 };
 
 export const chapters: Chapter[] = [
   {
-    n: "01",
     period: "2016",
     title: "Fantasy Pictures",
     body: [
@@ -42,12 +50,37 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    n: "02",
+    period: "June 2018",
+    title: "Sixteen, and the public picked mine",
+    body: [
+      "As part of the country's nation branding, the government launched #OurLuxembourg: post your picture of Luxembourg on Instagram. More than 1,300 people did. I posted a frame of people walking down Avenue de la Liberté on a day the street was closed to traffic.",
+      "The public prize went to the photos with the most hearts on the official Luxembourg account. Mine came first. The announcement from the government on 13 June 2018 lists it in one line: premier prix du public, Noe Nei. I was sixteen.",
+      "I am not putting this here because a prize matters. I am putting it here because it was the first signal from outside my own head that the camera was not just a hobby. Two years later I registered the company, and seven years later national news desks were still running my frames with my name under them.",
+    ],
+    links: [
+      {
+        href: "https://en.paperjam.lu/article/delano_ourluxembourg-frame",
+        label: "The winning frames on Delano",
+      },
+      {
+        href: "https://gouvernement.lu/fr/actualites/toutes_actualites/communiques/2018/06-juin/13-ourluxembourg.html",
+        label: "The government's announcement",
+      },
+    ],
+  },
+  {
     period: "2020",
     title: "Fapic, at eighteen",
     body: [
       "The moment I was legally allowed to, I registered my own company. Fapic: music production, video, photography, web design. Some big names came through it.",
-      "I was a producer and a musician before I was ever a developer. For a while, the music paid.",
+      "I was a producer and a musician before I was ever a developer. In May 2020 the Lëtzebuerger Journal ran a full interview with me about the music, under the headline Träume leben: live your dreams. The point I made then was that your listeners should not lose sight of their goals. It reads differently now that I know what the next four years were going to do to mine.",
+      "For a while, the music paid.",
+    ],
+    links: [
+      {
+        href: "https://www.a-z.lu/discovery/fulldisplay?docid=alma990016521220107251&context=L&vid=352LUX_BIBNET_NETWORK:BIBNET_UNION&lang=fr",
+        label: "Lëtzebuerger Journal, 7 May 2020",
+      },
     ],
     shots: [
       {
@@ -65,7 +98,6 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    n: "03",
     period: "The pivot",
     title: "Why I left the music scene",
     body: [
@@ -74,7 +106,6 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    n: "04",
     period: "2023",
     title: "I was bad at selling, so I went and sold",
     body: [
@@ -84,14 +115,13 @@ export const chapters: Chapter[] = [
     pull: "Fix your weakest skill on purpose. Mine was selling, so I went and sold.",
   },
   {
-    n: "05",
-    period: "Umarket",
+    period: "2023, Umarket",
     title: "Everything I had, into one bet",
     body: [
       "I put the 30k and every other euro I owned into Umarket, a 24/7 delivery service for Luxembourg. Stock, advertising, fit out, all of it.",
       "For six months I lived in the office. I slept on the couch and my back still remembers it. I ate instant noodles from Action so that rent got paid, because anything that was not survival went into the company. One night, while I was out on a shoot, the office was broken into. Nothing was taken. It still cost me a week of sleep.",
       "I believed in that company the way you only manage to believe in something once.",
-      "And for one quarter it worked. In Q2 2024 Umarket came in fifth among all food delivery apps in Luxembourg by downloads, on the same list as Wolt and Uber Eats. A self-financed app out of an office I was sleeping in, next to companies with a few hundred million in funding.",
+      "And it worked, for a while. In Q2 2024 Umarket was still the fifth most downloaded food delivery app in Luxembourg, on the same list as Wolt and Uber Eats. A self-financed app out of an office I was sleeping in, next to companies with a few hundred million in funding.",
     ],
     ranking: {
       label: "Top 5 food delivery apps, Luxembourg",
@@ -135,7 +165,6 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    n: "06",
     period: "The fall",
     title: "It did not fail on the market",
     body: [
@@ -144,8 +173,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    n: "07",
-    period: "November",
+    period: "Nov to Dec 2023",
     title: "Zero",
     tone: "dark",
     body: [
@@ -155,7 +183,6 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    n: "08",
     period: "After",
     title: "I paid what I owed anyway",
     body: [
@@ -165,17 +192,39 @@ export const chapters: Chapter[] = [
     pull: "Pay what you owe, even when you no longer have to. It is the only thing you still own when everything else is gone.",
   },
   {
-    n: "09",
-    period: "The gap",
-    title: "Too qualified, not qualified enough",
+    period: "Jan to Mar 2024",
+    title: "Comms for the people I had just been standing next to",
     body: [
-      "I started a Service Volontaire with the SNJ at Stëmm vun der Strooss. It gave me structure and it let me keep paying the debt down.",
-      "In parallel I applied everywhere. For the roles I actually wanted I was not qualified enough on paper. For a fast food job I was overqualified. I sat precisely in between, and nobody was hiring the middle.",
-      "Then a journalist wrote about it in the Luxembourg Times. That piece is what broke it open: companies got in touch, and that is how I found the job I have now.",
+      "I signed up for a Fräiwëllegendéngscht, the voluntary service run by the SNJ, Luxembourg's national youth service, and was placed at Stëmm vun der Strooss. That is the organisation behind the day centres, the canteens and the second-hand shops for people in social distress in this country.",
+      "I went in full time as Assistant in Communication, covering communication and IT: I produced video series for them and handled the technical support. The work I already knew how to do, handed to an organisation that looks after people who were a short step from where I had just been.",
+      "It gave me a structure to get up for and an allowance that went straight into paying the company debt down. Three months in, I left early, because a job finally came. A year later I wrote about those months in Forum magazine, alongside two other volunteers.",
+    ],
+    pull: "It was often the small gestures that were priceless to these people. A conversation.",
+    pullCite: "Written for Forum, issue 443, May 2025",
+    links: [
+      {
+        href: "https://www.forum.lu/article/draei-jonker-erziele-vun-hirem-fraeiwellegendengscht/",
+        label: "My piece in Forum 443",
+      },
     ],
   },
   {
-    n: "10",
+    period: "The gap",
+    title: "Too qualified, not qualified enough",
+    body: [
+      "Alongside it I applied everywhere, and in parallel I took a part-time support job at Wolt to keep money coming in. For the roles I actually wanted I was not qualified enough on paper: no degree, just a company I had run. For a fast food job I was overqualified, and they told me so. I sat precisely in between, and nobody was hiring the middle.",
+      "That is the part nobody warns you about. Five years of running a business reads as nothing at all when a form asks for a diploma, and as far too much when it asks for a shift.",
+      "Then a journalist wrote about it in the Luxembourg Times. That piece is what broke it open: companies got in touch, and that is how I found the job I have now.",
+    ],
+    links: [
+      {
+        href:
+          "https://www.luxtimes.lu/luxembourg/22-year-old-entrepreneur-fights-for-a-fresh-start-at-stemm-vun-der-strooss/42925190.html",
+        label: "The article in the Luxembourg Times",
+      },
+    ],
+  },
+  {
     period: "The end of Fapic",
     title: "Insolvency, in the end",
     body: [
@@ -184,7 +233,6 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    n: "11",
     period: "2024 to now",
     title: "What I built out of it",
     body: [
@@ -193,7 +241,26 @@ export const chapters: Chapter[] = [
       "Day to day I am Head Developer at DSP Invest, leading Doctomap, a doctor management SaaS integrated with Luxembourg's national e-health stack. I run my own products alongside it, with real paying customers and real support tickets.",
       "I am not here because it went well. I am here because it did not, and I rebuilt anyway.",
     ],
+    products: true,
   },
+];
+
+/** Spelled-out count for the section heading, so inserts stay correct. */
+const NUMBER_WORDS = [
+  "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+  "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+  "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty",
+];
+
+export function spellCount(n: number): string {
+  return NUMBER_WORDS[n] ?? String(n);
+}
+
+export const storyProducts = [
+  { slug: "luxpos", name: "LUXPOS" },
+  { slug: "salonify", name: "Salonify" },
+  { slug: "boxbee", name: "BoxBee" },
+  { slug: "doctomap", name: "Doctomap" },
 ];
 
 export const lessons = [
@@ -224,12 +291,21 @@ export const roles: Role[] = [
     ],
   },
   {
+    period: "Jan to Mar 24",
+    title: "Assistant in Communication",
+    org: "Fräiwëllegendéngscht, SNJ · placed at Stëmm vun der Strooss · Luxembourg",
+    bullets: [
+      "Full-time communication and IT role at the Luxembourg NGO for people in social distress: produced video series and ran technical support.",
+      "Wrote about the placement for Forum magazine, issue 443, May 2025.",
+    ],
+  },
+  {
     period: "2020 to 2024",
     title: "Founder & Director",
     org: "Fapic · Media agency · Luxembourg",
     bullets: [
       "Founded and ran a media agency solo for almost five years from the age of eighteen, delivering photo, video, web and brand work to SME clients.",
-      "Launched and operated Umarket, a 24/7 delivery service in Luxembourg.",
+      "Launched and operated Umarket, a 24/7 delivery service in Luxembourg. Fifth most downloaded food delivery app in the country in Q2 2024, alongside Wolt and Uber Eats.",
       "Operator-level knowledge of Luxembourg and EU business law, contracts, tax and accounting, running sales, delivery, HR and finance without a team.",
     ],
   },
@@ -276,27 +352,115 @@ export const education = [
   { title: "7ème & 8ème TE", org: "Lycée Bel-Val", period: "14 to 16" },
 ];
 
-export const credentials = [
+export const credentials: { title: string; org: string; links: Link[] }[] = [
   {
     title: "Claude Code 101",
     org: "Anthropic",
-    href: "https://verify.skilljar.com/c/xhxtnkiesrio",
-    hrefLabel: "Verify",
+    links: [{ href: "https://verify.skilljar.com/c/xhxtnkiesrio", label: "Verify" }],
   },
   {
     title: "Claude 101",
     org: "Anthropic",
-    href: "https://verify.skilljar.com/c/pj2yb2inbgqk",
-    hrefLabel: "Verify",
+    links: [{ href: "https://verify.skilljar.com/c/pj2yb2inbgqk", label: "Verify" }],
   },
   {
-    title: "1st Public's Prize, OUR LUXEMBOURG",
-    org: "Inspiring Luxembourg × Ministère de l'économie, June 2018",
-    href:
-      "https://maee.gouvernement.lu/fr/actualites.gouvernement+fr+actualites+toutes_actualites+communiques+2018+06-juin+13-ourluxembourg.html",
-    hrefLabel: "Source",
+    title: "1st Public's Prize, #OurLuxembourg",
+    org: "Ministère de l'économie and Ministère des affaires étrangères, June 2018. Around 1,300 entries.",
+    links: [
+      { href: "https://en.paperjam.lu/article/delano_ourluxembourg-frame", label: "Delano" },
+      { href: "https://gouvernement.lu/fr/actualites/toutes_actualites/communiques/2018/06-juin/13-ourluxembourg.html", label: "gouvernement.lu" },
+    ],
+  },
+];
+
+export type PressItem = {
+  outlet: string;
+  date: string;
+  title: string;
+  note: string;
+  /** Omitted where the piece is print-only or not publicly linkable. */
+  href?: string;
+};
+
+export const pressGroups: { label: string; blurb: string; items: PressItem[] }[] = [
+  {
+    label: "My photos in the press",
+    blurb:
+      "News desks run my frames under my own credit. This is the part of my work that has been published the longest.",
+    items: [
+      {
+        outlet: "RTL Lëtzebuerg",
+        date: "10 April 2025",
+        title: "À la Cloche d'Or: le tram a déraillé après une collision avec un bus",
+        note: "My photos of the derailment, credited © Noe Nei.",
+      },
+      {
+        outlet: "RTL Today",
+        date: "10 April 2025",
+        title: "Tram derails overnight after colliding with bus at Cloche d'Or",
+        note: "English edition of the same report, © Noe Nei.",
+      },
+      {
+        outlet: "Tageblatt",
+        date: "25 October 2022",
+        title: "Groovige Klänge der hauseigenen Abbey Band",
+        note: "Concert photography, credited Foto: Noe Nei.",
+      },
+    ],
+  },
+  {
+    label: "Written about, and written by me",
+    blurb: "Interviews, reporting and one piece I wrote myself.",
+    items: [
+      {
+        outlet: "Forum",
+        date: "May 2025",
+        title: "Dräi Jonker erzielen vun hirem Fräiwëllegendéngscht",
+        note: "Issue 443. I co-authored it: my own account of the placement at Stëmm vun der Strooss.",
+        href: "https://www.forum.lu/article/draei-jonker-erziele-vun-hirem-fraeiwellegendengscht/",
+      },
+      {
+        outlet: "Luxembourg Times",
+        date: "2024",
+        title: "22-year-old entrepreneur fights for a fresh start at Stëmm vun der Strooss",
+        note: "The piece that ended the job search.",
+        href: "https://www.luxtimes.lu/luxembourg/22-year-old-entrepreneur-fights-for-a-fresh-start-at-stemm-vun-der-strooss/42925190.html",
+      },
+      {
+        outlet: "Paperjam",
+        date: "16 April 2024",
+        title: "Bienvenue à tous les nouveaux membres",
+        note: "Member portrait, listed as Noé Nei, Fapic Group.",
+      },
+      {
+        outlet: "Lëtzebuerger Journal",
+        date: "7 May 2020",
+        title: "Träume leben: Noe Nei will seine Hörer ermutigen, ihre Ziele nicht aus den Augen zu verlieren",
+        note: "Interview by Liz Mikos on the music. Volume 73, number 107, page 7.",
+        href: "https://www.a-z.lu/discovery/fulldisplay?docid=alma990016521220107251&context=L&vid=352LUX_BIBNET_NETWORK:BIBNET_UNION&lang=fr",
+      },
+      {
+        outlet: "gouvernement.lu",
+        date: "13 June 2018",
+        title: "Le Comité Inspiring Luxembourg annonce les gagnants du concours photo #OurLuxembourg",
+        note: "The official announcement: premier prix du public, Noe Nei. Also carried by the economy and foreign ministries.",
+        href: "https://gouvernement.lu/fr/actualites/toutes_actualites/communiques/2018/06-juin/13-ourluxembourg.html",
+      },
+      {
+        outlet: "Delano",
+        date: "June 2018",
+        title: "#OurLuxembourg in the frame",
+        note: "The winning entries, including the public prize.",
+        href: "https://en.paperjam.lu/article/delano_ourluxembourg-frame",
+      },
+    ],
   },
 ];
 
 export const pressUrl =
   "https://www.luxtimes.lu/luxembourg/22-year-old-entrepreneur-fights-for-a-fresh-start-at-stemm-vun-der-strooss/42925190.html";
+
+export const delanoUrl = "https://en.paperjam.lu/article/delano_ourluxembourg-frame";
+
+export const forumUrl =
+  "https://www.forum.lu/article/draei-jonker-erziele-vun-hirem-fraeiwellegendengscht/";
