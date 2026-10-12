@@ -11,6 +11,14 @@ export type Shot = {
   kind: "photo" | "square" | "app" | "logo";
 };
 
+export type Ranking = {
+  label: string;
+  note: string;
+  source: string;
+  sourceLabel: string;
+  entries: { pos: number; name: string; mine?: boolean }[];
+};
+
 export type Chapter = {
   n: string;
   period: string;
@@ -20,6 +28,7 @@ export type Chapter = {
   tone?: "dark";
   pull?: string;
   shots?: Shot[];
+  ranking?: Ranking;
 };
 
 export const chapters: Chapter[] = [
@@ -82,7 +91,22 @@ export const chapters: Chapter[] = [
       "I put the 30k and every other euro I owned into Umarket, a 24/7 delivery service for Luxembourg. Stock, advertising, fit out, all of it.",
       "For six months I lived in the office. I slept on the couch and my back still remembers it. I ate instant noodles from Action so that rent got paid, because anything that was not survival went into the company. One night, while I was out on a shoot, the office was broken into. Nothing was taken. It still cost me a week of sleep.",
       "I believed in that company the way you only manage to believe in something once.",
+      "And for one quarter it worked. In Q2 2024 Umarket came in fifth among all food delivery apps in Luxembourg by downloads, on the same list as Wolt and Uber Eats. A self-financed app out of an office I was sleeping in, next to companies with a few hundred million in funding.",
     ],
+    ranking: {
+      label: "Top 5 food delivery apps, Luxembourg",
+      note: "Q2 2024, downloads, iOS and Android combined",
+      source:
+        "https://sensortower.com/blog/2024-q2-unified-top-5-food%20delivery%20services-units-lu-63da96fbe1714cfff1c1e5a1",
+      sourceLabel: "Sensor Tower",
+      entries: [
+        { pos: 1, name: "Wolt Delivery" },
+        { pos: 2, name: "Wedely" },
+        { pos: 3, name: "Uber Eats" },
+        { pos: 4, name: "Takeaway.com Luxembourg" },
+        { pos: 5, name: "UMarket Delivery", mine: true },
+      ],
+    },
     shots: [
       {
         src: "/story/umarket-bunny.jpg",

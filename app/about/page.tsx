@@ -5,6 +5,7 @@ import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import Reveal from "@/components/Reveal";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import StoryRanking from "@/components/StoryRanking";
 import StoryShots from "@/components/StoryShots";
 import {
   chapters,
@@ -227,6 +228,8 @@ export default function AboutPage() {
                           <p key={p.slice(0, 24)}>{p}</p>
                         ))}
                       </div>
+
+                      {ch.ranking && <StoryRanking ranking={ch.ranking} />}
 
                       {ch.shots && <StoryShots shots={ch.shots} dark={dark} />}
 
