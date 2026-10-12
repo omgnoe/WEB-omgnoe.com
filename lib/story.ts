@@ -115,13 +115,24 @@ export const chapters: Chapter[] = [
     pull: "Fix your weakest skill on purpose. Mine was selling, so I went and sold.",
   },
   {
-    period: "2023, Umarket",
+    period: "Jan to May 2024",
+    title: "I photographed 200 restaurants, then asked for a job",
+    body: [
+      "Wolt booked Fapic to shoot their restaurants. I photographed around two hundred of them. Somewhere in that job I stopped being a supplier and started being a student. I wanted to know how a company like that actually works: customer relations, customer experience, the attitude they keep internally towards their own people. Their whole ecosystem fascinated me. So I applied, and I joined them in support.",
+      "I went in to reorient myself and I came out with more than I went looking for. I learned the market from the inside, and from the inside I could see the gap. Everybody in this country knew restaurant delivery. Nobody was doing groceries and household goods, instantly, across the whole of Luxembourg.",
+      "That gap became Umarket. I launched it in March 2024, while I was still on their payroll.",
+      "In May they let me go, once they realised what I was building. I understand the decision, and I am still grateful for what those months taught me. That company motivates me to this day.",
+      "Today every supermarket here delivers, a lot of it through Wolt. It is completely normal now. It was not when we started.",
+    ],
+  },
+  {
+    period: "March 2024",
     title: "Everything I had, into one bet",
     body: [
-      "I put the 30k and every other euro I owned into Umarket, a 24/7 delivery service for Luxembourg. Stock, advertising, fit out, all of it.",
+      "I put the 30k and every other euro I owned into Umarket, a 24/7 delivery service for Luxembourg: groceries and household goods, not restaurant food. Stock, advertising, fit out, all of it.",
       "For six months I lived in the office. I slept on the couch and my back still remembers it. I ate instant noodles from Action so that rent got paid, because anything that was not survival went into the company. One night, while I was out on a shoot, the office was broken into. Nothing was taken. It still cost me a week of sleep.",
       "I believed in that company the way you only manage to believe in something once.",
-      "And it worked, for a while. In Q2 2024 Umarket was still the fifth most downloaded food delivery app in Luxembourg, on the same list as Wolt and Uber Eats. A self-financed app out of an office I was sleeping in, next to companies with a few hundred million in funding.",
+      "And it worked. In Q2 2024, its first full quarter, Umarket was the fifth most downloaded food delivery app in Luxembourg, on the same list as Wolt and Uber Eats. A self-financed app out of an office I was sleeping in, next to companies carrying a few hundred million in funding.",
     ],
     ranking: {
       label: "Top 5 food delivery apps, Luxembourg",
@@ -165,7 +176,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    period: "The fall",
+    period: "October 2024",
     title: "It did not fail on the market",
     body: [
       "It failed on a person. My partner had me pay for renovating the building, then pulled the building across to his own company and set about rebuilding what I had built.",
@@ -173,7 +184,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    period: "Nov to Dec 2023",
+    period: "Nov to Dec 2024",
     title: "Zero",
     tone: "dark",
     body: [
@@ -192,12 +203,12 @@ export const chapters: Chapter[] = [
     pull: "Pay what you owe, even when you no longer have to. It is the only thing you still own when everything else is gone.",
   },
   {
-    period: "Jan to Mar 2024",
+    period: "Jan to Mar 2025",
     title: "Comms for the people I had just been standing next to",
     body: [
-      "I signed up for a Fräiwëllegendéngscht, the voluntary service run by the SNJ, Luxembourg's national youth service, and was placed at Stëmm vun der Strooss. That is the organisation behind the day centres, the canteens and the second-hand shops for people in social distress in this country.",
+      "I signed up for a Fräiwëllegendéngscht, the voluntary service run by the SNJ, Luxembourg's national youth service, and was placed at Stëmm vun der Strooss from January to March 2025. That is the organisation behind the day centres, the canteens and the second-hand shops for people in social distress in this country.",
       "I went in full time as Assistant in Communication, covering communication and IT: I produced video series for them and handled the technical support. The work I already knew how to do, handed to an organisation that looks after people who were a short step from where I had just been.",
-      "It gave me a structure to get up for and an allowance that went straight into paying the company debt down. Three months in, I left early, because a job finally came. A year later I wrote about those months in Forum magazine, alongside two other volunteers.",
+      "It gave me a structure to get up for and an allowance that went straight into paying the company debt down. Three months in, I left early, because a job finally came. Later that year I wrote about those months in Forum magazine, alongside two other volunteers.",
     ],
     pull: "It was often the small gestures that were priceless to these people. A conversation.",
     pullCite: "Written for Forum, issue 443, May 2025",
@@ -212,7 +223,7 @@ export const chapters: Chapter[] = [
     period: "The gap",
     title: "Too qualified, not qualified enough",
     body: [
-      "Alongside it I applied everywhere, and in parallel I took a part-time support job at Wolt to keep money coming in. For the roles I actually wanted I was not qualified enough on paper: no degree, just a company I had run. For a fast food job I was overqualified, and they told me so. I sat precisely in between, and nobody was hiring the middle.",
+      "Alongside it I applied everywhere. For the roles I actually wanted I was not qualified enough on paper: no degree, just a company I had run. For a fast food job I was overqualified, and they told me so. I sat precisely in between, and nobody was hiring the middle.",
       "That is the part nobody warns you about. Five years of running a business reads as nothing at all when a form asks for a diploma, and as far too much when it asks for a shift.",
       "Then a journalist wrote about it in the Luxembourg Times. That piece is what broke it open: companies got in touch, and that is how I found the job I have now.",
     ],
@@ -233,12 +244,12 @@ export const chapters: Chapter[] = [
     ],
   },
   {
-    period: "2024 to now",
+    period: "2025 to now",
     title: "What I built out of it",
     body: [
       "I used the quiet to learn. I went deep into programming and started building the software I had needed as a company director and could never afford to buy.",
       "That is where LUXPOS came from, a point of sale and loyalty and accounting system for Luxembourg retail. And Salonify, a booking platform for salons. And BoxBee. And the rest of them.",
-      "Day to day I am Head Developer at DSP Invest, leading Doctomap, a doctor management SaaS integrated with Luxembourg's national e-health stack. I run my own products alongside it, with real paying customers and real support tickets.",
+      "Since March 2025 I have been Head Developer at DSP Invest, leading Doctomap, a doctor management SaaS integrated with Luxembourg's national e-health stack. I run my own products alongside it, with real paying customers and real support tickets.",
       "I am not here because it went well. I am here because it did not, and I rebuilt anyway.",
     ],
     products: true,
@@ -281,7 +292,7 @@ export type Role = {
 
 export const roles: Role[] = [
   {
-    period: "2024 to now",
+    period: "Mar 2025 to now",
     title: "Head Developer",
     org: "DSP Invest Sarl · Luxembourg",
     bullets: [
@@ -291,7 +302,7 @@ export const roles: Role[] = [
     ],
   },
   {
-    period: "Jan to Mar 24",
+    period: "Jan to Mar 25",
     title: "Assistant in Communication",
     org: "Fräiwëllegendéngscht, SNJ · placed at Stëmm vun der Strooss · Luxembourg",
     bullets: [
@@ -300,12 +311,22 @@ export const roles: Role[] = [
     ],
   },
   {
+    period: "Jan to May 24",
+    title: "Support Associate",
+    org: "Wolt · Luxembourg",
+    bullets: [
+      "Customer experience: retention, complex order resolution and three-sided coordination between customers, couriers and restaurants.",
+      "Joined after shooting roughly 200 of their restaurants as a Fapic contract, specifically to learn how a delivery platform runs its customer relations and its internal culture.",
+      "What I learned about the market there is what led directly to founding Umarket.",
+    ],
+  },
+  {
     period: "2020 to 2024",
     title: "Founder & Director",
     org: "Fapic · Media agency · Luxembourg",
     bullets: [
       "Founded and ran a media agency solo for almost five years from the age of eighteen, delivering photo, video, web and brand work to SME clients.",
-      "Launched and operated Umarket, a 24/7 delivery service in Luxembourg. Fifth most downloaded food delivery app in the country in Q2 2024, alongside Wolt and Uber Eats.",
+      "Launched and operated Umarket, 24/7 instant delivery of groceries and household goods across Luxembourg. Fifth most downloaded food delivery app in the country in Q2 2024, alongside Wolt and Uber Eats.",
       "Operator-level knowledge of Luxembourg and EU business law, contracts, tax and accounting, running sales, delivery, HR and finance without a team.",
     ],
   },
@@ -315,14 +336,6 @@ export const roles: Role[] = [
     org: "bofrost* · Kenn, Rheinland-Pfalz (DE)",
     bullets: [
       "Field sales role taken deliberately to sharpen acquisition, objection handling and closing for my own company. Left as top seller of the branch.",
-    ],
-  },
-  {
-    period: "Jan to May 24",
-    title: "Support Associate",
-    org: "Wolt · Luxembourg",
-    bullets: [
-      "Customer experience: retention, complex order resolution and three-sided coordination between customers, couriers and restaurants.",
     ],
   },
 ];

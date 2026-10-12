@@ -20,7 +20,7 @@ export function GET() {
     "Biography: born 9 March 2002 in Luxembourg. Started paid creative work at 14,",
     "founded his media agency Fapic at 18 (2020 to 2024), launched the 24/7 delivery",
     "service Umarket, lost the company and rebuilt as a developer. Head Developer at",
-    "DSP Invest Sarl since 2024, leading Doctomap. Full story: " + SITE + "/about.",
+    "DSP Invest Sarl since March 2025, leading Doctomap. Full story: " + SITE + "/about.",
     "Clients and organisations he has worked with include Wolt, the Government of the",
     "Grand Duchy of Luxembourg, OGBL, SaniSure, Cepa, LTPS, Vinoteca, Promopharm,",
     "Dynapharm, Luxtex and DSP.",
