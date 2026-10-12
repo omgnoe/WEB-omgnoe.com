@@ -333,6 +333,20 @@ export default function Home() {
                 build things that survive contact with reality, and I stay around after
                 launch to keep them fast, secure and online.
               </p>
+              <p>
+                I started working at fourteen, had my own company at eighteen, and lost
+                all of it at twenty two before rebuilding as a developer. The full story
+                and my CV are on their own page.
+              </p>
+            </div>
+
+            <div className="mt-8">
+              <Link href="/about" className="btn btn-ghost">
+                Read my story
+                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
+                  <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
             </div>
 
             <div className="mt-8 grid grid-cols-3 gap-3">

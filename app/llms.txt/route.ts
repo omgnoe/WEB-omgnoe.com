@@ -17,6 +17,10 @@ export function GET() {
     "> Luxembourg and Europe. Contact via the form at https://omgnoe.com/#contact.",
     "",
     "Languages: English, German, French, Luxembourgish.",
+    "Biography: born 9 March 2002 in Luxembourg. Started paid creative work at 14,",
+    "founded his media agency Fapic at 18 (2020 to 2024), launched the 24/7 delivery",
+    "service Umarket, lost the company and rebuilt as a developer. Head Developer at",
+    "DSP Invest Sarl since 2024, leading Doctomap. Full story: " + SITE + "/about.",
     "Clients and organisations he has worked with include Wolt, the Government of the",
     "Grand Duchy of Luxembourg, OGBL, SaniSure, Cepa, LTPS, Vinoteca, Promopharm,",
     "Dynapharm, Luxtex and DSP.",
@@ -42,6 +46,7 @@ export function GET() {
     `- [Home](${SITE}/): overview, portfolio and contact form`,
     `- [Services](${SITE}/services): all services with scope and FAQ`,
     `- [Work](${SITE}/work): full portfolio with case studies`,
+    `- [About & CV](${SITE}/about): full biography, career timeline, experience, stack, education and certifications`,
     "",
   ];
 

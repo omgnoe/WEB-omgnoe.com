@@ -22,6 +22,11 @@ export default function SiteFooter() {
               hosting and IT, built and operated end to end.
             </p>
             <ObfuscatedEmail className="mt-5 inline-block font-mono text-sm text-ink underline decoration-accent decoration-2 underline-offset-4" />
+            <p className="mt-4 text-sm">
+              <Link href="/about" className="text-muted transition-colors hover:text-ink">
+                About &amp; CV
+              </Link>
+            </p>
           </div>
 
           <div>
