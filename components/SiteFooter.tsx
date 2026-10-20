@@ -1,10 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
-import { projects, clients } from "@/lib/projects";
-import { services } from "@/lib/services";
+import { getClients, getProjects } from "@/lib/projects";
+import { getServices } from "@/lib/services";
+import { aboutPath, servicePath, workItemPath, type Locale } from "@/lib/i18n";
+import { dict } from "@/lib/ui";
 
-export default function SiteFooter() {
+export default function SiteFooter({ locale }: { locale: Locale }) {
+  const t = dict(locale);
+  const services = getServices(locale);
+  const projects = getProjects(locale);
+  const clients = getClients(locale);
+
   return (
     <footer className="px-3 pb-3 pt-16 sm:px-5">
       <div className="card card-lg mx-auto max-w-6xl overflow-hidden">
@@ -17,24 +24,24 @@ export default function SiteFooter() {
               height={34}
               className="logo-dark h-5 w-auto"
             />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-              Noe Nei, full-stack developer and founder in Luxembourg. Apps, websites,
-              hosting and IT, built and operated end to end.
-            </p>
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">{t.footer.blurb}</p>
             <ObfuscatedEmail className="mt-5 inline-block font-mono text-sm text-ink underline decoration-accent decoration-2 underline-offset-4" />
             <p className="mt-4 text-sm">
-              <Link href="/about" className="text-muted transition-colors hover:text-ink">
-                About &amp; CV
+              <Link href={aboutPath(locale)} className="text-muted transition-colors hover:text-ink">
+                {t.footer.aboutCv}
               </Link>
             </p>
           </div>
 
           <div>
-            <p className="kicker">Services</p>
+            <p className="kicker">{t.footer.services}</p>
             <ul className="mt-4 space-y-2.5 text-sm">
               {services.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/services/${s.slug}`} className="text-muted transition-colors hover:text-ink">
+                  <Link
+                    href={servicePath(locale, s.slug)}
+                    className="text-muted transition-colors hover:text-ink"
+                  >
                     {s.name}
                   </Link>
                 </li>
@@ -43,11 +50,14 @@ export default function SiteFooter() {
           </div>
 
           <div>
-            <p className="kicker">Products</p>
+            <p className="kicker">{t.footer.products}</p>
             <ul className="mt-4 space-y-2.5 text-sm">
               {projects.map((p) => (
                 <li key={p.slug}>
-                  <Link href={`/work/${p.slug}`} className="text-muted transition-colors hover:text-ink">
+                  <Link
+                    href={workItemPath(locale, p.slug)}
+                    className="text-muted transition-colors hover:text-ink"
+                  >
                     {p.name}
                   </Link>
                 </li>
@@ -56,11 +66,14 @@ export default function SiteFooter() {
           </div>
 
           <div>
-            <p className="kicker">Client work</p>
+            <p className="kicker">{t.footer.clients}</p>
             <ul className="mt-4 space-y-2.5 text-sm">
               {clients.map((c) => (
                 <li key={c.slug}>
-                  <Link href={`/work/${c.slug}`} className="text-muted transition-colors hover:text-ink">
+                  <Link
+                    href={workItemPath(locale, c.slug)}
+                    className="text-muted transition-colors hover:text-ink"
+                  >
                     {c.name}
                   </Link>
                 </li>
@@ -70,8 +83,8 @@ export default function SiteFooter() {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-3 border-t border-line px-8 py-5 text-xs text-muted sm:flex-row sm:px-12">
-          <p>© {new Date().getFullYear()} Noe Nei · Luxembourg</p>
-          <p>Designed, built and hosted by me. Obviously.</p>
+          <p>© {new Date().getFullYear()} {t.footer.rights}</p>
+          <p>{t.footer.madeBy}</p>
         </div>
       </div>
     </footer>

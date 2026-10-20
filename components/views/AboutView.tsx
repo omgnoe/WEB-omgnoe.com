@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
@@ -8,47 +7,52 @@ import SiteHeader from "@/components/SiteHeader";
 import StoryRanking from "@/components/StoryRanking";
 import StoryShots from "@/components/StoryShots";
 import {
-  chapters,
-  credentials,
-  education,
-  languages,
-  lessons,
-  pressGroups,
-  roles,
-  skillGroups,
-  spellCount,
+  getChapters,
+  getCredentials,
+  getEducation,
+  getLanguages,
+  getLessons,
+  getPressGroups,
+  getRoles,
+  getSkillGroups,
+  spellCountIn,
+  storyChrome,
   storyProducts,
 } from "@/lib/story";
+import {
+  contactPath,
+  urlFor,
+  workItemPath,
+  workPath,
+  HTML_LANG,
+  SITE,
+  type Locale,
+} from "@/lib/i18n";
+import { dict } from "@/lib/ui";
+import { PERSON_ID, SAME_AS } from "@/lib/schema";
 
-const SITE = "https://omgnoe.com";
+export default function AboutView({ locale }: { locale: Locale }) {
+  const t = dict(locale);
+  const c = storyChrome(locale);
+  const facts = c.facts;
+  const chapters = getChapters(locale);
+  const lessons = getLessons(locale);
+  const roles = getRoles(locale);
+  const skillGroups = getSkillGroups(locale);
+  const languages = getLanguages(locale);
+  const education = getEducation(locale);
+  const credentials = getCredentials(locale);
+  const pressGroups = getPressGroups(locale);
+  const url = urlFor(locale, { kind: "about" });
 
-export const metadata: Metadata = {
-  title: "About & CV: from zero, twice",
-  description:
-    "The long version. Noe Nei started working at fourteen, founded his own agency at eighteen, lost everything with a delivery startup, paid the debt out of his own salary and rebuilt as a developer in Luxembourg. Full CV, experience, stack and education.",
-  alternates: { canonical: `${SITE}/about` },
-  openGraph: {
-    type: "profile",
-    url: `${SITE}/about`,
-    title: "About & CV | Noe Nei",
-    description:
-      "Started at fourteen. Own company at eighteen. Lost it all at twenty two. Rebuilt as a developer. The long version, plus the full CV.",
-  },
-};
-
-const facts = [
-  { k: "Based in", v: "Luxembourg" },
-  { k: "Born", v: "9 March 2002" },
-  { k: "Now", v: "Head Developer, DSP Invest" },
-  { k: "Also", v: "Founder of LUXPOS, Salonify, BoxBee" },
-];
-
-export default function AboutPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
+    url,
+    inLanguage: HTML_LANG[locale],
     mainEntity: {
       "@type": "Person",
+      "@id": PERSON_ID,
       name: "Noe Nei",
       url: SITE,
       image: `${SITE}/me/noe-suit.jpg`,
@@ -57,22 +61,11 @@ export default function AboutPage() {
       worksFor: { "@type": "Organization", name: "DSP Invest Sarl" },
       address: { "@type": "PostalAddress", addressCountry: "LU" },
       knowsLanguage: ["lb", "de", "en", "fr"],
-      knowsAbout: [
-        "Full-stack development",
-        "Next.js",
-        "Flutter",
-        "NestJS",
-        "PostgreSQL",
-        "Cybersecurity",
-        "Managed hosting",
-        "SaaS",
-      ],
       alumniOf: education.map((e) => ({ "@type": "EducationalOrganization", name: e.org })),
       sameAs: [
-        "https://www.linkedin.com/in/noe-nei",
-        "https://github.com/omgnoe",
+        ...SAME_AS,
         ...pressGroups.flatMap((g) => g.items.map((a) => a.href).filter((h): h is string => !!h)),
-      ],
+      ].filter((v, i, a) => a.indexOf(v) === i),
       award: "1st Public's Prize, #OurLuxembourg, Ministere de l'economie, June 2018",
     },
   };
@@ -81,8 +74,8 @@ export default function AboutPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-      { "@type": "ListItem", position: 2, name: "About", item: `${SITE}/about` },
+      { "@type": "ListItem", position: 1, name: t.common.home, item: urlFor(locale, { kind: "home" }) },
+      { "@type": "ListItem", position: 2, name: t.nav.about, item: url },
     ],
   };
 
@@ -96,39 +89,30 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
-      <SiteHeader />
+      <SiteHeader locale={locale} pageKey={{ kind: "about" }} />
 
       {/* HERO */}
       <section className="stage relative overflow-hidden">
         <div className="dots absolute inset-0" />
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-14 pt-14 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="rise min-w-0">
-            <p className="kicker">About · the long version</p>
+            <p className="kicker">{c.kicker}</p>
             <h1 className="font-display mt-5 max-w-2xl text-[2.6rem] font-bold leading-[1.05] tracking-tight sm:text-6xl">
-              I have been to zero.{" "}
-              <span className="underline-swipe">Twice is the plan for nobody.</span>
+              {c.h1a}{" "}
+              <span className="underline-swipe">{c.h1b}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-              Most portfolios show you the highlight reel. Here is the whole thing:
-              first invoice at fourteen, own company at eighteen, a delivery startup
-              that took everything I had, two months with nothing, and the rebuild
-              that turned me into a developer.
-            </p>
-            <p className="mt-4 max-w-xl leading-relaxed text-muted">
-              It is a long read, and the parts that can be checked are linked to
-              their sources. If you only want the facts, the CV starts further
-              down.
-            </p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{c.lead}</p>
+            <p className="mt-4 max-w-xl leading-relaxed text-muted">{c.leadNote}</p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href="#cv" className="btn btn-accent">
-                Jump to the CV
+                {c.jumpCv}
                 <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
                   <path d="M8 3v10m0 0 4-4m-4 4-4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <Link href="/#contact" className="btn btn-ghost">
-                Work with me
+              <Link href={contactPath(locale)} className="btn btn-ghost">
+                {c.workWithMe}
               </Link>
             </div>
           </div>
@@ -138,7 +122,7 @@ export default function AboutPage() {
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem]">
                 <Image
                   src="/me/noe-suit.jpg"
-                  alt="Noe Nei, founder and developer from Luxembourg"
+                  alt={c.portraitAlt}
                   fill
                   priority
                   sizes="(max-width: 1024px) 80vw, 380px"
@@ -158,7 +142,7 @@ export default function AboutPage() {
               className="floaty pill absolute -left-2 top-8 z-10 !bg-card !px-3.5 !py-2 text-xs font-semibold shadow-card sm:-left-6"
               style={{ "--float-rot": "-5deg" } as React.CSSProperties}
             >
-              Still here
+              {c.stillHere}
             </span>
           </div>
         </div>
@@ -168,9 +152,9 @@ export default function AboutPage() {
       <section className="border-y border-line bg-paper-deep/50">
         <div className="mx-auto max-w-5xl px-5 py-20 sm:py-24">
           <Reveal className="mb-12">
-            <p className="kicker">The story</p>
+            <p className="kicker">{c.storyKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              {spellCount(chapters.length)} chapters, in order.
+              {c.storyH2(spellCountIn(locale, chapters.length))}
             </h2>
           </Reveal>
 
@@ -186,7 +170,7 @@ export default function AboutPage() {
                 const dark = ch.tone === "dark";
                 const num = String(i + 1).padStart(2, "0");
                 return (
-                  <Reveal as="li" key={ch.title} delay={(i % 3) * 60} className="relative sm:pl-12">
+                  <Reveal as="li" key={ch.id} delay={(i % 3) * 60} className="relative sm:pl-12">
                     {/* node */}
                     <span
                       aria-hidden
@@ -291,7 +275,7 @@ export default function AboutPage() {
                           {storyProducts.map((pr) => (
                             <Link
                               key={pr.slug}
-                              href={`/work/${pr.slug}`}
+                              href={workItemPath(locale, pr.slug)}
                               className="pill !py-1.5 font-semibold transition-colors hover:border-line-strong"
                             >
                               {pr.name}
@@ -312,9 +296,9 @@ export default function AboutPage() {
       <section className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="grid items-start gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           <Reveal>
-            <p className="kicker">What it cost, what it taught</p>
+            <p className="kicker">{c.lessonsKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Six things I paid for in cash.
+              {c.lessonsH2}
             </h2>
             <ol className="mt-8 space-y-4">
               {lessons.map((l, i) => (
@@ -333,7 +317,7 @@ export default function AboutPage() {
               <div className="relative aspect-[3/4] overflow-hidden rounded-[1.6rem]">
                 <Image
                   src="/me/noe-archive.jpg"
-                  alt="Noe Nei going through printed work"
+                  alt={c.archiveAlt}
                   fill
                   sizes="(max-width: 1024px) 90vw, 420px"
                   className="object-cover"
@@ -342,12 +326,8 @@ export default function AboutPage() {
             </div>
 
             <div className="card-night card-lg mt-10 p-6 sm:p-8">
-              <p className="font-display text-sm font-bold text-lime-300">Off the clock</p>
-              <p className="mt-4 leading-relaxed text-white/70">
-                I still make music. I just do not sell it any more. I spent years
-                turning everything I loved into an invoice, and this one stays a
-                hobby.
-              </p>
+              <p className="font-display text-sm font-bold text-lime-300">{c.offClockKicker}</p>
+              <p className="mt-4 leading-relaxed text-white/70">{c.offClock}</p>
             </div>
           </Reveal>
         </div>
@@ -357,15 +337,15 @@ export default function AboutPage() {
       <section id="cv" className="border-y border-line bg-paper-deep/50 scroll-mt-24">
         <div className="mx-auto max-w-5xl px-5 py-20 sm:py-24">
           <Reveal className="mb-12">
-            <p className="kicker">Curriculum vitae</p>
+            <p className="kicker">{c.cvKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              The short version, for people in a hurry.
+              {c.cvH2}
             </h2>
           </Reveal>
 
           {/* Experience */}
           <Reveal className="mb-14">
-            <h3 className="kicker mb-6">Experience</h3>
+            <h3 className="kicker mb-6">{c.experience}</h3>
             <div className="space-y-4">
               {roles.map((r) => (
                 <article key={r.title + r.period} className="card p-6 sm:p-8">
@@ -393,7 +373,7 @@ export default function AboutPage() {
 
           {/* Stack */}
           <Reveal className="mb-14">
-            <h3 className="kicker mb-6">Stack & tools</h3>
+            <h3 className="kicker mb-6">{c.stackTools}</h3>
             <div className="card divide-y divide-line overflow-hidden">
               {skillGroups.map((g) => (
                 <div key={g.label} className="grid gap-1 px-6 py-4 sm:grid-cols-[150px_1fr] sm:gap-4 sm:px-8">
@@ -408,7 +388,7 @@ export default function AboutPage() {
 
           {/* Languages */}
           <Reveal className="mb-14">
-            <h3 className="kicker mb-6">Languages</h3>
+            <h3 className="kicker mb-6">{c.languages}</h3>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {languages.map((l) => (
                 <div key={l.name} className="card p-5">
@@ -424,7 +404,7 @@ export default function AboutPage() {
           {/* Education + credentials */}
           <div className="grid gap-10 lg:grid-cols-2">
             <Reveal>
-              <h3 className="kicker mb-6">Education</h3>
+              <h3 className="kicker mb-6">{c.education}</h3>
               <ul className="card divide-y divide-line overflow-hidden">
                 {education.map((e) => (
                   <li key={e.title} className="px-6 py-4 sm:px-8">
@@ -441,7 +421,7 @@ export default function AboutPage() {
             </Reveal>
 
             <Reveal delay={100}>
-              <h3 className="kicker mb-6">Certifications & awards</h3>
+              <h3 className="kicker mb-6">{c.credentials}</h3>
               <ul className="card divide-y divide-line overflow-hidden">
                 {credentials.map((c) => (
                   <li key={c.title} className="px-6 py-4 sm:px-8">
@@ -501,7 +481,7 @@ export default function AboutPage() {
                         >
                           {inner}
                           <span className="mt-2 inline-flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted transition-colors group-hover:text-ink">
-                            Open
+                            {c.open}
                             <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" aria-hidden>
                               <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
@@ -531,20 +511,17 @@ export default function AboutPage() {
               }}
             />
             <div className="relative">
-              <p className="kicker !text-white/50">Still reading</p>
+              <p className="kicker !text-white/50">{c.ctaKicker}</p>
               <h2 className="font-display mx-auto mt-4 max-w-2xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                Then you already know how I will treat your project.
+                {c.ctaH2}
               </h2>
-              <p className="mx-auto mt-5 max-w-xl text-lg text-white/65">
-                I build things that have to survive contact with reality, because
-                mine did not get the choice.
-              </p>
+              <p className="mx-auto mt-5 max-w-xl text-lg text-white/65">{c.ctaLead}</p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                <Link href="/#contact" className="btn btn-accent">
-                  Start a project
+                <Link href={contactPath(locale)} className="btn btn-accent">
+                  {t.common.startProject}
                 </Link>
-                <Link href="/work" className="btn !bg-white/10 !text-white/85 hover:!bg-white/15">
-                  See the work
+                <Link href={workPath(locale)} className="btn !bg-white/10 !text-white/85 hover:!bg-white/15">
+                  {t.common.seeWork}
                 </Link>
               </div>
               <div className="mt-8">
@@ -555,7 +532,7 @@ export default function AboutPage() {
         </Reveal>
       </section>
 
-      <SiteFooter />
+      <SiteFooter locale={locale} />
     </main>
   );
 }

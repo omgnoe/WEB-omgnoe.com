@@ -1,73 +1,67 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import Reveal from "@/components/Reveal";
 import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import WorkCard from "@/components/WorkCard";
-import { getWork } from "@/lib/projects";
-import { getService, services } from "@/lib/services";
+import { getWorkLocalised } from "@/lib/projects";
+import { getServices, type Service } from "@/lib/services";
+import {
+  homePath,
+  servicePath,
+  servicesPath,
+  urlFor,
+  workAnchor,
+  workPath,
+  HTML_LANG,
+  SITE,
+  type Locale,
+} from "@/lib/i18n";
+import { dict } from "@/lib/ui";
+import { providerLd } from "@/lib/schema";
 
-const SITE = "https://omgnoe.com";
-
-export function generateStaticParams() {
-  return services.map((s) => ({ slug: s.slug }));
-}
-
-export async function generateMetadata({
-  params,
+export default function ServiceDetailView({
+  locale,
+  service: s,
 }: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const s = getService(slug);
-  if (!s) return {};
-
-  const url = `${SITE}/services/${s.slug}`;
-  return {
-    title: s.title,
-    description: s.meta,
-    keywords: s.keywords,
-    alternates: { canonical: url },
-    openGraph: {
-      type: "website",
-      url,
-      title: `${s.title} | Noe Nei`,
-      description: s.meta,
-    },
-    twitter: { card: "summary_large_image", title: `${s.title} | Noe Nei`, description: s.meta },
-  };
-}
-
-export default async function ServicePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
+  locale: Locale;
+  service: Service;
 }) {
-  const { slug } = await params;
-  const s = getService(slug);
-  if (!s) notFound();
-
-  const related = s.related.map(getWork).filter((w) => w !== undefined);
-  const otherServices = services.filter((o) => o.slug !== s.slug);
+  const t = dict(locale);
+  const url = urlFor(locale, { kind: "service", canonical: s.slug });
+  const related = s.related
+    .map((slug) => getWorkLocalised(locale, slug))
+    .filter((w) => w !== undefined);
+  const otherServices = getServices(locale).filter((o) => o.slug !== s.slug);
 
   const serviceLd = {
     "@context": "https://schema.org",
     "@type": "Service",
     name: s.title,
     description: s.meta,
-    url: `${SITE}/services/${s.slug}`,
-    provider: { "@type": "Person", name: "Noe Nei", url: SITE },
-    areaServed: ["Luxembourg", "Europe"],
+    url,
+    inLanguage: HTML_LANG[locale],
+    provider: providerLd(),
+    areaServed: [
+      { "@type": "Country", name: "Luxembourg" },
+      { "@type": "AdministrativeArea", name: "Grande Region" },
+      { "@type": "Place", name: "Europe" },
+    ],
     serviceType: s.name,
+    termsOfService: `${SITE}/services`,
+    availableChannel: {
+      "@type": "ServiceChannel",
+      serviceUrl: url,
+      availableLanguage: ["fr", "de", "en", "lb"],
+    },
   };
 
   const faqLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: HTML_LANG[locale],
     mainEntity: s.faq.map((f) => ({
       "@type": "Question",
       name: f.q,
@@ -79,9 +73,14 @@ export default async function ServicePage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE}/services` },
-      { "@type": "ListItem", position: 3, name: s.title, item: `${SITE}/services/${s.slug}` },
+      { "@type": "ListItem", position: 1, name: t.common.home, item: urlFor(locale, { kind: "home" }) },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: t.nav.services,
+        item: urlFor(locale, { kind: "services" }),
+      },
+      { "@type": "ListItem", position: 3, name: s.title, item: url },
     ],
   };
 
@@ -90,16 +89,16 @@ export default async function ServicePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <SiteHeader />
+      <SiteHeader locale={locale} pageKey={{ kind: "service", canonical: s.slug }} />
 
       {/* HERO */}
       <section className="stage relative overflow-hidden">
         <div className="dots absolute inset-0" />
         <div className="mx-auto max-w-6xl px-5 pb-12 pt-14 sm:pt-18">
-          <nav className="rise flex items-center gap-2 text-xs text-muted" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-ink">Home</Link>
+          <nav className="rise flex items-center gap-2 text-xs text-muted" aria-label={t.common.breadcrumb}>
+            <Link href={homePath(locale)} className="hover:text-ink">{t.common.home}</Link>
             <span>/</span>
-            <Link href="/services" className="hover:text-ink">Services</Link>
+            <Link href={servicesPath(locale)} className="hover:text-ink">{t.nav.services}</Link>
             <span>/</span>
             <span className="text-ink">{s.name}</span>
           </nav>
@@ -122,9 +121,9 @@ export default async function ServicePage({
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <ObfuscatedEmail className="btn btn-accent" label="Start a conversation" />
-                <Link href="/#work" className="btn btn-ghost">
-                  See the work
+                <ObfuscatedEmail className="btn btn-accent" label={t.common.startConversation} />
+                <Link href={workAnchor(locale)} className="btn btn-ghost">
+                  {t.common.seeWork}
                 </Link>
               </div>
             </div>
@@ -160,14 +159,14 @@ export default async function ServicePage({
             </div>
 
             <div className="card mt-10 p-6 sm:p-8">
-              <p className="kicker">Track record</p>
+              <p className="kicker">{t.service.trackRecord}</p>
               <p className="mt-3 leading-relaxed">{s.proof}</p>
             </div>
           </Reveal>
 
           <Reveal delay={120}>
             <div className="card p-6 sm:p-7">
-              <p className="kicker">What you get</p>
+              <p className="kicker">{t.service.whatYouGet}</p>
               <ul className="mt-5 space-y-3.5">
                 {s.deliverables.map((d) => (
                   <li key={d} className="flex items-start gap-3 text-sm leading-relaxed">
@@ -183,7 +182,7 @@ export default async function ServicePage({
                   </li>
                 ))}
               </ul>
-              <ObfuscatedEmail className="btn btn-ink mt-7 w-full" label="Get a quote" />
+              <ObfuscatedEmail className="btn btn-ink mt-7 w-full" label={t.common.getQuote} />
             </div>
           </Reveal>
         </div>
@@ -193,10 +192,8 @@ export default async function ServicePage({
       <section className="border-y border-line bg-paper-deep/50">
         <div className="mx-auto max-w-6xl px-5 py-16">
           <Reveal>
-            <p className="kicker">FAQ</p>
-            <h2 className="font-display mt-3 text-3xl font-bold tracking-tight">
-              Common questions
-            </h2>
+            <p className="kicker">{t.service.faqKicker}</p>
+            <h2 className="font-display mt-3 text-3xl font-bold tracking-tight">{t.service.faqH2}</h2>
           </Reveal>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {s.faq.map((f, i) => (
@@ -216,19 +213,19 @@ export default async function ServicePage({
         <section className="mx-auto max-w-6xl px-5 py-16">
           <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="kicker">Proof</p>
+              <p className="kicker">{t.service.proofKicker}</p>
               <h2 className="font-display mt-3 text-3xl font-bold tracking-tight">
-                Work in this area
+                {t.service.proofH2}
               </h2>
             </div>
-            <Link href="/work" className="btn btn-ghost">
-              All work
+            <Link href={workPath(locale)} className="btn btn-ghost">
+              {t.common.allWork}
             </Link>
           </Reveal>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.slice(0, 3).map((w, i) => (
               <Reveal key={w.slug} delay={i * 80}>
-                <WorkCard item={w} />
+                <WorkCard item={w} locale={locale} />
               </Reveal>
             ))}
           </div>
@@ -237,10 +234,14 @@ export default async function ServicePage({
 
       {/* OTHER SERVICES */}
       <section className="mx-auto max-w-6xl px-5 pb-16">
-        <p className="kicker mb-5">Other services</p>
+        <p className="kicker mb-5">{t.service.otherServices}</p>
         <div className="flex flex-wrap gap-2">
           {otherServices.map((o) => (
-            <Link key={o.slug} href={`/services/${o.slug}`} className="pill !py-2 font-medium transition-colors hover:border-line-strong">
+            <Link
+              key={o.slug}
+              href={servicePath(locale, o.slug)}
+              className="pill !py-2 font-medium transition-colors hover:border-line-strong"
+            >
               <ServiceIcon name={o.icon} className="h-3.5 w-3.5" />
               {o.name}
             </Link>
@@ -257,14 +258,12 @@ export default async function ServicePage({
               style={{ background: "radial-gradient(55% 70% at 50% 120%, rgba(255,90,31,0.3), transparent 70%)" }}
             />
             <h2 className="font-display relative text-3xl font-bold text-white sm:text-4xl">
-              Let&apos;s talk about {s.name}.
+              {t.service.ctaH2(s.name)}
             </h2>
-            <p className="relative mx-auto mt-4 max-w-md text-white/65">
-              One message is enough. You describe the goal, I reply with a plan.
-            </p>
+            <p className="relative mx-auto mt-4 max-w-md text-white/65">{t.service.ctaLead}</p>
             <div className="relative mt-7 flex flex-wrap items-center justify-center gap-3">
-              <Link href="/#contact" className="btn btn-accent !px-7 !py-3.5">
-                Send an inquiry
+              <Link href={`${homePath(locale)}#contact`.replace("//#", "/#")} className="btn btn-accent !px-7 !py-3.5">
+                {t.common.sendInquiry}
               </Link>
               <ObfuscatedEmail className="btn !bg-white/10 !text-white/85 font-mono !text-sm hover:!bg-white/15" />
             </div>
@@ -272,7 +271,7 @@ export default async function ServicePage({
         </Reveal>
       </section>
 
-      <SiteFooter />
+      <SiteFooter locale={locale} />
     </main>
   );
 }

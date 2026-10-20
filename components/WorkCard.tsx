@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { WorkItem } from "@/lib/projects";
+import { workItemPath, type Locale } from "@/lib/i18n";
+import { dict } from "@/lib/ui";
 
 function hostOf(url?: string) {
   if (!url) return null;
@@ -11,12 +13,13 @@ function hostOf(url?: string) {
   }
 }
 
-export default function WorkCard({ item }: { item: WorkItem }) {
+export default function WorkCard({ item, locale }: { item: WorkItem; locale: Locale }) {
+  const t = dict(locale);
   const own = item.kind === "personal";
   const host = hostOf(item.url);
 
   return (
-    <Link href={`/work/${item.slug}`} className="group block h-full">
+    <Link href={workItemPath(locale, item.slug)} className="group block h-full">
       <article className="card card-hover relative flex h-full flex-col overflow-hidden">
         {/* Screenshot in a browser frame */}
         <div className="p-2.5 pb-0">
@@ -33,7 +36,7 @@ export default function WorkCard({ item }: { item: WorkItem }) {
               {item.shot ? (
                 <Image
                   src={item.shot}
-                  alt={`${item.name} website screenshot`}
+                  alt={t.workItem.shotAlt(item.name)}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
                 />
@@ -81,7 +84,7 @@ export default function WorkCard({ item }: { item: WorkItem }) {
                 own ? "!border-transparent !bg-accent !text-white" : "!bg-paper text-muted"
               }`}
             >
-              {own ? "Own product" : "Client work"}
+              {own ? t.common.ownProduct : t.common.clientWork}
             </span>
           </div>
 
@@ -96,7 +99,7 @@ export default function WorkCard({ item }: { item: WorkItem }) {
           </div>
 
           <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-ink">
-            View case study
+            {t.common.viewCase}
             <span className="grid h-6 w-6 place-items-center rounded-full bg-paper transition-all group-hover:bg-accent group-hover:text-white">
               <svg viewBox="0 0 16 16" className="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" aria-hidden>
                 <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />

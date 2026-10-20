@@ -1,37 +1,13 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-
-const SERVICES = [
-  "Website",
-  "Online shop",
-  "iOS / Android app",
-  "Web platform / SaaS",
-  "App publishing",
-  "IT help & support",
-  "Cybersecurity",
-  "Hosting & IT management",
-  "Something else",
-];
-
-const BUDGETS = [
-  "Not sure yet",
-  "Under 2.500 EUR",
-  "2.500 to 10.000 EUR",
-  "10.000 to 25.000 EUR",
-  "25.000 EUR or more",
-];
-
-const TIMELINES = [
-  "As soon as possible",
-  "Within 1 to 3 months",
-  "In 3 months or later",
-  "Flexible",
-];
+import type { Locale } from "@/lib/i18n";
+import { dict } from "@/lib/ui";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-export default function ContactForm() {
+export default function ContactForm({ locale }: { locale: Locale }) {
+  const t = dict(locale).form;
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -56,11 +32,11 @@ export default function ContactForm() {
         form.reset();
       } else {
         setStatus("error");
-        setError(typeof json.error === "string" ? json.error : "Sending failed. Please email me directly.");
+        setError(typeof json.error === "string" ? json.error : t.failed);
       }
     } catch {
       setStatus("error");
-      setError("Sending failed. Please email me directly.");
+      setError(t.failed);
     }
   }
 
@@ -73,10 +49,8 @@ export default function ContactForm() {
               <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          <p className="font-display mt-5 text-xl font-bold text-white">Message sent.</p>
-          <p className="mt-2 text-sm text-white/60">
-            Thanks! I read every inquiry personally and usually reply within a day.
-          </p>
+          <p className="font-display mt-5 text-xl font-bold text-white">{t.sentTitle}</p>
+<p className="mt-2 text-sm text-white/60">{t.sentBody}</p>
         </div>
       </div>
     );
@@ -86,18 +60,18 @@ export default function ContactForm() {
     <form onSubmit={onSubmit} className="rounded-3xl border border-white/10 bg-white/5 p-5 text-left sm:p-6">
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-white/60">Name *</span>
+          <span className="mb-1.5 block text-xs font-medium text-white/60">{t.name}</span>
           <input
             name="name"
             required
             maxLength={120}
             autoComplete="name"
             className="cf-input"
-            placeholder="Your name"
+            placeholder={t.namePlaceholder}
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-white/60">Email *</span>
+          <span className="mb-1.5 block text-xs font-medium text-white/60">{t.email}</span>
           <input
             name="email"
             type="email"
@@ -105,28 +79,28 @@ export default function ContactForm() {
             maxLength={200}
             autoComplete="email"
             className="cf-input"
-            placeholder="you@company.com"
+            placeholder={t.emailPlaceholder}
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-white/60">Phone</span>
+          <span className="mb-1.5 block text-xs font-medium text-white/60">{t.phone}</span>
           <input
             name="phone"
             type="tel"
             maxLength={40}
             autoComplete="tel"
             className="cf-input"
-            placeholder="+352 ... (optional)"
+            placeholder={t.phonePlaceholder}
           />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-white/60">Company</span>
-          <input name="company" maxLength={120} autoComplete="organization" className="cf-input" placeholder="Optional" />
+          <span className="mb-1.5 block text-xs font-medium text-white/60">{t.company}</span>
+          <input name="company" maxLength={120} autoComplete="organization" className="cf-input" placeholder={t.companyPlaceholder} />
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-white/60">I need</span>
-          <select name="service" className="cf-input" defaultValue={SERVICES[0]}>
-            {SERVICES.map((s) => (
+          <span className="mb-1.5 block text-xs font-medium text-white/60">{t.need}</span>
+          <select name="service" className="cf-input" defaultValue={t.services[0]}>
+            {t.services.map((s) => (
               <option key={s} value={s} className="text-ink">
                 {s}
               </option>
@@ -134,9 +108,9 @@ export default function ContactForm() {
           </select>
         </label>
         <label className="block">
-          <span className="mb-1.5 block text-xs font-medium text-white/60">Budget</span>
-          <select name="budget" className="cf-input" defaultValue={BUDGETS[0]}>
-            {BUDGETS.map((s) => (
+          <span className="mb-1.5 block text-xs font-medium text-white/60">{t.budget}</span>
+          <select name="budget" className="cf-input" defaultValue={t.budgets[0]}>
+            {t.budgets.map((s) => (
               <option key={s} value={s} className="text-ink">
                 {s}
               </option>
@@ -144,9 +118,9 @@ export default function ContactForm() {
           </select>
         </label>
         <label className="block sm:col-span-2">
-          <span className="mb-1.5 block text-xs font-medium text-white/60">Timeline</span>
-          <select name="timeline" className="cf-input" defaultValue={TIMELINES[0]}>
-            {TIMELINES.map((s) => (
+          <span className="mb-1.5 block text-xs font-medium text-white/60">{t.timeline}</span>
+          <select name="timeline" className="cf-input" defaultValue={t.timelines[0]}>
+            {t.timelines.map((s) => (
               <option key={s} value={s} className="text-ink">
                 {s}
               </option>
@@ -156,7 +130,7 @@ export default function ContactForm() {
       </div>
 
       <label className="mt-3 block">
-        <span className="mb-1.5 block text-xs font-medium text-white/60">Project *</span>
+        <span className="mb-1.5 block text-xs font-medium text-white/60">{t.project}</span>
         <textarea
           name="message"
           required
@@ -164,7 +138,7 @@ export default function ContactForm() {
           maxLength={4000}
           rows={4}
           className="cf-input resize-y"
-          placeholder="What do you want to build or fix? Goals, current situation, links. The more detail, the better my answer."
+          placeholder={t.projectPlaceholder}
         />
       </label>
 
@@ -181,11 +155,9 @@ export default function ContactForm() {
       {error && <p className="mt-3 text-sm text-red-300">{error}</p>}
 
       <button type="submit" disabled={status === "sending"} className="btn btn-accent mt-4 w-full disabled:opacity-60">
-        {status === "sending" ? "Sending…" : "Send inquiry"}
+        {status === "sending" ? t.sending : t.submit}
       </button>
-      <p className="mt-3 text-center text-[0.7rem] text-white/40">
-        No newsletter, no spam. Your message goes straight to me.
-      </p>
+<p className="mt-3 text-center text-[0.7rem] text-white/40">{t.privacy}</p>
     </form>
   );
 }

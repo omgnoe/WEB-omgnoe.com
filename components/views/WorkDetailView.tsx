@@ -1,53 +1,15 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import CaseGallery from "@/components/CaseGallery";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import Reveal from "@/components/Reveal";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import WorkCard from "@/components/WorkCard";
-import { allWork, getWork } from "@/lib/projects";
-
-const SITE = "https://omgnoe.com";
-
-export function generateStaticParams() {
-  return allWork.map((w) => ({ slug: w.slug }));
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const w = getWork(slug);
-  if (!w) return {};
-
-  const title = `${w.name}: ${w.tagline}`;
-  const url = `${SITE}/work/${w.slug}`;
-  const image = w.shot ?? "/opengraph-image";
-
-  return {
-    title,
-    description: w.description,
-    alternates: { canonical: url },
-    openGraph: {
-      type: "article",
-      url,
-      title,
-      description: w.description,
-      images: [{ url: image }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: w.description,
-      images: [image],
-    },
-  };
-}
+import { getAllWork, type WorkItem } from "@/lib/projects";
+import { homePath, urlFor, workPath, HTML_LANG, SITE, type Locale } from "@/lib/i18n";
+import { dict } from "@/lib/ui";
+import { PERSON_ID } from "@/lib/schema";
 
 function hostOf(url?: string) {
   if (!url) return null;
@@ -58,16 +20,18 @@ function hostOf(url?: string) {
   }
 }
 
-export default async function CaseStudy({
-  params,
+export default function WorkDetailView({
+  locale,
+  item: w,
 }: {
-  params: Promise<{ slug: string }>;
+  locale: Locale;
+  item: WorkItem;
 }) {
-  const { slug } = await params;
-  const w = getWork(slug);
-  if (!w) notFound();
-
-  const others = allWork.filter((o) => o.slug !== w.slug && o.kind === w.kind).slice(0, 3);
+  const t = dict(locale);
+  const url = urlFor(locale, { kind: "workItem", slug: w.slug });
+  const others = getAllWork(locale)
+    .filter((o) => o.slug !== w.slug && o.kind === w.kind)
+    .slice(0, 3);
   const own = w.kind === "personal";
   const host = hostOf(w.url);
 
@@ -77,10 +41,11 @@ export default async function CaseStudy({
     name: w.name,
     headline: `${w.name}: ${w.tagline}`,
     description: w.description,
-    url: `${SITE}/work/${w.slug}`,
+    url,
+    inLanguage: HTML_LANG[locale],
     ...(w.url ? { sameAs: w.url } : {}),
     ...(w.shot ? { image: `${SITE}${w.shot}` } : {}),
-    creator: { "@type": "Person", name: "Noe Nei", url: SITE },
+    creator: { "@id": PERSON_ID },
     keywords: w.tags.join(", "),
   };
 
@@ -88,9 +53,9 @@ export default async function CaseStudy({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Work", item: `${SITE}/work` },
-      { "@type": "ListItem", position: 3, name: w.name, item: `${SITE}/work/${w.slug}` },
+      { "@type": "ListItem", position: 1, name: t.common.home, item: urlFor(locale, { kind: "home" }) },
+      { "@type": "ListItem", position: 2, name: t.nav.work, item: urlFor(locale, { kind: "work" }) },
+      { "@type": "ListItem", position: 3, name: w.name, item: url },
     ],
   };
 
@@ -98,15 +63,15 @@ export default async function CaseStudy({
     <main className="relative">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <SiteHeader />
+      <SiteHeader locale={locale} pageKey={{ kind: "workItem", slug: w.slug }} />
 
       <article className="stage relative overflow-hidden">
         <div className="dots absolute inset-0" />
         <div className="mx-auto max-w-5xl px-5 pb-16 pt-14 sm:pt-16">
-          <nav className="rise flex items-center gap-2 text-xs text-muted" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-ink">Home</Link>
+          <nav className="rise flex items-center gap-2 text-xs text-muted" aria-label={t.common.breadcrumb}>
+            <Link href={homePath(locale)} className="hover:text-ink">{t.common.home}</Link>
             <span>/</span>
-            <Link href="/work" className="hover:text-ink">Work</Link>
+            <Link href={workPath(locale)} className="hover:text-ink">{t.nav.work}</Link>
             <span>/</span>
             <span className="text-ink">{w.name}</span>
           </nav>
@@ -118,7 +83,7 @@ export default async function CaseStudy({
                 own ? "!border-transparent !bg-accent !text-white" : "!bg-card text-muted"
               }`}
             >
-              {own ? "Own product" : "Client work"}
+              {own ? t.common.ownProduct : t.common.clientWork}
             </span>
             {w.role.map((r) => (
               <span key={r} className="pill pill-muted">
@@ -155,7 +120,7 @@ export default async function CaseStudy({
                   <div className="shot-frame relative aspect-[16/10]">
                     <Image
                       src={w.shot}
-                      alt={`${w.name} website screenshot`}
+                      alt={t.workItem.shotAlt(w.name)}
                       fill
                       priority
                       sizes="(max-width: 1024px) 100vw, 1000px"
@@ -176,7 +141,7 @@ export default async function CaseStudy({
 
             <Reveal delay={100}>
               <aside className="card sticky top-24 p-6">
-                <p className="kicker">Scope</p>
+                <p className="kicker">{t.workItem.scope}</p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {w.role.map((r) => (
                     <span key={r} className="pill !py-1 !text-[0.72rem]">
@@ -184,11 +149,11 @@ export default async function CaseStudy({
                     </span>
                   ))}
                 </div>
-                <p className="kicker mt-6">Stack</p>
+                <p className="kicker mt-6">{t.workItem.stack}</p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  {w.tags.map((t) => (
-                    <span key={t} className="pill pill-muted !py-1 !text-[0.72rem]">
-                      {t}
+                  {w.tags.map((tag) => (
+                    <span key={tag} className="pill pill-muted !py-1 !text-[0.72rem]">
+                      {tag}
                     </span>
                   ))}
                 </div>
@@ -199,7 +164,7 @@ export default async function CaseStudy({
                     rel="noopener noreferrer"
                     className="btn btn-ink mt-7 w-full"
                   >
-                    Visit live site
+                    {t.common.visitSite}
                     <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" aria-hidden>
                       <path d="M6 3h7v7M13 3L3 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -212,8 +177,10 @@ export default async function CaseStudy({
           {/* gallery */}
           {w.gallery && w.gallery.length > 0 && (
             <Reveal className="mt-16">
-              <p className="kicker">Gallery</p>
-              <h2 className="font-display mt-3 text-2xl font-bold tracking-tight">A closer look</h2>
+              <p className="kicker">{t.workItem.galleryKicker}</p>
+              <h2 className="font-display mt-3 text-2xl font-bold tracking-tight">
+                {t.workItem.galleryH2}
+              </h2>
               <CaseGallery items={w.gallery} accent={w.accent} host={host} />
             </Reveal>
           )}
@@ -221,7 +188,7 @@ export default async function CaseStudy({
           {/* under the hood */}
           {w.highlights && w.highlights.length > 0 && (
             <Reveal className="mt-16">
-              <p className="kicker">Under the hood</p>
+              <p className="kicker">{t.workItem.hoodKicker}</p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {w.highlights.map((h, i) => (
                   <li key={i} className="card flex items-start gap-3 p-5">
@@ -240,12 +207,12 @@ export default async function CaseStudy({
         <section className="border-t border-line bg-paper-deep/50">
           <div className="mx-auto max-w-6xl px-5 py-16">
             <h2 className="font-display mb-8 text-2xl font-bold tracking-tight">
-              More {w.kind === "client" ? "client work" : "products"}
+              {w.kind === "client" ? t.workItem.moreClients : t.workItem.moreProducts}
             </h2>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {others.map((o, i) => (
                 <Reveal key={o.slug} delay={i * 80}>
-                  <WorkCard item={o} />
+                  <WorkCard item={o} locale={locale} />
                 </Reveal>
               ))}
             </div>
@@ -262,20 +229,17 @@ export default async function CaseStudy({
               style={{ background: "radial-gradient(55% 70% at 50% 120%, rgba(255,90,31,0.3), transparent 70%)" }}
             />
             <h2 className="font-display relative text-3xl font-bold text-white sm:text-4xl">
-              Have a project like this?
+              {t.workItem.ctaH2}
             </h2>
-            <p className="relative mx-auto mt-4 max-w-lg text-white/65">
-              I build websites, platforms, shops and apps end to end. Tell me what you
-              have in mind.
-            </p>
+            <p className="relative mx-auto mt-4 max-w-lg text-white/65">{t.workItem.ctaLead}</p>
             <div className="relative mt-7">
-              <ObfuscatedEmail className="btn btn-accent !px-7 !py-3.5" label="Email me" />
+              <ObfuscatedEmail className="btn btn-accent !px-7 !py-3.5" label={t.common.emailMe} />
             </div>
           </div>
         </Reveal>
       </section>
 
-      <SiteFooter />
+      <SiteFooter locale={locale} />
     </main>
   );
 }

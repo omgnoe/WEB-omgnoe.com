@@ -3,24 +3,28 @@
 import { useMemo, useState } from "react";
 import WorkCard from "@/components/WorkCard";
 import type { WorkItem } from "@/lib/projects";
+import type { Locale } from "@/lib/i18n";
+import { dict } from "@/lib/ui";
 
 type Filter = "all" | "personal" | "client";
-
-const FILTERS: { key: Filter; label: string }[] = [
-  { key: "all", label: "Everything" },
-  { key: "personal", label: "Own products" },
-  { key: "client", label: "Client work" },
-];
 
 const MOBILE_LIMIT = 6;
 
 export default function WorkGrid({
   items,
+  locale,
   showTagFilter = true,
 }: {
   items: WorkItem[];
+  locale: Locale;
   showTagFilter?: boolean;
 }) {
+  const t = dict(locale);
+  const FILTERS: { key: Filter; label: string }[] = [
+    { key: "all", label: t.grid.all },
+    { key: "personal", label: t.grid.own },
+    { key: "client", label: t.grid.client },
+  ];
   const [filter, setFilter] = useState<Filter>("all");
   const [tag, setTag] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
@@ -83,7 +87,7 @@ export default function WorkGrid({
             key={i.slug}
             className={idx >= MOBILE_LIMIT && !showAll ? "hidden sm:block" : undefined}
           >
-            <WorkCard item={i} />
+            <WorkCard item={i} locale={locale} />
           </div>
         ))}
       </div>
@@ -91,13 +95,13 @@ export default function WorkGrid({
       {!showAll && visible.length > MOBILE_LIMIT && (
         <div className="mt-6 text-center sm:hidden">
           <button type="button" onClick={() => setShowAll(true)} className="btn btn-ghost w-full">
-            Show all {visible.length} projects
+            {t.grid.showAll(visible.length)}
           </button>
         </div>
       )}
 
       {visible.length === 0 && (
-        <p className="mt-10 text-center text-muted">Nothing matches this combination yet.</p>
+        <p className="mt-10 text-center text-muted">{t.grid.empty}</p>
       )}
     </div>
   );

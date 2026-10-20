@@ -1,9 +1,9 @@
 import { ImageResponse } from "next/og";
 
-export const size = { width: 32, height: 32 };
-export const contentType = "image/png";
+export const imageSize = { width: 32, height: 32 };
+export const imageContentType = "image/png";
 
-export default function Icon() {
+export function renderIcon() {
   return new ImageResponse(
     (
       <div
@@ -23,6 +23,6 @@ export default function Icon() {
         n
       </div>
     ),
-    { ...size },
+    { ...imageSize },
   );
 }

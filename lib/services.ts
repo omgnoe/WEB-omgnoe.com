@@ -1,3 +1,6 @@
+import type { Locale } from "@/lib/i18n";
+import { serviceTranslations } from "@/lib/services.i18n";
+
 export type ServiceFaq = { q: string; a: string };
 
 export type Service = {
@@ -31,7 +34,7 @@ export const services: Service[] = [
   {
     slug: "ios-apps",
     name: "iOS apps",
-    title: "iOS & Apple app development",
+    title: "iOS app development in Luxembourg",
     short: "Native apps for iPhone, iPad and Mac. Swift, SwiftUI and Flutter, all the way to the App Store.",
     meta: "iOS app development in Luxembourg: native iPhone, iPad and Mac apps built with Swift, SwiftUI and Flutter, delivered to the App Store. From idea to a shipped, signed, reviewed app.",
     intro: [
@@ -77,7 +80,7 @@ export const services: Service[] = [
   {
     slug: "android-apps",
     name: "Android apps",
-    title: "Android app development",
+    title: "Android app development in Luxembourg",
     short: "Android apps with Flutter: one codebase, native feel, delivered to Google Play.",
     meta: "Android app development in Luxembourg: Flutter apps with a native feel, push notifications, payments and offline support, published to Google Play. One codebase for Android and iOS.",
     intro: [
@@ -167,7 +170,7 @@ export const services: Service[] = [
   {
     slug: "websites",
     name: "Websites",
-    title: "Websites & web platforms",
+    title: "Website development in Luxembourg",
     short: "From landing pages to full platforms with shops, booking and back offices. Fast, SEO-first, built to convert.",
     meta: "Web development in Luxembourg: websites, online shops, booking platforms and SaaS built with Next.js. Fast, SEO-optimised, multilingual and mobile-first, from landing page to full platform.",
     intro: [
@@ -198,14 +201,20 @@ export const services: Service[] = [
         q: "Will my site rank on Google?",
         a: "Technical SEO is built in: clean markup, structured data, sitemaps, fast Core Web Vitals and per-page metadata. I also structure content for the searches your customers actually make. Rankings then depend on content and competition, and I tell you honestly what to expect.",
       },
+      {
+        q: "Will the site be multilingual?",
+        a: "Yes, and in Luxembourg that is almost always the right call. I build the site in French, German, English and Luxembourgish with correct hreflang tags, so Google serves each visitor the right language instead of letting your own pages compete with each other.",
+      },
     ],
     keywords: [
       "web development Luxembourg",
-      "website erstellen Luxembourg",
-      "Next.js developer",
-      "e-commerce development",
+      "website Luxembourg",
+      "web developer Luxembourg",
+      "web design Luxembourg",
       "online shop Luxembourg",
-      "SEO website",
+      "e-commerce development Luxembourg",
+      "website redesign Luxembourg",
+      "multilingual website Luxembourg",
     ],
     icon: "globe",
     accent: "#2563eb",
@@ -213,7 +222,7 @@ export const services: Service[] = [
   {
     slug: "it-support",
     name: "IT help",
-    title: "IT help & support",
+    title: "IT support and computer help in Luxembourg",
     short: "Hands-on IT help for small businesses: devices, email, networks, printers, tills and the daily chaos.",
     meta: "IT support for small businesses in Luxembourg: devices, email, Wi-Fi, printers, POS tills, backups and software problems, fixed hands-on and explained in plain language.",
     intro: [
@@ -401,4 +410,24 @@ export const services: Service[] = [
 
 export function getService(slug: string): Service | undefined {
   return services.find((s) => s.slug === slug);
+}
+
+/* ------------------------------------------------------- localised reads --- */
+
+/**
+ * Services in the requested locale. Missing translations fall back to the
+ * English source field by field, so a half-translated entry still renders.
+ */
+export function getServices(locale: Locale): Service[] {
+  if (locale === "en") return services;
+  const overrides = serviceTranslations[locale] ?? {};
+  return services.map((s) => ({ ...s, ...(overrides[s.slug] ?? {}) }));
+}
+
+/** Look a service up by its canonical slug, in the requested locale. */
+export function getServiceLocalised(locale: Locale, canonical: string): Service | undefined {
+  const s = services.find((x) => x.slug === canonical);
+  if (!s) return undefined;
+  if (locale === "en") return s;
+  return { ...s, ...(serviceTranslations[locale]?.[canonical] ?? {}) };
 }

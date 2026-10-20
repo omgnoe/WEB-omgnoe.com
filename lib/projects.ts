@@ -1,3 +1,6 @@
+import type { Locale } from "@/lib/i18n";
+import { workTranslations } from "@/lib/projects.i18n";
+
 export type WorkItem = {
   slug: string;
   name: string;
@@ -455,3 +458,27 @@ export const stack: Tool[] = [
   { name: "Hetzner", slug: "siHetzner" },
   { name: "Claude / AI", slug: "siAnthropic" },
 ];
+
+/* ------------------------------------------------------- localised reads --- */
+
+function localise(item: WorkItem, locale: Locale): WorkItem {
+  if (locale === "en") return item;
+  return { ...item, ...(workTranslations[locale]?.[item.slug] ?? {}) };
+}
+
+export function getProjects(locale: Locale): WorkItem[] {
+  return projects.map((p) => localise(p, locale));
+}
+
+export function getClients(locale: Locale): WorkItem[] {
+  return clients.map((c) => localise(c, locale));
+}
+
+export function getAllWork(locale: Locale): WorkItem[] {
+  return allWork.map((w) => localise(w, locale));
+}
+
+export function getWorkLocalised(locale: Locale, slug: string): WorkItem | undefined {
+  const w = getWork(slug);
+  return w ? localise(w, locale) : undefined;
+}

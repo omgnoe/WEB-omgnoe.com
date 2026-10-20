@@ -25,10 +25,20 @@ import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
 import WorkGrid from "@/components/WorkGrid";
-import { trustedBy } from "@/lib/creative";
 import AutoScrollRow from "@/components/AutoScrollRow";
-import { allWork, projects, stack } from "@/lib/projects";
-import { services } from "@/lib/services";
+import { trustedBy } from "@/lib/creative";
+import { getAllWork, getProjects, stack } from "@/lib/projects";
+import { getServices } from "@/lib/services";
+import {
+  aboutPath,
+  contactPath,
+  servicePath,
+  servicesPath,
+  workAnchor,
+  workItemPath,
+  type Locale,
+} from "@/lib/i18n";
+import { dict } from "@/lib/ui";
 
 const ICONS: Record<string, SimpleIcon> = {
   siTypescript,
@@ -48,59 +58,60 @@ const ICONS: Record<string, SimpleIcon> = {
   siAnthropic,
 };
 
-const heroChips = [
-  { label: "iOS & Android apps", rot: "-6deg", pos: "-top-4 left-0 sm:-left-8" },
-  { label: "Websites & shops", rot: "4deg", pos: "top-14 right-0 sm:-right-10" },
-  { label: "Cybersecurity", rot: "-3deg", pos: "bottom-36 -left-2 sm:-left-12" },
-  { label: "Hosting & IT", rot: "5deg", pos: "bottom-24 right-2 sm:-right-8" },
+const CHIP_STYLE = [
+  { rot: "-6deg", pos: "-top-4 left-0 sm:-left-8" },
+  { rot: "4deg", pos: "top-14 right-0 sm:-right-10" },
+  { rot: "-3deg", pos: "bottom-36 -left-2 sm:-left-12" },
+  { rot: "5deg", pos: "bottom-24 right-2 sm:-right-8" },
 ];
 
-export default function Home() {
+export default function HomeView({ locale }: { locale: Locale }) {
+  const t = dict(locale);
+  const services = getServices(locale);
+  const allWork = getAllWork(locale);
+  const projects = getProjects(locale);
+
   return (
     <main className="relative">
-      <SiteHeader />
+      <SiteHeader locale={locale} pageKey={{ kind: "home" }} />
 
       {/* HERO */}
       <section className="stage relative overflow-hidden">
         <div className="dots absolute inset-0" />
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 pb-16 pt-14 sm:pt-20 lg:grid-cols-[1.15fr_0.85fr] lg:pb-24">
           <div className="rise min-w-0">
-            <p className="kicker">Noe Nei · Full-stack developer · Luxembourg</p>
+            <p className="kicker">{t.home.kicker}</p>
             <h1 className="font-display mt-5 max-w-2xl text-[2.6rem] font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-[3.9rem]">
-              Apps, websites and the systems that{" "}
-              <span className="underline-swipe sm:whitespace-nowrap">keep them running.</span>
+              {t.home.h1a}{" "}
+              <span className="underline-swipe sm:whitespace-nowrap">{t.home.h1b}</span>
             </h1>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-              I design, build and ship digital products end to end: iPhone and Android
-              apps, web platforms, shops and the hosting, security and IT behind them.
-              For clients, and for my own companies.
-            </p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{t.home.lead}</p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href="/#work" className="btn btn-accent">
-                See my work
+              <Link href={workAnchor(locale)} className="btn btn-accent">
+                {t.home.ctaWork}
                 <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
                   <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </Link>
-              <Link href="/#contact" className="btn btn-ghost">
-                Start a project
+              <Link href={contactPath(locale)} className="btn btn-ghost">
+                {t.common.startProject}
               </Link>
             </div>
 
             <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-4">
               <div>
                 <dt className="font-display text-3xl font-bold">39+</dt>
-                <dd className="text-sm text-muted">Products shipped</dd>
+                <dd className="text-sm text-muted">{t.home.stats.shipped}</dd>
               </div>
               <div>
                 <dt className="font-display text-3xl font-bold">{projects.length}</dt>
-                <dd className="text-sm text-muted">Own products</dd>
+                <dd className="text-sm text-muted">{t.home.stats.own}</dd>
               </div>
               <div>
                 <dt className="font-display text-3xl font-bold">8</dt>
-                <dd className="text-sm text-muted">Services, one contact</dd>
+                <dd className="text-sm text-muted">{t.home.stats.services}</dd>
               </div>
             </dl>
           </div>
@@ -111,7 +122,7 @@ export default function Home() {
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem]">
                 <Image
                   src="/me/noe.jpg"
-                  alt="Noe Nei, developer from Luxembourg"
+                  alt={t.home.portraitAlt}
                   fill
                   priority
                   sizes="(max-width: 1024px) 80vw, 380px"
@@ -121,25 +132,25 @@ export default function Home() {
               <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3.5">
                 <div>
                   <p className="font-display text-sm font-bold">Noe Nei</p>
-                  <p className="text-xs text-muted">Developer · Founder</p>
+                  <p className="text-xs text-muted">{t.home.role}</p>
                 </div>
                 <span className="pill !border-transparent !bg-accent-soft !px-2.5 !text-[0.68rem] font-semibold !text-accent-deep">
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
                   </span>
-                  Available
+                  {t.home.available}
                 </span>
               </div>
             </div>
 
-            {heroChips.map((c, i) => (
+            {t.home.heroChips.map((label, i) => (
               <span
-                key={c.label}
-                className={`floaty pill absolute z-10 !bg-card !px-3.5 !py-2 text-xs font-semibold shadow-card ${c.pos}`}
-                style={{ "--float-rot": c.rot, animationDelay: `${i * 0.9}s` } as React.CSSProperties}
+                key={label}
+                className={`floaty pill absolute z-10 !bg-card !px-3.5 !py-2 text-xs font-semibold shadow-card ${CHIP_STYLE[i].pos}`}
+                style={{ "--float-rot": CHIP_STYLE[i].rot, animationDelay: `${i * 0.9}s` } as React.CSSProperties}
               >
-                {c.label}
+                {label}
               </span>
             ))}
           </div>
@@ -156,7 +167,7 @@ export default function Home() {
                   .map((w) => (
                     <Link
                       key={`${n}-${w.slug}`}
-                      href={`/work/${w.slug}`}
+                      href={workItemPath(locale, w.slug)}
                       className="font-display flex items-center gap-2.5 whitespace-nowrap text-sm font-bold text-muted transition-colors hover:text-ink"
                     >
                       {w.logo && (
@@ -175,17 +186,14 @@ export default function Home() {
       <section id="services" className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="kicker">What I do</p>
+            <p className="kicker">{t.home.servicesKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              One person. The whole stack.
+              {t.home.servicesH2}
             </h2>
-            <p className="mt-3 max-w-xl text-muted">
-              From the app on your customer&apos;s phone to the server it talks to.
-              Every service below has its own page with details, scope and FAQ.
-            </p>
+            <p className="mt-3 max-w-xl text-muted">{t.home.servicesLead}</p>
           </div>
-          <Link href="/services" className="btn btn-ghost">
-            All services
+          <Link href={servicesPath(locale)} className="btn btn-ghost">
+            {t.common.allServices}
           </Link>
         </Reveal>
 
@@ -195,7 +203,7 @@ export default function Home() {
             return (
               <Reveal key={s.slug} delay={(i % 4) * 70}>
                 <Link
-                  href={`/services/${s.slug}`}
+                  href={servicePath(locale, s.slug)}
                   className={`group flex h-full flex-col p-6 ${
                     dark ? "card-night card-hover shadow-card" : "card card-hover"
                   }`}
@@ -217,7 +225,7 @@ export default function Home() {
                       dark ? "text-lime-300" : "text-ink"
                     }`}
                   >
-                    Learn more
+                    {t.common.learnMore}
                     <svg viewBox="0 0 16 16" className="h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" aria-hidden>
                       <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -229,25 +237,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* I WORKED WITH: full-bleed band */}
+      {/* I WORKED WITH */}
       <section className="overflow-hidden pb-20">
         <Reveal>
           <div className="border-y border-line bg-card/70 py-10 backdrop-blur">
-            <p className="kicker text-center">I worked with</p>
+            <p className="kicker text-center">{t.home.trusted}</p>
             <AutoScrollRow className="mt-8 items-center">
               {[0, 1].map((n) => (
                 <div key={n} className="flex shrink-0 items-center gap-3 pr-3 sm:gap-4 sm:pr-4" aria-hidden={n === 1}>
-                  {trustedBy.map((t) => (
+                  {trustedBy.map((tb) => (
                     <span
-                      key={`${n}-${t.name}`}
-                      title={t.name}
+                      key={`${n}-${tb.name}`}
+                      title={tb.name}
                       className="flex h-16 w-36 shrink-0 items-center justify-center rounded-2xl border border-line bg-paper/60 px-5 sm:h-20 sm:w-48 sm:px-7"
                     >
                       <img
-                        src={t.src}
-                        alt={`${t.name} logo`}
+                        src={tb.src}
+                        alt={`${tb.name} logo`}
                         loading="lazy"
-                        style={{ maxHeight: t.h }}
+                        style={{ maxHeight: tb.h }}
                         className="trusted-logo max-h-10 w-auto max-w-full sm:max-h-none"
                       />
                     </span>
@@ -255,7 +263,7 @@ export default function Home() {
                 </div>
               ))}
             </AutoScrollRow>
-            <p className="mt-8 text-center text-xs text-muted">and many more across Luxembourg and Europe</p>
+            <p className="mt-8 text-center text-xs text-muted">{t.home.trustedMore}</p>
           </div>
         </Reveal>
       </section>
@@ -264,17 +272,14 @@ export default function Home() {
       <section id="work" className="border-y border-line bg-paper-deep/50">
         <div className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
           <Reveal className="mb-10">
-            <p className="kicker">Portfolio</p>
+            <p className="kicker">{t.home.workKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Built, shipped, and live right now.
+              {t.home.workH2}
             </h2>
-            <p className="mt-3 max-w-xl text-muted">
-              My own products and selected client work. Filter by type or tap a
-              technology. Every card opens a full case study.
-            </p>
+            <p className="mt-3 max-w-xl text-muted">{t.home.workLead}</p>
           </Reveal>
           <Reveal delay={100}>
-            <WorkGrid items={allWork} />
+            <WorkGrid items={allWork} locale={locale} />
           </Reveal>
         </div>
       </section>
@@ -287,7 +292,7 @@ export default function Home() {
               <div className="relative aspect-[3/4] overflow-hidden rounded-[1.6rem]">
                 <Image
                   src="/me/noe-suit.jpg"
-                  alt="Noe Nei in a dark control room"
+                  alt={t.home.portraitAlt}
                   fill
                   sizes="(max-width: 1024px) 90vw, 440px"
                   className="object-cover"
@@ -301,7 +306,7 @@ export default function Home() {
               <div className="relative aspect-[3/4] overflow-hidden rounded-[1.1rem]">
                 <Image
                   src="/me/noe-archive.jpg"
-                  alt="Noe Nei reviewing printed work"
+                  alt={t.home.portraitAlt}
                   fill
                   sizes="200px"
                   className="object-cover"
@@ -312,37 +317,24 @@ export default function Home() {
               className="floaty pill absolute -left-2 top-6 z-10 !bg-card !px-3.5 !py-2 text-xs font-semibold shadow-card sm:-left-6"
               style={{ "--float-rot": "-4deg" } as React.CSSProperties}
             >
-              Luxembourg, EU
+              {t.home.locationChip}
             </span>
           </Reveal>
 
           <Reveal delay={100}>
-            <p className="kicker">About</p>
+            <p className="kicker">{t.home.aboutKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              I turn ideas into products people use.
+              {t.home.aboutH2}
             </h2>
             <div className="mt-6 space-y-4 leading-relaxed text-muted">
-              <p>
-                Based in Luxembourg, I work across the whole stack: from database schema
-                and payment infrastructure to pixel-level frontend and native mobile apps.
-                I have shipped marketplaces, POS systems, encrypted mail, booking
-                platforms and AI tools.
-              </p>
-              <p>
-                The difference: I also operate my own products with real customers. So I
-                build things that survive contact with reality, and I stay around after
-                launch to keep them fast, secure and online.
-              </p>
-              <p>
-                I started working at fourteen, had my own company at eighteen, and lost
-                all of it at twenty two before rebuilding as a developer. The full story
-                and my CV are on their own page.
-              </p>
+              {t.home.aboutBody.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
             </div>
 
             <div className="mt-8">
-              <Link href="/about" className="btn btn-ghost">
-                Read my story
+              <Link href={aboutPath(locale)} className="btn btn-ghost">
+                {t.home.readStory}
                 <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
                   <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -350,11 +342,7 @@ export default function Home() {
             </div>
 
             <div className="mt-8 grid grid-cols-3 gap-3">
-              {[
-                { n: "39+", l: "Products shipped" },
-                { n: "12+", l: "Languages localised" },
-                { n: "EU", l: "Hosted & operated" },
-              ].map((s) => (
+              {t.home.aboutStats.map((s) => (
                 <div key={s.l} className="card p-4 text-center">
                   <p className="font-display text-2xl font-bold">{s.n}</p>
                   <p className="mt-1 text-xs text-muted">{s.l}</p>
@@ -366,21 +354,21 @@ export default function Home() {
 
         <div className="mt-16 grid gap-12 lg:grid-cols-2">
           <Reveal>
-            <p className="kicker">Stack</p>
+            <p className="kicker">{t.home.stackKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              Tools I build with
+              {t.home.stackH2}
             </h2>
             <div className="mt-6 flex flex-wrap gap-2">
-              {stack.map((t) => {
-                const icon = ICONS[t.slug];
+              {stack.map((tool) => {
+                const icon = ICONS[tool.slug];
                 return (
-                  <span key={t.name} className="pill !py-1.5 transition-colors hover:border-line-strong">
+                  <span key={tool.name} className="pill !py-1.5 transition-colors hover:border-line-strong">
                     {icon && (
                       <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill={`#${icon.hex}`} aria-hidden>
                         <path d={icon.path} />
                       </svg>
                     )}
-                    {t.name}
+                    {tool.name}
                   </span>
                 );
               })}
@@ -389,24 +377,14 @@ export default function Home() {
 
           <Reveal delay={100}>
             <div className="card-night h-full p-6 sm:p-8">
-              <p className="font-display text-sm font-bold text-lime-300">How I work</p>
+              <p className="font-display text-sm font-bold text-lime-300">{t.home.howKicker}</p>
               <ul className="mt-4 space-y-3.5 text-sm text-white/70">
-                <li className="flex gap-3">
-                  <span className="font-mono text-white/35">01</span>
-                  Understand the goal and the user, not just the feature list.
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-mono text-white/35">02</span>
-                  Design and build the smallest thing that actually ships.
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-mono text-white/35">03</span>
-                  Deploy, measure, iterate. Fast feedback beats perfect plans.
-                </li>
-                <li className="flex gap-3">
-                  <span className="font-mono text-white/35">04</span>
-                  Stay responsible: hosting, updates and security included.
-                </li>
+                {t.home.how.map((step, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="font-mono text-white/35">{String(i + 1).padStart(2, "0")}</span>
+                    {step}
+                  </li>
+                ))}
               </ul>
             </div>
           </Reveal>
@@ -426,29 +404,23 @@ export default function Home() {
             />
             <div className="relative grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
               <div>
-                <p className="kicker !text-white/50">Contact</p>
+                <p className="kicker !text-white/50">{t.home.contactKicker}</p>
                 <h2 className="font-display mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                  Let&apos;s build something.
+                  {t.home.contactH2}
                 </h2>
-                <p className="mt-5 max-w-md text-lg text-white/65">
-                  An app, a website, a platform, or IT that finally works: tell me what
-                  you have in mind and I&apos;ll tell you how I&apos;d build it.
-                </p>
+                <p className="mt-5 max-w-md text-lg text-white/65">{t.home.contactLead}</p>
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <ObfuscatedEmail className="btn !bg-white/10 !text-white/85 font-mono !text-sm hover:!bg-white/15" />
                 </div>
-                <p className="mt-6 text-xs text-white/40">
-                  Usually replies within a day · English, Deutsch, Français,
-                  Lëtzebuergesch
-                </p>
+                <p className="mt-6 text-xs text-white/40">{t.home.replyLine}</p>
               </div>
-              <ContactForm />
+              <ContactForm locale={locale} />
             </div>
           </div>
         </Reveal>
       </section>
 
-      <SiteFooter />
+      <SiteFooter locale={locale} />
     </main>
   );
 }

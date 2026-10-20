@@ -1,32 +1,42 @@
 import type { MetadataRoute } from "next";
 import { allWork } from "@/lib/projects";
 import { services } from "@/lib/services";
+import { defaultLocale, locales, urlFor, type PageKey } from "@/lib/i18n";
 
-const SITE = "https://omgnoe.com";
-
+/**
+ * One sitemap, every locale, with the full alternate set per entry.
+ *
+ * The `alternates.languages` block is what Next renders as xhtml:link
+ * hreflang rows. Without it Google treats the three language versions as
+ * three competing pages instead of one page in three languages.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const work = allWork.map((w) => ({
-    url: `${SITE}/work/${w.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
-
-  const servicePages = services.map((s) => ({
-    url: `${SITE}/services/${s.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.9,
-  }));
-
-  return [
-    { url: SITE, lastModified: now, changeFrequency: "monthly", priority: 1 },
-    { url: `${SITE}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${SITE}/work`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${SITE}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    ...servicePages,
-    ...work,
+  const keys: { key: PageKey; priority: number }[] = [
+    { key: { kind: "home" }, priority: 1 },
+    { key: { kind: "services" }, priority: 0.9 },
+    { key: { kind: "work" }, priority: 0.9 },
+    { key: { kind: "about" }, priority: 0.8 },
+    ...services.map((s) => ({
+      key: { kind: "service" as const, canonical: s.slug },
+      // The websites page is the one we actually want to rank.
+      priority: s.slug === "websites" ? 0.95 : 0.9,
+    })),
+    ...allWork.map((w) => ({ key: { kind: "workItem" as const, slug: w.slug }, priority: 0.7 })),
   ];
+
+  return keys.flatMap(({ key, priority }) => {
+    const languages = {
+      ...Object.fromEntries(locales.map((l) => [l, urlFor(l, key)])),
+      "x-default": urlFor(defaultLocale, key),
+    };
+    return locales.map((locale) => ({
+      url: urlFor(locale, key),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority,
+      alternates: { languages },
+    }));
+  });
 }

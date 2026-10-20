@@ -1,3 +1,6 @@
+import type { Locale } from "@/lib/i18n";
+import { storyTranslations } from "@/lib/story.i18n";
+
 /**
  * Long-form about / CV content for /about.
  * Prose lives here (not in JSX) so apostrophes stay readable and unescaped.
@@ -25,6 +28,8 @@ export type Ranking = {
 export type Link = { href: string; label: string };
 
 export type Chapter = {
+  /** Stable key for translations. Never derived from position. */
+  id: string;
   period: string;
   title: string;
   body: string[];
@@ -42,6 +47,7 @@ export type Chapter = {
 
 export const chapters: Chapter[] = [
   {
+    id: "fantasy-pictures",
     period: "2016",
     title: "Fantasy Pictures",
     body: [
@@ -50,6 +56,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "ourluxembourg",
     period: "June 2018",
     title: "Sixteen, and the public picked mine",
     body: [
@@ -69,6 +76,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "fapic",
     period: "2020",
     title: "Fapic, at eighteen",
     body: [
@@ -98,6 +106,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "pivot",
     period: "The pivot",
     title: "Why I left the music scene",
     body: [
@@ -106,6 +115,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "bofrost",
     period: "2023",
     title: "I was bad at selling, so I went and sold",
     body: [
@@ -115,6 +125,7 @@ export const chapters: Chapter[] = [
     pull: "Fix your weakest skill on purpose. Mine was selling, so I went and sold.",
   },
   {
+    id: "wolt",
     period: "Jan to May 2024",
     title: "I photographed 200 restaurants, then asked for a job",
     body: [
@@ -126,6 +137,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "umarket",
     period: "March 2024",
     title: "Everything I had, into one bet",
     body: [
@@ -176,6 +188,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "october",
     period: "October 2024",
     title: "It did not fail on the market",
     body: [
@@ -184,6 +197,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "zero",
     period: "Nov to Dec 2024",
     title: "Zero",
     tone: "dark",
@@ -194,6 +208,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "paid-debt",
     period: "After",
     title: "I paid what I owed anyway",
     body: [
@@ -203,6 +218,7 @@ export const chapters: Chapter[] = [
     pull: "Pay what you owe, even when you no longer have to. It is the only thing you still own when everything else is gone.",
   },
   {
+    id: "snj",
     period: "Jan to Mar 2025",
     title: "Comms for the people I had just been standing next to",
     body: [
@@ -220,6 +236,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "gap",
     period: "The gap",
     title: "Too qualified, not qualified enough",
     body: [
@@ -236,6 +253,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "insolvency",
     period: "The end of Fapic",
     title: "Insolvency, in the end",
     body: [
@@ -244,6 +262,7 @@ export const chapters: Chapter[] = [
     ],
   },
   {
+    id: "rebuild",
     period: "2025 to now",
     title: "What I built out of it",
     body: [
@@ -477,3 +496,111 @@ export const delanoUrl = "https://en.paperjam.lu/article/delano_ourluxembourg-fr
 
 export const forumUrl =
   "https://www.forum.lu/article/draei-jonker-erziele-vun-hirem-fraeiwellegendengscht/";
+
+/* ------------------------------------------------------- localised reads --- */
+
+/**
+ * Index-aligned arrays only merge when the lengths still match. A translation
+ * that drifted out of sync falls back to English for that array instead of
+ * pairing the wrong caption with the wrong photo.
+ */
+function aligned<T>(source: T[], translated: T[] | undefined): T[] | undefined {
+  if (!translated || translated.length !== source.length) return undefined;
+  return translated;
+}
+
+export function storyChrome(locale: Locale) {
+  return storyTranslations[locale].chrome;
+}
+
+export function spellCountIn(locale: Locale, n: number): string {
+  return storyTranslations[locale].numberWords[n] ?? String(n);
+}
+
+export function getChapters(locale: Locale): Chapter[] {
+  const tr = storyTranslations[locale].chapters;
+  return chapters.map((ch) => {
+    const t = tr[ch.id];
+    if (!t) return ch;
+
+    const shotsT = aligned(ch.shots ?? [], t.shots);
+    const linksT = aligned(ch.links ?? [], t.links?.map((label) => ({ href: "", label })));
+
+    return {
+      ...ch,
+      period: t.period ?? ch.period,
+      title: t.title ?? ch.title,
+      body: t.body ?? ch.body,
+      pull: t.pull ?? ch.pull,
+      pullCite: t.pullCite ?? ch.pullCite,
+      shots: ch.shots?.map((sh, i) =>
+        shotsT ? { ...sh, alt: shotsT[i].alt, caption: shotsT[i].caption } : sh
+      ),
+      ranking: ch.ranking
+        ? { ...ch.ranking, ...(t.ranking ?? {}) }
+        : undefined,
+      links: ch.links?.map((l, i) => (linksT ? { ...l, label: linksT[i].label } : l)),
+    };
+  });
+}
+
+export function getLessons(locale: Locale): string[] {
+  return aligned(lessons, storyTranslations[locale].lessons) ?? lessons;
+}
+
+export function getRoles(locale: Locale): Role[] {
+  const tr = aligned(roles, storyTranslations[locale].roles as Role[]);
+  if (!tr) return roles;
+  const t = storyTranslations[locale].roles;
+  return roles.map((r, i) => ({
+    period: t[i].period ?? r.period,
+    title: t[i].title ?? r.title,
+    org: t[i].org ?? r.org,
+    bullets: aligned(r.bullets, t[i].bullets) ?? r.bullets,
+  }));
+}
+
+export function getSkillGroups(locale: Locale) {
+  const labels = aligned(skillGroups, storyTranslations[locale].skillLabels as unknown[])
+    ? storyTranslations[locale].skillLabels
+    : undefined;
+  return skillGroups.map((g, i) => ({ ...g, label: labels?.[i] ?? g.label }));
+}
+
+export function getLanguages(locale: Locale) {
+  const levels = storyTranslations[locale].languageLevels;
+  return languages.map((l) => ({ ...l, level: levels[l.name] ?? l.level }));
+}
+
+export function getEducation(locale: Locale) {
+  const t = storyTranslations[locale].education;
+  if (t.length !== education.length) return education;
+  return education.map((e, i) => ({
+    ...e,
+    title: t[i].title ?? e.title,
+    period: t[i].period ?? e.period,
+  }));
+}
+
+export function getCredentials(locale: Locale) {
+  const t = storyTranslations[locale].credentials;
+  if (t.length !== credentials.length) return credentials;
+  return credentials.map((c, i) => ({
+    ...c,
+    title: t[i].title ?? c.title,
+    org: t[i].org ?? c.org,
+  }));
+}
+
+export function getPressGroups(locale: Locale) {
+  const t = storyTranslations[locale].press;
+  if (t.length !== pressGroups.length) return pressGroups;
+  return pressGroups.map((g, gi) => {
+    const notes = t[gi].notes.length === g.items.length ? t[gi].notes : undefined;
+    return {
+      label: t[gi].label,
+      blurb: t[gi].blurb,
+      items: g.items.map((it, ii) => ({ ...it, note: notes?.[ii] ?? it.note })),
+    };
+  });
+}

@@ -1,10 +1,13 @@
 import { ImageResponse } from "next/og";
+import type { Locale } from "@/lib/i18n";
+import { dict } from "@/lib/ui";
 
-export const alt = "Noe Nei | Apps, websites & IT from Luxembourg";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export const ogAlt = "Noe Nei | Websites, apps & IT from Luxembourg";
+export const imageSize = { width: 1200, height: 630 };
+export const imageContentType = "image/png";
 
-export default function OgImage() {
+export function renderOgImage(locale: Locale) {
+  const t = dict(locale).home;
   return new ImageResponse(
     (
       <div
@@ -54,25 +57,24 @@ export default function OgImage() {
               lineHeight: 1.05,
             }}
           >
-            <span>Apps, websites and the</span>
+            <span>{t.h1a}</span>
             <span style={{ display: "flex" }}>
-              systems that&nbsp;
               <span
                 style={{
                   borderBottom: "10px solid #ff5a1f",
                   paddingBottom: 2,
                 }}
               >
-                keep them running.
+                {t.h1b}
               </span>
             </span>
           </div>
           <div style={{ marginTop: 30, fontSize: 30, color: "#716c61" }}>
-            Noe Nei · Full-stack developer & founder · Luxembourg
+            {t.kicker}
           </div>
         </div>
       </div>
     ),
-    { ...size },
+    { ...imageSize },
   );
 }
