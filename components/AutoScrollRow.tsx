@@ -101,8 +101,17 @@ export default function AutoScrollRow({
     el.addEventListener("pointermove", onPointerMove);
     el.addEventListener("pointerup", onPointerEnd);
     el.addEventListener("pointercancel", onPointerEnd);
-    el.addEventListener("wheel", pause, { passive: true });
+    // Only a *horizontal* wheel gesture means "I am steering this strip".
+    // The band runs edge to edge, so an ordinary vertical page scroll puts the
+    // cursor over it and used to pause the drift for 2.5s every single time:
+    // the strip was reliably frozen at the exact moment anyone looked at it.
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) pause();
+    };
+    el.addEventListener("wheel", onWheel, { passive: true });
     el.addEventListener("touchstart", pause, { passive: true });
+    // (touchstart stays unconditional: on a phone a finger on the strip really
+    //  is an intent to steer it, and the drift resumes 2.5s after lift.)
     el.addEventListener("scroll", wrap, { passive: true });
     el.addEventListener("dragstart", onDragStart);
 
@@ -115,7 +124,7 @@ export default function AutoScrollRow({
       el.removeEventListener("pointermove", onPointerMove);
       el.removeEventListener("pointerup", onPointerEnd);
       el.removeEventListener("pointercancel", onPointerEnd);
-      el.removeEventListener("wheel", pause);
+      el.removeEventListener("wheel", onWheel);
       el.removeEventListener("touchstart", pause);
       el.removeEventListener("scroll", wrap);
       el.removeEventListener("dragstart", onDragStart);

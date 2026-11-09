@@ -2,21 +2,19 @@ import fs from "node:fs";
 import path from "node:path";
 
 /**
- * The hero background plate.
+ * The hero background plates.
  *
- * Noe art-directs this image himself (cyberspace / cyberpunk, his persona in
- * it), so the site must not break while it does not exist yet. Drop a file at
- * one of the paths below, rebuild, and the hero picks it up. With nothing
- * there, the hero falls back to the lit-panel gradient and still reads as
- * finished rather than as a missing image.
+ * Two of them, because a 16:9 plate cropped into a tall phone hero throws away
+ * the subject and keeps the empty sky. Art direction, not just a resize: the
+ * wide plate keeps its left third near black for the headline, the tall plate
+ * keeps its top third near black for the same reason.
  *
- * Wants a wide plate, 2400x1350 or larger, dark, with the left third close to
- * black: the headline sits over that side.
+ * Either file can be absent. With nothing there the hero falls back to the
+ * lit-panel gradient and still reads as finished rather than as a broken image.
+ * See public/hero/README.md for what the layout needs from a replacement.
  */
-const CANDIDATES = ["header.jpg", "header.png", "header.webp"];
-
-function findPlate(): string | null {
-  for (const name of CANDIDATES) {
+function find(names: string[]): string | null {
+  for (const name of names) {
     try {
       if (fs.existsSync(path.join(process.cwd(), "public", "hero", name))) {
         return `/hero/${name}`;
@@ -28,4 +26,9 @@ function findPlate(): string | null {
   return null;
 }
 
-export const heroPlate = findPlate();
+/** Wide plate, used from the `sm` breakpoint up. */
+export const heroPlate = find(["header.jpg", "header.png", "header.webp"]);
+
+/** Tall plate for phones. Falls back to the wide one if it is not there. */
+export const heroPlateMobile =
+  find(["header-mobile.jpg", "header-mobile.png", "header-mobile.webp"]) ?? heroPlate;

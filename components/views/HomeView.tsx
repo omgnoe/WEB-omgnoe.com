@@ -32,7 +32,7 @@ import SystemIndex from "@/components/SystemIndex";
 import { trustedBy } from "@/lib/creative";
 import { getAllWork, stack } from "@/lib/projects";
 import { getServices } from "@/lib/services";
-import { heroPlate } from "@/lib/hero";
+import { heroPlate, heroPlateMobile } from "@/lib/hero";
 import { getChapters, getPressGroups } from "@/lib/story";
 import {
   aboutPath,
@@ -95,23 +95,46 @@ export default function HomeView({ locale }: { locale: Locale }) {
               in public/hero the gradient alone carries the section. */}
           {heroPlate && (
             <div className="absolute inset-0 z-0" aria-hidden>
-              <Image
-                src={heroPlate}
-                alt=""
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-[70%_center]"
-              />
-              {/* Two scrims: one across, one up, so the headline keeps its
-                  contrast whatever ends up in the picture. */}
-              <div className="absolute inset-0 bg-gradient-to-r from-void via-void/85 to-void/30" />
-              <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/60" />
+              {/* Phone: the tall plate runs full bleed, scrimmed from the top
+                  because that is where the headline sits. */}
+              {heroPlateMobile && (
+                <div className="absolute inset-0 sm:hidden">
+                  <Image
+                    src={heroPlateMobile}
+                    alt=""
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-void via-void/70 to-void/85" />
+                </div>
+              )}
+
+              {/* Desktop: a panel on the right rather than a full bleed. The
+                  headline runs to about two thirds of the viewport at this
+                  size, so anything behind it loses: a full-bleed portrait put
+                  his face directly under the type and the scrim then had to
+                  erase him to keep the words legible. Given its own column he
+                  stays fully visible and the type stays fully readable. */}
+              <div className="absolute inset-y-0 right-0 hidden w-[54%] sm:block xl:w-[50%]">
+                <Image
+                  src={heroPlate}
+                  alt=""
+                  fill
+                  priority
+                  sizes="50vw"
+                  className="object-cover object-[58%_center]"
+                />
+                {/* Fade the inner edge into the page so there is no seam. */}
+                <div className="absolute inset-0 bg-gradient-to-r from-void from-15% via-void/45 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/70" />
+              </div>
             </div>
           )}
 
           <div className="relative z-10 mx-auto max-w-[90rem] px-4 sm:px-8">
-            <div className={`pb-12 ${heroPlate ? "pt-24 lg:pt-40 lg:pb-28" : "pt-12 lg:pt-16 lg:pb-16"}`}>
+            <div className={`pb-12 sm:max-w-[56%] ${heroPlate ? "pt-14 lg:pt-20 lg:pb-20" : "pt-12 lg:pt-16 lg:pb-16"}`}>
               <p className="mono text-dim">{t.op.heroEyebrow}</p>
 
               <h1 className="font-display d-hero mt-7 max-w-[18ch] text-balance">
@@ -176,6 +199,38 @@ export default function HomeView({ locale }: { locale: Locale }) {
             </div>
             <p className="sr-only">{t.op.ticker.join(", ")}</p>
           </div>
+        </section>
+
+        {/* ── WORKED WITH ──────────────────────────────────────────────── */}
+        <section className="rule-t overflow-hidden py-14">
+          <Reveal>
+            <p className="mono px-4 text-center text-faint sm:px-8">{t.home.trusted}</p>
+            <AutoScrollRow className="mt-9 items-stretch">
+              {[0, 1].map((n) => (
+                <div key={n} className="flex shrink-0 items-stretch" aria-hidden={n === 1}>
+                  {trustedBy.map((tb) => (
+                    <span
+                      key={`${n}-${tb.name}`}
+                      title={tb.name}
+                      className="flex h-16 w-44 shrink-0 items-center justify-center border-r border-line px-7 sm:w-52"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={tb.src}
+                        alt={`${tb.name} logo`}
+                        loading="lazy"
+                        style={{ maxHeight: tb.h }}
+                        className={`client-logo w-auto max-w-full ${
+                          tb.src.endsWith(".svg") ? "client-logo-svg" : ""
+                        }`}
+                      />
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </AutoScrollRow>
+            <p className="mono mt-9 px-4 text-center text-faint sm:px-8">{t.home.trustedMore}</p>
+          </Reveal>
         </section>
 
         {/* ── 01 SYSTEMS ───────────────────────────────────────────────── */}
@@ -255,38 +310,6 @@ export default function HomeView({ locale }: { locale: Locale }) {
               </Reveal>
             </div>
           </div>
-        </section>
-
-        {/* ── WORKED WITH ──────────────────────────────────────────────── */}
-        <section className="rule-t overflow-hidden py-14">
-          <Reveal>
-            <p className="mono px-4 text-center text-faint sm:px-8">{t.home.trusted}</p>
-            <AutoScrollRow className="mt-9 items-stretch">
-              {[0, 1].map((n) => (
-                <div key={n} className="flex shrink-0 items-stretch" aria-hidden={n === 1}>
-                  {trustedBy.map((tb) => (
-                    <span
-                      key={`${n}-${tb.name}`}
-                      title={tb.name}
-                      className="flex h-16 w-44 shrink-0 items-center justify-center border-r border-line px-7 sm:w-52"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={tb.src}
-                        alt={`${tb.name} logo`}
-                        loading="lazy"
-                        style={{ maxHeight: tb.h }}
-                        className={`client-logo w-auto max-w-full ${
-                          tb.src.endsWith(".svg") ? "client-logo-svg" : ""
-                        }`}
-                      />
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </AutoScrollRow>
-            <p className="mono mt-9 px-4 text-center text-faint sm:px-8">{t.home.trustedMore}</p>
-          </Reveal>
         </section>
 
         {/* ── 04 CAPABILITIES ──────────────────────────────────────────── */}
