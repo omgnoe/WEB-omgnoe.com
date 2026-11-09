@@ -32,6 +32,7 @@ import SystemIndex from "@/components/SystemIndex";
 import { trustedBy } from "@/lib/creative";
 import { getAllWork, stack } from "@/lib/projects";
 import { getServices } from "@/lib/services";
+import { heroPlate } from "@/lib/hero";
 import { getChapters, getPressGroups } from "@/lib/story";
 import {
   aboutPath,
@@ -89,85 +90,75 @@ export default function HomeView({ locale }: { locale: Locale }) {
 
       <main>
         {/* ── HERO ─────────────────────────────────────────────────────── */}
-        <section className="powered guides relative">
+        <section className="powered guides relative overflow-hidden">
+          {/* The plate is an enhancement layer, never a dependency: with no file
+              in public/hero the gradient alone carries the section. */}
+          {heroPlate && (
+            <div className="absolute inset-0 z-0" aria-hidden>
+              <Image
+                src={heroPlate}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-[70%_center]"
+              />
+              {/* Two scrims: one across, one up, so the headline keeps its
+                  contrast whatever ends up in the picture. */}
+              <div className="absolute inset-0 bg-gradient-to-r from-void via-void/85 to-void/30" />
+              <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/60" />
+            </div>
+          )}
+
           <div className="relative z-10 mx-auto max-w-[90rem] px-4 sm:px-8">
-            <div className="grid items-end gap-10 pt-12 pb-12 lg:grid-cols-[1.6fr_0.55fr] lg:pt-16 lg:pb-16">
-              <div>
-                <p className="mono text-dim">{t.op.heroEyebrow}</p>
+            <div className={`pb-12 ${heroPlate ? "pt-24 lg:pt-40 lg:pb-28" : "pt-12 lg:pt-16 lg:pb-16"}`}>
+              <p className="mono text-dim">{t.op.heroEyebrow}</p>
 
-                <h1 className="font-display d-hero mt-7 text-balance">
-                  <span className="block">{t.op.heroLine1}</span>{" "}
-                  <span className="block">
-                    {t.op.heroLine2.split(" ")[0]}{" "}
-                    <span className="relative inline-block">
-                      <span className="relative z-10">
-                        {t.op.heroLine2.split(" ").slice(1).join(" ")}
-                      </span>
-                      <span
-                        className="absolute inset-x-0 bottom-[0.08em] z-0 h-[0.11em] bg-ember"
-                        aria-hidden
-                      />
+              <h1 className="font-display d-hero mt-7 max-w-[18ch] text-balance">
+                <span className="block">{t.op.heroLine1}</span>{" "}
+                <span className="block">
+                  {t.op.heroLine2.split(" ")[0]}{" "}
+                  <span className="relative inline-block">
+                    <span className="relative z-10">
+                      {t.op.heroLine2.split(" ").slice(1).join(" ")}
                     </span>
-                  </span>
-                </h1>
-
-                <p className="lead mt-7 max-w-xl text-dim">{t.op.heroLead}</p>
-
-                <div className="mt-8 flex flex-wrap items-center gap-3">
-                  <Link href={contactPath(locale)} className="btn btn-ember">
-                    {t.op.ctaPrimary} <span aria-hidden>→</span>
-                  </Link>
-                  <Link href={workAnchor(locale)} className="btn btn-wire">
-                    {t.op.ctaSecondary}
-                  </Link>
-                </div>
-
-                <dl className="rule-t mt-10 grid max-w-xl grid-cols-3 pt-7">
-                  {t.op.heroStats.map((s) => (
-                    <div key={s.l}>
-                      <dt className="sr-only">{s.l}</dt>
-                      <dd>
-                        <span className="font-display tnum block text-[clamp(1.75rem,3.4vw,2.75rem)]">
-                          {s.n}
-                        </span>
-                        <span className="mono mt-2 block max-w-[11rem] text-faint">{s.l}</span>
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-
-              {/* Portrait as a specimen plate, not a floating sticker sheet. */}
-              <div>
-                <figure className="bezel mx-auto max-w-[17rem] lg:ml-auto lg:mr-0 lg:max-w-[19rem]">
-                  <div className="bezel-bar">
-                    <span className="mono text-dim">{t.op.portraitMeta[1]}</span>
-                    <span className="mono flex items-center gap-1.5 text-dim">
-                      <span className="dot dot-live" aria-hidden />
-                      {t.rail.available}
-                    </span>
-                  </div>
-                  <div className="relative aspect-[4/5]">
-                    <Image
-                      src="/me/noe.jpg"
-                      alt={t.home.portraitAlt}
-                      fill
-                      priority
-                      sizes="(max-width: 1024px) 80vw, 420px"
-                      className="portrait object-cover"
+                    <span
+                      className="absolute inset-x-0 bottom-[0.08em] z-0 h-[0.11em] bg-ember"
+                      aria-hidden
                     />
-                  </div>
-                  <figcaption className="flex items-center justify-between gap-3 border-t border-line px-3 py-2.5">
-                    <span className="mono text-chalk">{t.op.portraitMeta[0]}</span>
-                    <span className="mono text-faint">{t.op.portraitMeta[2]}</span>
-                  </figcaption>
-                </figure>
+                  </span>
+                </span>
+              </h1>
+
+              <p className="lead mt-7 max-w-xl text-dim">{t.op.heroLead}</p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link href={contactPath(locale)} className="btn btn-ember">
+                  {t.op.ctaPrimary} <span aria-hidden>→</span>
+                </Link>
+                <Link href={workAnchor(locale)} className="btn btn-wire">
+                  {t.op.ctaSecondary}
+                </Link>
               </div>
+
+              <dl className="rule-t mt-10 grid max-w-2xl grid-cols-3 pt-7">
+                {t.op.heroStats.map((s) => (
+                  <div key={s.l}>
+                    <dt className="sr-only">{s.l}</dt>
+                    <dd>
+                      <span className="font-display tnum block text-[clamp(1.75rem,3.4vw,2.75rem)]">
+                        {s.n}
+                      </span>
+                      <span className="mono mt-2 block max-w-[11rem] text-faint">{s.l}</span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
 
           {/* Ticker: the whole offer in one band, at reading speed. */}
-          <div className="rule-t rule-b overflow-hidden bg-ember py-3">
+          <div className="rule-t rule-b relative z-10 overflow-hidden bg-ember py-3">
             <div className="ticker" aria-hidden>
               {[0, 1].map((copy) => (
                 <div key={copy} className="flex shrink-0 items-center">
