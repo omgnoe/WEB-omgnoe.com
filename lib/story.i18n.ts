@@ -45,6 +45,15 @@ export type StoryTranslation = {
   /** Index-aligned with `pressGroups`; item notes are index-aligned too. */
   press: { label: string; blurb: string; notes: string[] }[];
   chrome: {
+    /** Era bands grouping the chapters. Index-aligned with `eras` in story.ts. */
+    eras: { label: string; title: string }[];
+    indexKicker: string;
+    indexH2: string;
+    numbersKicker: string;
+    numbersH2: string;
+    numbers: { n: string; l: string }[];
+    pressKicker: string;
+    pressH2: string;
     metaTitle: string;
     metaDescription: string;
     kicker: string;
@@ -344,6 +353,25 @@ const fr: StoryTranslation = {
     },
   ],
   chrome: {
+    eras: [
+      { label: "Première partie", title: "L'appareil photo" },
+      { label: "Deuxième partie", title: "Le pari" },
+      { label: "Troisième partie", title: "La chute" },
+      { label: "Quatrième partie", title: "La remontée" },
+    ],
+    indexKicker: "L'arc",
+    indexH2: "Tout, sur un seul écran.",
+    numbersKicker: "Les repères",
+    numbersH2: "Cinq chiffres qui résument le reste.",
+    numbers: [
+      { n: "14", l: "L'âge de ma première facture" },
+      { n: "18", l: "L'âge de ma première société" },
+      { n: "05", l: "Rang au Luxembourg, T2 2024" },
+      { n: "30k", l: "Euros de dettes remboursés" },
+      { n: "39+", l: "Produits livrés depuis" },
+    ],
+    pressKicker: "La presse",
+    pressH2: "Ce qui est vérifiable, et où le vérifier.",
     metaTitle: "À propos & CV : parti de zéro, deux fois",
     metaDescription:
       "La version longue. Noe Nei a commencé à travailler à quatorze ans, a fondé son agence à dix-huit, a tout perdu avec une startup de livraison, a remboursé la dette sur son propre salaire et s'est reconstruit comme développeur au Luxembourg. CV complet, expérience, technologies et formation.",
@@ -653,6 +681,25 @@ const de: StoryTranslation = {
     },
   ],
   chrome: {
+    eras: [
+      { label: "Erster Teil", title: "Die Kamera" },
+      { label: "Zweiter Teil", title: "Der Einsatz" },
+      { label: "Dritter Teil", title: "Der Absturz" },
+      { label: "Vierter Teil", title: "Der Weg zurück" },
+    ],
+    indexKicker: "Der Bogen",
+    indexH2: "Alles auf einem Bildschirm.",
+    numbersKicker: "Die Eckpunkte",
+    numbersH2: "Fünf Zahlen, die den Rest zusammenfassen.",
+    numbers: [
+      { n: "14", l: "Alter bei der ersten Rechnung" },
+      { n: "18", l: "Alter bei der ersten Firma" },
+      { n: "05", l: "Platz in Luxemburg, Q2 2024" },
+      { n: "30k", l: "Euro Schulden zurückgezahlt" },
+      { n: "39+", l: "Produkte seitdem ausgeliefert" },
+    ],
+    pressKicker: "Die Presse",
+    pressH2: "Was überprüfbar ist, und wo.",
     metaTitle: "Über mich & CV: zweimal bei null angefangen",
     metaDescription:
       "Die lange Version. Noe Nei hat mit vierzehn angefangen zu arbeiten, mit achtzehn seine eigene Agentur gegründet, mit einem Lieferstartup alles verloren, die Schulden aus dem eigenen Gehalt abbezahlt und sich in Luxemburg als Entwickler neu aufgebaut. Vollständiger Lebenslauf, Erfahrung, Stack und Ausbildung.",
@@ -716,6 +763,25 @@ const en: StoryTranslation = {
   credentials: [],
   press: [],
   chrome: {
+    eras: [
+      { label: "Part one", title: "The camera" },
+      { label: "Part two", title: "The bet" },
+      { label: "Part three", title: "The fall" },
+      { label: "Part four", title: "The climb back" },
+    ],
+    indexKicker: "The arc",
+    indexH2: "All of it, on one screen.",
+    numbersKicker: "The markers",
+    numbersH2: "Five numbers that carry the rest.",
+    numbers: [
+      { n: "14", l: "Age at the first invoice" },
+      { n: "18", l: "Age at the first company" },
+      { n: "05", l: "Rank in Luxembourg, Q2 2024" },
+      { n: "30k", l: "Euro of debt repaid" },
+      { n: "39+", l: "Products shipped since" },
+    ],
+    pressKicker: "The press",
+    pressH2: "What can be checked, and where.",
     metaTitle: "About & CV: from zero, twice",
     metaDescription:
       "The long version. Noe Nei started working at fourteen, founded his own agency at eighteen, lost everything with a delivery startup, paid the debt out of his own salary and rebuilt as a developer in Luxembourg. Full CV, experience, stack and education.",

@@ -11,6 +11,7 @@ import {
   getChapters,
   getCredentials,
   getEducation,
+  getEras,
   getLanguages,
   getLessons,
   getPressGroups,
@@ -32,11 +33,21 @@ import {
 import { dict } from "@/lib/ui";
 import { PERSON_ID, SAME_AS } from "@/lib/schema";
 
+/** Section label plus a rule to the far edge. Same device as the homepage. */
+function SectionHead({ label, right }: { label: string; right?: string }) {
+  return (
+    <div className="sec-head">
+      <span className="mono text-ember">{label}</span>
+      {right && <span className="mono tnum shrink-0 text-faint">{right}</span>}
+    </div>
+  );
+}
+
 export default function AboutView({ locale }: { locale: Locale }) {
   const t = dict(locale);
   const c = storyChrome(locale);
-  const facts = c.facts;
   const chapters = getChapters(locale);
+  const eras = getEras(locale);
   const lessons = getLessons(locale);
   const roles = getRoles(locale);
   const skillGroups = getSkillGroups(locale);
@@ -82,456 +93,422 @@ export default function AboutView({ locale }: { locale: Locale }) {
 
   return (
     <main className="relative">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+
       <StatusRail locale={locale} />
       <SiteHeader locale={locale} pageKey={{ kind: "about" }} />
 
-      {/* HERO */}
-      <section className="powered relative overflow-hidden">
-        <div className="absolute inset-0" />
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-14 pt-14 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="rise min-w-0">
-            <p className="mono">{c.kicker}</p>
-            <h1 className="font-display mt-5 max-w-2xl text-[2.6rem] font-bold leading-[1.05] tracking-tight sm:text-6xl">
-              {c.h1a}{" "}
-              <span className="underline-swipe">{c.h1b}</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-dim">{c.lead}</p>
-            <p className="mt-4 max-w-xl leading-relaxed text-dim">{c.leadNote}</p>
+      {/* ── MASTHEAD ──────────────────────────────────────────────────── */}
+      <section className="powered guides relative">
+        <div className="relative z-10 mx-auto max-w-[90rem] px-4 sm:px-8">
+          <div className="grid gap-12 pt-14 pb-16 lg:grid-cols-[1.5fr_0.6fr] lg:pt-20">
+            <div>
+              <p className="mono text-dim">{c.kicker}</p>
+              <h1 className="font-display d-hero mt-7 max-w-[16ch] text-balance">
+                <span className="block">{c.h1a}</span>
+                <span className="block text-ember">{c.h1b}</span>
+              </h1>
+              <p className="lead mt-8 max-w-2xl text-dim">{c.lead}</p>
+              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-faint">{c.leadNote}</p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#cv" className="btn btn-ember">
-                {c.jumpCv}
-                <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
-                  <path d="M8 3v10m0 0 4-4m-4 4-4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
-              <Link href={contactPath(locale)} className="btn btn-wire">
-                {c.workWithMe}
-              </Link>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <a href="#cv" className="btn btn-ember">
+                  {c.jumpCv} <span aria-hidden>↓</span>
+                </a>
+                <Link href={contactPath(locale)} className="btn btn-wire">
+                  {c.workWithMe}
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div className="relative mx-auto w-full max-w-sm">
-            <div className="panel panel relative overflow-hidden p-2.5">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem]">
+            <figure className="mx-auto w-full max-w-[15rem] lg:ml-auto lg:mr-0 lg:max-w-none">
+              <div className="relative aspect-[4/5] border border-line">
                 <Image
                   src="/me/noe-suit.jpg"
                   alt={c.portraitAlt}
                   fill
                   priority
-                  sizes="(max-width: 1024px) 80vw, 380px"
-                  className="object-cover"
+                  sizes="(max-width: 1024px) 60vw, 320px"
+                  className="portrait object-cover"
                 />
               </div>
-              <dl className="divide-y divide-line px-4 py-1">
-                {facts.map((f) => (
-                  <div key={f.k} className="flex items-baseline justify-between gap-4 py-2.5">
-                    <dt className="mono !text-[0.62rem]">{f.k}</dt>
-                    <dd className="text-right text-xs font-semibold">{f.v}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-            <span
-              className="tag absolute -left-2 top-8 z-10 !bg-panel !px-3.5 !py-2 text-xs font-semibold sm:-left-6"
-              style={{ "--float-rot": "-5deg" } as React.CSSProperties}
-            >
-              {c.stillHere}
-            </span>
+            </figure>
+          </div>
+
+          {/* The file header: the checkable facts, flat and scannable. */}
+          <dl className="rule-t grid grid-cols-2 border-line pb-14 md:grid-cols-4">
+            {c.facts.map((f) => (
+              <div key={f.k} className="rule-l -ml-px px-5 py-6 first:ml-0">
+                <dt className="mono text-faint">{f.k}</dt>
+                <dd className="mt-2.5 text-sm leading-snug text-chalk">{f.v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* ── THE MARKERS ───────────────────────────────────────────────── */}
+      <section className="rule-t py-16 sm:py-20">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
+          <Reveal>
+            <SectionHead label={c.numbersKicker} />
+            <h2 className="font-display d-lg mt-7 max-w-2xl text-balance">{c.numbersH2}</h2>
+            <dl className="rule-t mt-10 grid grid-cols-2 border-line md:grid-cols-5">
+              {c.numbers.map((n) => (
+                <div key={n.l} className="rule-l rule-b -ml-px px-5 py-7 first:ml-0">
+                  <dt className="sr-only">{n.l}</dt>
+                  <dd>
+                    <span className="font-display tnum block text-[clamp(1.9rem,3.6vw,3rem)] text-ember">
+                      {n.n}
+                    </span>
+                    <span className="mono mt-3 block text-faint">{n.l}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── THE ARC: every chapter on one screen ──────────────────────── */}
+      <section className="rule-t py-16 sm:py-20">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
+          <Reveal>
+            <SectionHead label={c.indexKicker} right={spellCountIn(locale, chapters.length)} />
+            <h2 className="font-display d-lg mt-7 max-w-2xl text-balance">{c.indexH2}</h2>
+          </Reveal>
+
+          <div className="rule-t mt-10 grid gap-x-10 md:grid-cols-2">
+            {chapters.map((ch, i) => (
+              <a
+                key={ch.id}
+                href={`#${ch.id}`}
+                className="sysrow group grid-cols-[2.5rem_1fr] px-1"
+              >
+                <span className="mono tnum self-start pt-1 text-faint">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="min-w-0">
+                  <span className="mono block text-faint">{ch.period}</span>
+                  <span className="mt-1.5 block text-base text-dim transition-colors group-hover:text-chalk">
+                    {ch.title}
+                  </span>
+                </span>
+              </a>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* STORY */}
-      <section className="border-y border-line bg-panel-2">
-        <div className="mx-auto max-w-5xl px-5 py-20 sm:py-24">
-          <Reveal className="mb-12">
-            <p className="mono">{c.storyKicker}</p>
-            <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              {c.storyH2(spellCountIn(locale, chapters.length))}
-            </h2>
-          </Reveal>
+      {/* ── THE CHAPTERS, in eras ─────────────────────────────────────── */}
+      {eras.map((era, ei) => (
+        <section key={era.id} className="rule-t">
+          {/* Era band: a full-width marker so the arc has visible joints. */}
+          <div className="rule-b bg-panel">
+            <div className="mx-auto flex max-w-[90rem] items-baseline gap-5 px-4 py-6 sm:px-8">
+              <span className="mono tnum text-ember">{c.eras[ei]?.label}</span>
+              <h2 className="font-display d-md">{c.eras[ei]?.title}</h2>
+            </div>
+          </div>
 
-          <div className="relative">
-            {/* spine */}
-            <span
-              aria-hidden
-              className="absolute left-[7px] top-2 bottom-2 hidden w-px bg-line-strong sm:block"
-            />
+          <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
+            {era.chapters.map(({ chapter: ch, n }) => {
+              // The one chapter marked `tone: dark` in the data is the low
+              // point. The whole page is dark now, so it gets the ember spine
+              // instead of an inverted card.
+              const pivot = ch.tone === "dark";
+              return (
+                <article
+                  key={ch.id}
+                  id={ch.id}
+                  className="rule-soft-b grid scroll-mt-24 gap-x-10 gap-y-5 py-12 lg:grid-cols-[10rem_minmax(0,46rem)_1fr] lg:py-16"
+                >
+                  {/* Rail */}
+                  <div className="lg:sticky lg:top-28 lg:self-start">
+                    <p className="mono tnum text-ember">{String(n).padStart(2, "0")}</p>
+                    <p className="mono mt-2 text-faint">{ch.period}</p>
+                  </div>
 
-            <ol className="space-y-5">
-              {chapters.map((ch, i) => {
-                const dark = ch.tone === "dark";
-                const num = String(i + 1).padStart(2, "0");
-                return (
-                  <Reveal as="li" key={ch.id} delay={(i % 3) * 60} className="relative sm:pl-12">
-                    {/* node */}
-                    <span
-                      aria-hidden
-                      className={`absolute left-0 top-8 hidden h-[15px] w-[15px] rounded-full border-2 sm:block ${
-                        dark
-                          ? "border-ink bg-ink"
-                          : "border-ember bg-panel-2"
-                      }`}
-                    />
-                    <article
-                      className={`panel p-6 sm:p-9 ${dark ? "border-ember/40 bg-panel-2" : ""}`}
-                    >
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                        <span
-                          className={`font-mono text-xs tracking-[0.22em] ${
-                            dark ? "text-lime-300" : "text-accent"
-                          }`}
-                        >
-                          {num}
-                        </span>
-                        <span
-                          className={`font-mono text-[0.68rem] uppercase tracking-[0.22em] ${
-                            dark ? "text-ember" : "text-faint"
-                          }`}
-                        >
-                          {ch.period}
-                        </span>
+                  {/* Reading column */}
+                  <div className={pivot ? "border-l-2 border-ember pl-6" : ""}>
+                    <h3 className="font-display d-lg max-w-[20ch] text-balance">{ch.title}</h3>
+
+                    <div className="mt-6 space-y-5 text-dim">
+                      {ch.body.map((para) => (
+                        <p key={para.slice(0, 28)}>{para}</p>
+                      ))}
+                    </div>
+
+                    {ch.pull && (
+                      <blockquote className="mt-9 border-l-2 border-line pl-6">
+                        <p className="font-display d-md text-balance text-chalk">{ch.pull}</p>
+                        {ch.pullCite && <cite className="mono mt-3 block not-italic text-faint">{ch.pullCite}</cite>}
+                      </blockquote>
+                    )}
+
+                    {ch.ranking && (
+                      <div className="mt-9">
+                        <StoryRanking ranking={ch.ranking} />
                       </div>
+                    )}
 
-                      <h3
-                        className={`font-display mt-3 text-2xl font-bold leading-tight tracking-tight sm:text-3xl ${
-                          dark ? "text-white" : ""
-                        }`}
-                      >
-                        {ch.title}
-                      </h3>
+                    {ch.shots && <StoryShots shots={ch.shots} />}
 
-                      <div
-                        className={`mt-4 space-y-4 leading-relaxed ${
-                          dark ? "text-chalk" : "text-dim"
-                        }`}
-                      >
-                        {ch.body.map((p) => (
-                          <p key={p.slice(0, 24)}>{p}</p>
+                    {ch.links && ch.links.length > 0 && (
+                      <div className="mt-8 flex flex-wrap gap-3">
+                        {ch.links.map((l) => (
+                          <a
+                            key={l.href}
+                            href={l.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-wire !py-2.5"
+                          >
+                            {l.label} <span aria-hidden>↗</span>
+                          </a>
                         ))}
                       </div>
+                    )}
 
-                      {ch.ranking && <StoryRanking ranking={ch.ranking} />}
+                    {ch.products && (
+                      <div className="mt-8 flex flex-wrap gap-2.5">
+                        {storyProducts.map((p) => (
+                          <Link key={p.slug} href={workItemPath(locale, p.slug)} className="tag text-dim transition-colors hover:text-chalk">
+                            {p.name}
+                          </Link>
+                        ))}
+                        <Link href={workPath(locale)} className="tag text-ember">
+                          {t.common.allWork} →
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ))}
 
-                      {ch.shots && <StoryShots shots={ch.shots} dark={dark} />}
+      {/* ── WHAT IT TAUGHT ────────────────────────────────────────────── */}
+      <section className="rule-t py-16 sm:py-24">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
+          <Reveal>
+            <SectionHead label={c.lessonsKicker} />
+            <h2 className="font-display d-xl mt-7 max-w-2xl text-balance">{c.lessonsH2}</h2>
+          </Reveal>
 
-                      {ch.pull && (
-                        <blockquote
-                          className={`mt-6 border-l-2 pl-5 ${
-                            dark ? "border-lime-300" : "border-accent"
-                          }`}
-                        >
-                          <p
-                            className={`font-display text-lg font-semibold leading-snug ${
-                              dark ? "text-chalk" : "text-chalk"
-                            }`}
-                          >
-                            {ch.pull}
-                          </p>
-                          {ch.pullCite && (
-                            <cite
-                              className={`mt-2 block font-mono text-[0.62rem] uppercase not-italic tracking-[0.14em] ${
-                                dark ? "text-faint" : "text-faint"
-                              }`}
-                            >
-                              {ch.pullCite}
-                            </cite>
-                          )}
-                        </blockquote>
-                      )}
-
-                      {ch.links && (
-                        <div className="mt-6 flex flex-wrap gap-2.5">
-                          {ch.links.map((l) => (
-                            <a
-                              key={l.href}
-                              href={l.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={`btn !py-2.5 text-sm ${
-                                dark
-                                  ? "!bg-white/10 !text-white/85 hover:!bg-white/15"
-                                  : "btn-wire"
-                              }`}
-                            >
-                              {l.label}
-                              <svg viewBox="0 0 16 16" className="h-3 w-3" fill="none" aria-hidden>
-                                <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
-                            </a>
-                          ))}
-                        </div>
-                      )}
-
-                      {ch.products && (
-                        <div className="mt-6 flex flex-wrap gap-2">
-                          {storyProducts.map((pr) => (
-                            <Link
-                              key={pr.slug}
-                              href={workItemPath(locale, pr.slug)}
-                              className="tag !py-1.5 font-semibold transition-colors hover:border-line-strong"
-                            >
-                              {pr.name}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </article>
-                  </Reveal>
-                );
-              })}
+          <div className="mt-12 grid gap-12 lg:grid-cols-[1.3fr_0.7fr]">
+            <ol className="rule-t">
+              {lessons.map((l, i) => (
+                <Reveal key={l.slice(0, 24)} delay={i * 50}>
+                  <li className="rule-soft-b flex gap-6 py-5">
+                    <span className="mono tnum shrink-0 pt-1 text-ember">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-dim">{l}</span>
+                  </li>
+                </Reveal>
+              ))}
             </ol>
+
+            <Reveal>
+              <figure>
+                <div className="relative aspect-[4/5] border border-line">
+                  <Image
+                    src="/me/noe-archive.jpg"
+                    alt={c.archiveAlt}
+                    fill
+                    sizes="(max-width: 1024px) 80vw, 340px"
+                    className="portrait object-cover"
+                  />
+                </div>
+                <figcaption className="mt-6">
+                  <p className="mono text-faint">{c.offClockKicker}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-dim">{c.offClock}</p>
+                </figcaption>
+              </figure>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* LESSONS + PHOTO */}
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
-        <div className="grid items-start gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+      {/* ── CV ────────────────────────────────────────────────────────── */}
+      <section id="cv" className="rule-t scroll-mt-20 py-16 sm:py-24">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
           <Reveal>
-            <p className="mono">{c.lessonsKicker}</p>
-            <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              {c.lessonsH2}
-            </h2>
-            <ol className="mt-8 space-y-4">
-              {lessons.map((l, i) => (
-                <li key={l} className="panel flex gap-4 p-5">
-                  <span className="font-mono text-xs text-ember">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="leading-relaxed">{l}</span>
-                </li>
-              ))}
-            </ol>
-          </Reveal>
-
-          <Reveal delay={100} className="lg:sticky lg:top-24">
-            <div className="panel panel overflow-hidden p-2.5" style={{ transform: "rotate(1.5deg)" }}>
-              <div className="relative aspect-[3/4] overflow-hidden rounded-[1.6rem]">
-                <Image
-                  src="/me/noe-archive.jpg"
-                  alt={c.archiveAlt}
-                  fill
-                  sizes="(max-width: 1024px) 90vw, 420px"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-
-            <div className="panel panel mt-10 p-6 sm:p-8">
-              <p className="font-display text-sm font-bold text-lime-300">{c.offClockKicker}</p>
-              <p className="mt-4 leading-relaxed text-white/70">{c.offClock}</p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* CV */}
-      <section id="cv" className="border-y border-line bg-panel-2 scroll-mt-24">
-        <div className="mx-auto max-w-5xl px-5 py-20 sm:py-24">
-          <Reveal className="mb-12">
-            <p className="mono">{c.cvKicker}</p>
-            <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-              {c.cvH2}
-            </h2>
+            <SectionHead label={c.cvKicker} />
+            <h2 className="font-display d-xl mt-7 max-w-2xl text-balance">{c.cvH2}</h2>
           </Reveal>
 
           {/* Experience */}
-          <Reveal className="mb-14">
-            <h3 className="mono mb-6">{c.experience}</h3>
-            <div className="space-y-4">
+          <div className="mt-14">
+            <p className="mono text-faint">{c.experience}</p>
+            <div className="rule-t mt-5">
               {roles.map((r) => (
-                <article key={r.title + r.period} className="panel p-6 sm:p-8">
-                  <div className="grid gap-4 sm:grid-cols-[150px_1fr]">
-                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-ember sm:pt-1">
-                      {r.period}
-                    </p>
+                <Reveal key={r.title + r.org}>
+                  <div className="rule-soft-b grid gap-x-10 gap-y-3 py-7 lg:grid-cols-[12rem_1fr]">
+                    <p className="mono tnum text-faint lg:pt-1">{r.period}</p>
                     <div>
-                      <h4 className="font-display text-xl font-bold leading-tight">{r.title}</h4>
-                      <p className="mt-1 text-sm text-dim">{r.org}</p>
-                      <ul className="mt-4 space-y-2.5">
+                      <h3 className="font-display d-md">{r.title}</h3>
+                      <p className="mono-flat mt-1.5 font-mono text-sm text-dim">{r.org}</p>
+                      <ul className="mt-4 space-y-2">
                         {r.bullets.map((b) => (
-                          <li key={b.slice(0, 24)} className="flex gap-3 text-sm leading-relaxed text-dim">
-                            <span className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-ember" />
+                          <li key={b.slice(0, 24)} className="flex gap-3.5 text-sm leading-relaxed text-dim">
+                            <span className="mt-2 h-px w-3 shrink-0 bg-ember" aria-hidden />
                             {b}
                           </li>
                         ))}
                       </ul>
                     </div>
                   </div>
-                </article>
+                </Reveal>
               ))}
             </div>
-          </Reveal>
+          </div>
 
           {/* Stack */}
-          <Reveal className="mb-14">
-            <h3 className="mono mb-6">{c.stackTools}</h3>
-            <div className="panel divide-y divide-line overflow-hidden">
+          <div className="mt-16">
+            <p className="mono text-faint">{c.stackTools}</p>
+            <dl className="rule-t mt-5 grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
               {skillGroups.map((g) => (
-                <div key={g.label} className="grid gap-1 px-6 py-4 sm:grid-cols-[150px_1fr] sm:gap-4 sm:px-8">
-                  <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ember">
-                    {g.label}
-                  </p>
-                  <p className="text-sm">{g.items}</p>
+                <div key={g.label} className="bg-void px-5 py-5">
+                  <dt className="mono text-ember">{g.label}</dt>
+                  <dd className="mono-flat mt-2.5 font-mono text-sm leading-relaxed text-dim">{g.items}</dd>
                 </div>
               ))}
-            </div>
-          </Reveal>
+            </dl>
+          </div>
 
-          {/* Languages */}
-          <Reveal className="mb-14">
-            <h3 className="mono mb-6">{c.languages}</h3>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {languages.map((l) => (
-                <div key={l.name} className="panel p-5">
-                  <p className="font-display text-lg font-bold leading-tight">{l.name}</p>
-                  <p className="mt-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-ember">
-                    {l.level}
-                  </p>
-                </div>
-              ))}
+          {/* Languages, education, credentials */}
+          <div className="mt-16 grid gap-12 lg:grid-cols-3">
+            <div>
+              <p className="mono text-faint">{c.languages}</p>
+              <dl className="rule-t mt-5">
+                {languages.map((l) => (
+                  <div key={l.name} className="rule-soft-b flex items-baseline justify-between gap-4 py-3.5">
+                    <dt className="text-chalk">{l.name}</dt>
+                    <dd className="mono text-faint">{l.level}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
-          </Reveal>
 
-          {/* Education + credentials */}
-          <div className="grid gap-10 lg:grid-cols-2">
-            <Reveal>
-              <h3 className="mono mb-6">{c.education}</h3>
-              <ul className="panel divide-y divide-line overflow-hidden">
+            <div>
+              <p className="mono text-faint">{c.education}</p>
+              <ul className="rule-t mt-5">
                 {education.map((e) => (
-                  <li key={e.title} className="px-6 py-4 sm:px-8">
-                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                      <p className="font-semibold leading-tight">{e.title}</p>
-                      <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ember">
-                        {e.period}
-                      </p>
-                    </div>
-                    <p className="mt-1 text-sm text-dim">{e.org}</p>
+                  <li key={e.title} className="rule-soft-b py-4">
+                    <p className="text-sm text-chalk">{e.title}</p>
+                    <p className="mono mt-1.5 text-faint">
+                      {e.org} · {e.period}
+                    </p>
                   </li>
                 ))}
               </ul>
-            </Reveal>
+            </div>
 
-            <Reveal delay={100}>
-              <h3 className="mono mb-6">{c.credentials}</h3>
-              <ul className="panel divide-y divide-line overflow-hidden">
-                {credentials.map((c) => (
-                  <li key={c.title} className="px-6 py-4 sm:px-8">
-                    <p className="font-semibold leading-tight">{c.title}</p>
-                    <p className="mt-1 text-sm text-dim">{c.org}</p>
-                    <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
-                      {c.links.map((l) => (
+            <div>
+              <p className="mono text-faint">{c.credentials}</p>
+              <ul className="rule-t mt-5">
+                {credentials.map((cr) => (
+                  <li key={cr.title} className="rule-soft-b py-4">
+                    <p className="text-sm text-chalk">{cr.title}</p>
+                    <p className="mt-1.5 text-xs leading-relaxed text-faint">{cr.org}</p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {cr.links.map((l) => (
                         <a
                           key={l.href}
                           href={l.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] font-semibold text-ember hover:text-ember"
+                          className="mono text-dim underline decoration-ember decoration-1 underline-offset-4 transition-colors hover:text-chalk"
                         >
                           {l.label}
-                          <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" aria-hidden>
-                            <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
                         </a>
                       ))}
                     </div>
                   </li>
                 ))}
               </ul>
-            </Reveal>
+            </div>
           </div>
-
-          {/* Press */}
-          {pressGroups.map((g, gi) => (
-            <Reveal key={g.label} className="mt-14" delay={gi * 80}>
-              <h3 className="mono mb-2">{g.label}</h3>
-              <p className="mb-6 max-w-xl text-sm text-dim">{g.blurb}</p>
-              <ul className="panel divide-y divide-line overflow-hidden">
-                {g.items.map((a) => {
-                  const inner = (
-                    <>
-                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ember">
-                          {a.outlet}
-                        </span>
-                        <span className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-dim">
-                          {a.date}
-                        </span>
-                      </div>
-                      <p className="mt-1.5 font-semibold leading-snug">{a.title}</p>
-                      <p className="mt-1 text-sm text-dim">{a.note}</p>
-                    </>
-                  );
-                  return (
-                    <li key={a.title}>
-                      {a.href ? (
-                        <a
-                          href={a.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group block px-6 py-5 transition-colors hover:bg-panel sm:px-8"
-                        >
-                          {inner}
-                          <span className="mt-2 inline-flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-dim transition-colors group-hover:text-chalk">
-                            {c.open}
-                            <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" aria-hidden>
-                              <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </span>
-                        </a>
-                      ) : (
-                        <div className="px-6 py-5 sm:px-8">{inner}</div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </Reveal>
-          ))}
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="px-3 pt-20 sm:px-5">
-        <Reveal>
-          <div className="panel relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-14 text-center sm:px-10 sm:py-16">
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(55% 60% at 50% 115%, rgba(255,90,31,0.3), transparent 70%)",
-              }}
-            />
-            <div className="relative">
-              <p className="mono !text-white/50">{c.ctaKicker}</p>
-              <h2 className="font-display mx-auto mt-4 max-w-2xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                {c.ctaH2}
-              </h2>
-              <p className="mx-auto mt-5 max-w-xl text-lg text-white/65">{c.ctaLead}</p>
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                <Link href={contactPath(locale)} className="btn btn-ember">
-                  {t.common.startProject}
-                </Link>
-                <Link href={workPath(locale)} className="btn !bg-white/10 !text-white/85 hover:!bg-white/15">
-                  {t.common.seeWork}
-                </Link>
-              </div>
-              <div className="mt-8">
-                <ObfuscatedEmail className="font-mono text-sm text-white/55 hover:text-white/85" />
-              </div>
+      {/* ── PRESS ─────────────────────────────────────────────────────── */}
+      <section className="rule-t py-16 sm:py-24">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
+          <Reveal>
+            <SectionHead label={c.pressKicker} />
+            <h2 className="font-display d-xl mt-7 max-w-2xl text-balance">{c.pressH2}</h2>
+          </Reveal>
+
+          <div className="mt-12 grid gap-12 lg:grid-cols-2">
+            {pressGroups.map((g) => (
+              <Reveal key={g.label}>
+                <div>
+                  <p className="mono text-ember">{g.label}</p>
+                  <p className="mt-3 max-w-md text-sm leading-relaxed text-faint">{g.blurb}</p>
+                  <ul className="rule-t mt-6">
+                    {g.items.map((item) => {
+                      const inner = (
+                        <>
+                          <div className="flex items-baseline justify-between gap-4">
+                            <span className="mono-flat font-mono text-sm text-chalk">{item.outlet}</span>
+                            <span className="mono shrink-0 text-faint">{item.date}</span>
+                          </div>
+                          <p className="mt-2 text-sm leading-snug text-dim">{item.title}</p>
+                          <p className="mt-1.5 text-xs leading-relaxed text-faint">{item.note}</p>
+                        </>
+                      );
+                      return (
+                        <li key={item.outlet + item.date} className="rule-soft-b py-4">
+                          {item.href ? (
+                            <a
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group block transition-opacity hover:opacity-80"
+                            >
+                              {inner}
+                              <span className="mono mt-2.5 inline-block text-faint transition-colors group-hover:text-ember">
+                                {c.open} ↗
+                              </span>
+                            </a>
+                          ) : (
+                            inner
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CLOSE ─────────────────────────────────────────────────────── */}
+      <section className="rule-t bg-paper text-ink">
+        <div className="mx-auto max-w-[90rem] px-4 py-20 sm:px-8 sm:py-28">
+          <div className="max-w-3xl">
+            <p className="mono flex items-center gap-2 text-rust">
+              <span className="dot bg-live" aria-hidden />
+              {c.stillHere}
+            </p>
+            <h2 className="font-display d-xl mt-7 text-balance">{c.ctaH2}</h2>
+            <p className="lead mt-6 max-w-xl opacity-75">{c.ctaLead}</p>
+            <div className="mt-10 flex flex-wrap items-center gap-6">
+              <Link href={contactPath(locale)} className="btn btn-ember">
+                {c.workWithMe} <span aria-hidden>→</span>
+              </Link>
+              <ObfuscatedEmail className="mono-flat font-mono text-sm underline decoration-rust decoration-2 underline-offset-[6px]" />
             </div>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       <SiteFooter locale={locale} />

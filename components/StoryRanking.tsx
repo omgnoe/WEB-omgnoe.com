@@ -10,7 +10,9 @@ export default function StoryRanking({ ranking }: { ranking: Ranking }) {
     <figure className="panel overflow-hidden">
       <figcaption className="bezel-bar flex-col items-start gap-1">
         <p className="font-display text-sm">{ranking.label}</p>
-        <p className="mono text-faint">{ranking.note}</p>
+        {/* text-dim, not text-faint: the bezel bar is a raised panel and faint
+            only clears AA against the page void, not against this surface. */}
+        <p className="mono text-dim">{ranking.note}</p>
       </figcaption>
 
       <ol>

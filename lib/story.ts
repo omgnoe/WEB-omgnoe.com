@@ -604,3 +604,32 @@ export function getPressGroups(locale: Locale) {
     };
   });
 }
+
+/**
+ * Era bands for /about.
+ *
+ * Grouped by chapter id, never by position, so inserting a chapter does not
+ * silently move it into the wrong era. Labels and titles are translated in
+ * lib/story.i18n.ts under `chrome.eras`, index-aligned with this array.
+ */
+export const eras: { id: string; chapters: string[] }[] = [
+  { id: "camera", chapters: ["fantasy-pictures", "ourluxembourg", "fapic", "pivot"] },
+  { id: "bet", chapters: ["bofrost", "wolt", "umarket"] },
+  { id: "fall", chapters: ["october", "zero", "paid-debt"] },
+  { id: "climb", chapters: ["snj", "gap", "insolvency", "rebuild"] },
+];
+
+/** Chapters grouped into their eras, each keeping its global index. */
+export function getEras(locale: Locale) {
+  const all = getChapters(locale);
+  const indexOf = new Map(all.map((c, i) => [c.id, i]));
+  return eras.map((era) => ({
+    id: era.id,
+    chapters: era.chapters
+      .map((id) => {
+        const ch = all.find((c) => c.id === id);
+        return ch ? { chapter: ch, n: (indexOf.get(id) ?? 0) + 1 } : null;
+      })
+      .filter((x): x is { chapter: Chapter; n: number } => x !== null),
+  }));
+}
