@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import StatusRail from "@/components/StatusRail";
 import WorkCard from "@/components/WorkCard";
 import { getWorkLocalised } from "@/lib/projects";
 import { getServices, type Service } from "@/lib/services";
@@ -89,26 +90,27 @@ export default function ServiceDetailView({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <StatusRail locale={locale} />
       <SiteHeader locale={locale} pageKey={{ kind: "service", canonical: s.slug }} />
 
       {/* HERO */}
-      <section className="stage relative overflow-hidden">
-        <div className="dots absolute inset-0" />
+      <section className="powered relative overflow-hidden">
+        <div className="absolute inset-0" />
         <div className="mx-auto max-w-6xl px-5 pb-12 pt-14 sm:pt-18">
-          <nav className="rise flex items-center gap-2 text-xs text-muted" aria-label={t.common.breadcrumb}>
-            <Link href={homePath(locale)} className="hover:text-ink">{t.common.home}</Link>
+          <nav className="rise flex items-center gap-2 text-xs text-dim" aria-label={t.common.breadcrumb}>
+            <Link href={homePath(locale)} className="hover:text-chalk">{t.common.home}</Link>
             <span>/</span>
-            <Link href={servicesPath(locale)} className="hover:text-ink">{t.nav.services}</Link>
+            <Link href={servicesPath(locale)} className="hover:text-chalk">{t.nav.services}</Link>
             <span>/</span>
-            <span className="text-ink">{s.name}</span>
+            <span className="text-chalk">{s.name}</span>
           </nav>
 
           <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
             <div className="rise">
               <div className="flex items-start gap-5">
                 <span
-                  className="hidden h-16 w-16 shrink-0 place-items-center rounded-3xl bg-card shadow-card sm:grid"
-                  style={{ color: s.accent === "#171410" ? undefined : s.accent }}
+                  className="hidden h-16 w-16 shrink-0 place-items-center rounded-[3px] bg-panel sm:grid"
+                  style={{ color: s.accent }}
                 >
                   <ServiceIcon name={s.icon} className="h-7 w-7" />
                 </span>
@@ -116,13 +118,13 @@ export default function ServiceDetailView({
                   <h1 className="font-display max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
                     {s.title}
                   </h1>
-                  <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">{s.short}</p>
+                  <p className="mt-4 max-w-2xl text-lg leading-relaxed text-dim">{s.short}</p>
                 </div>
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <ObfuscatedEmail className="btn btn-accent" label={t.common.startConversation} />
-                <Link href={workAnchor(locale)} className="btn btn-ghost">
+                <ObfuscatedEmail className="btn btn-ember" label={t.common.startConversation} />
+                <Link href={workAnchor(locale)} className="btn btn-wire">
                   {t.common.seeWork}
                 </Link>
               </div>
@@ -130,7 +132,7 @@ export default function ServiceDetailView({
 
             {s.photo && (
               <div className="rise relative mx-auto hidden w-full max-w-xs lg:block">
-                <div className="card card-lg overflow-hidden p-2 shadow-pop" style={{ transform: "rotate(2deg)" }}>
+                <div className="panel panel overflow-hidden p-2" style={{ transform: "rotate(2deg)" }}>
                   <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
                     <Image
                       src={s.photo}
@@ -152,27 +154,27 @@ export default function ServiceDetailView({
       <section className="mx-auto max-w-6xl px-5 py-14">
         <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
           <Reveal>
-            <div className="space-y-5 text-lg leading-relaxed text-muted">
+            <div className="space-y-5 text-lg leading-relaxed text-dim">
               {s.intro.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
             </div>
 
-            <div className="card mt-10 p-6 sm:p-8">
-              <p className="kicker">{t.service.trackRecord}</p>
+            <div className="panel mt-10 p-6 sm:p-8">
+              <p className="mono">{t.service.trackRecord}</p>
               <p className="mt-3 leading-relaxed">{s.proof}</p>
             </div>
           </Reveal>
 
           <Reveal delay={120}>
-            <div className="card p-6 sm:p-7">
-              <p className="kicker">{t.service.whatYouGet}</p>
+            <div className="panel p-6 sm:p-7">
+              <p className="mono">{t.service.whatYouGet}</p>
               <ul className="mt-5 space-y-3.5">
                 {s.deliverables.map((d) => (
                   <li key={d} className="flex items-start gap-3 text-sm leading-relaxed">
                     <span
                       className="mt-1 grid h-4.5 w-4.5 shrink-0 place-items-center rounded-full"
-                      style={{ background: `${s.accent === "#171410" ? "#ff5a1f" : s.accent}1c`, color: s.accent === "#171410" ? "#ff5a1f" : s.accent }}
+                      style={{ background: `${s.accent}1c`, color: s.accent }}
                     >
                       <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none" aria-hidden>
                         <path d="M2.5 6.5l2.5 2.5 4.5-5.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -182,25 +184,25 @@ export default function ServiceDetailView({
                   </li>
                 ))}
               </ul>
-              <ObfuscatedEmail className="btn btn-ink mt-7 w-full" label={t.common.getQuote} />
+              <ObfuscatedEmail className="btn btn-chalk mt-7 w-full" label={t.common.getQuote} />
             </div>
           </Reveal>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="border-y border-line bg-paper-deep/50">
+      <section className="border-y border-line bg-panel-2">
         <div className="mx-auto max-w-6xl px-5 py-16">
           <Reveal>
-            <p className="kicker">{t.service.faqKicker}</p>
+            <p className="mono">{t.service.faqKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight">{t.service.faqH2}</h2>
           </Reveal>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {s.faq.map((f, i) => (
               <Reveal key={f.q} delay={i * 80}>
-                <div className="card h-full p-6">
+                <div className="panel h-full p-6">
                   <h3 className="font-display font-bold leading-snug">{f.q}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted">{f.a}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-dim">{f.a}</p>
                 </div>
               </Reveal>
             ))}
@@ -213,12 +215,12 @@ export default function ServiceDetailView({
         <section className="mx-auto max-w-6xl px-5 py-16">
           <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="kicker">{t.service.proofKicker}</p>
+              <p className="mono">{t.service.proofKicker}</p>
               <h2 className="font-display mt-3 text-3xl font-bold tracking-tight">
                 {t.service.proofH2}
               </h2>
             </div>
-            <Link href={workPath(locale)} className="btn btn-ghost">
+            <Link href={workPath(locale)} className="btn btn-wire">
               {t.common.allWork}
             </Link>
           </Reveal>
@@ -234,13 +236,13 @@ export default function ServiceDetailView({
 
       {/* OTHER SERVICES */}
       <section className="mx-auto max-w-6xl px-5 pb-16">
-        <p className="kicker mb-5">{t.service.otherServices}</p>
+        <p className="mono mb-5">{t.service.otherServices}</p>
         <div className="flex flex-wrap gap-2">
           {otherServices.map((o) => (
             <Link
               key={o.slug}
               href={servicePath(locale, o.slug)}
-              className="pill !py-2 font-medium transition-colors hover:border-line-strong"
+              className="tag !py-2 font-medium transition-colors hover:border-line-strong"
             >
               <ServiceIcon name={o.icon} className="h-3.5 w-3.5" />
               {o.name}
@@ -252,7 +254,7 @@ export default function ServiceDetailView({
       {/* CTA */}
       <section className="px-3 sm:px-5">
         <Reveal>
-          <div className="card-night relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-16 text-center">
+          <div className="panel relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-16 text-center">
             <div
               className="pointer-events-none absolute inset-0"
               style={{ background: "radial-gradient(55% 70% at 50% 120%, rgba(255,90,31,0.3), transparent 70%)" }}
@@ -262,7 +264,7 @@ export default function ServiceDetailView({
             </h2>
             <p className="relative mx-auto mt-4 max-w-md text-white/65">{t.service.ctaLead}</p>
             <div className="relative mt-7 flex flex-wrap items-center justify-center gap-3">
-              <Link href={`${homePath(locale)}#contact`.replace("//#", "/#")} className="btn btn-accent !px-7 !py-3.5">
+              <Link href={`${homePath(locale)}#contact`.replace("//#", "/#")} className="btn btn-ember !px-7 !py-3.5">
                 {t.common.sendInquiry}
               </Link>
               <ObfuscatedEmail className="btn !bg-white/10 !text-white/85 font-mono !text-sm hover:!bg-white/15" />

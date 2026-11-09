@@ -4,6 +4,7 @@ import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import Reveal from "@/components/Reveal";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import StatusRail from "@/components/StatusRail";
 import StoryRanking from "@/components/StoryRanking";
 import StoryShots from "@/components/StoryShots";
 import {
@@ -89,36 +90,37 @@ export default function AboutView({ locale }: { locale: Locale }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
+      <StatusRail locale={locale} />
       <SiteHeader locale={locale} pageKey={{ kind: "about" }} />
 
       {/* HERO */}
-      <section className="stage relative overflow-hidden">
-        <div className="dots absolute inset-0" />
+      <section className="powered relative overflow-hidden">
+        <div className="absolute inset-0" />
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-14 pt-14 sm:pt-20 lg:grid-cols-[1.2fr_0.8fr]">
           <div className="rise min-w-0">
-            <p className="kicker">{c.kicker}</p>
+            <p className="mono">{c.kicker}</p>
             <h1 className="font-display mt-5 max-w-2xl text-[2.6rem] font-bold leading-[1.05] tracking-tight sm:text-6xl">
               {c.h1a}{" "}
               <span className="underline-swipe">{c.h1b}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{c.lead}</p>
-            <p className="mt-4 max-w-xl leading-relaxed text-muted">{c.leadNote}</p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-dim">{c.lead}</p>
+            <p className="mt-4 max-w-xl leading-relaxed text-dim">{c.leadNote}</p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#cv" className="btn btn-accent">
+              <a href="#cv" className="btn btn-ember">
                 {c.jumpCv}
                 <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" fill="none" aria-hidden>
                   <path d="M8 3v10m0 0 4-4m-4 4-4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <Link href={contactPath(locale)} className="btn btn-ghost">
+              <Link href={contactPath(locale)} className="btn btn-wire">
                 {c.workWithMe}
               </Link>
             </div>
           </div>
 
           <div className="relative mx-auto w-full max-w-sm">
-            <div className="card card-lg relative overflow-hidden p-2.5">
+            <div className="panel panel relative overflow-hidden p-2.5">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem]">
                 <Image
                   src="/me/noe-suit.jpg"
@@ -132,14 +134,14 @@ export default function AboutView({ locale }: { locale: Locale }) {
               <dl className="divide-y divide-line px-4 py-1">
                 {facts.map((f) => (
                   <div key={f.k} className="flex items-baseline justify-between gap-4 py-2.5">
-                    <dt className="kicker !text-[0.62rem]">{f.k}</dt>
+                    <dt className="mono !text-[0.62rem]">{f.k}</dt>
                     <dd className="text-right text-xs font-semibold">{f.v}</dd>
                   </div>
                 ))}
               </dl>
             </div>
             <span
-              className="floaty pill absolute -left-2 top-8 z-10 !bg-card !px-3.5 !py-2 text-xs font-semibold shadow-card sm:-left-6"
+              className="tag absolute -left-2 top-8 z-10 !bg-panel !px-3.5 !py-2 text-xs font-semibold sm:-left-6"
               style={{ "--float-rot": "-5deg" } as React.CSSProperties}
             >
               {c.stillHere}
@@ -149,10 +151,10 @@ export default function AboutView({ locale }: { locale: Locale }) {
       </section>
 
       {/* STORY */}
-      <section className="border-y border-line bg-paper-deep/50">
+      <section className="border-y border-line bg-panel-2">
         <div className="mx-auto max-w-5xl px-5 py-20 sm:py-24">
           <Reveal className="mb-12">
-            <p className="kicker">{c.storyKicker}</p>
+            <p className="mono">{c.storyKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               {c.storyH2(spellCountIn(locale, chapters.length))}
             </h2>
@@ -177,11 +179,11 @@ export default function AboutView({ locale }: { locale: Locale }) {
                       className={`absolute left-0 top-8 hidden h-[15px] w-[15px] rounded-full border-2 sm:block ${
                         dark
                           ? "border-ink bg-ink"
-                          : "border-accent bg-paper"
+                          : "border-ember bg-panel-2"
                       }`}
                     />
                     <article
-                      className={`p-6 sm:p-9 ${dark ? "card-night card-lg shadow-pop" : "card card-lg"}`}
+                      className={`panel p-6 sm:p-9 ${dark ? "border-ember/40 bg-panel-2" : ""}`}
                     >
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
                         <span
@@ -193,7 +195,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
                         </span>
                         <span
                           className={`font-mono text-[0.68rem] uppercase tracking-[0.22em] ${
-                            dark ? "text-white/45" : "text-muted"
+                            dark ? "text-ember" : "text-faint"
                           }`}
                         >
                           {ch.period}
@@ -210,7 +212,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
 
                       <div
                         className={`mt-4 space-y-4 leading-relaxed ${
-                          dark ? "text-white/70" : "text-muted"
+                          dark ? "text-chalk" : "text-dim"
                         }`}
                       >
                         {ch.body.map((p) => (
@@ -230,7 +232,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
                         >
                           <p
                             className={`font-display text-lg font-semibold leading-snug ${
-                              dark ? "text-white" : "text-ink"
+                              dark ? "text-chalk" : "text-chalk"
                             }`}
                           >
                             {ch.pull}
@@ -238,7 +240,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
                           {ch.pullCite && (
                             <cite
                               className={`mt-2 block font-mono text-[0.62rem] uppercase not-italic tracking-[0.14em] ${
-                                dark ? "text-white/40" : "text-muted"
+                                dark ? "text-faint" : "text-faint"
                               }`}
                             >
                               {ch.pullCite}
@@ -258,7 +260,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
                               className={`btn !py-2.5 text-sm ${
                                 dark
                                   ? "!bg-white/10 !text-white/85 hover:!bg-white/15"
-                                  : "btn-ghost"
+                                  : "btn-wire"
                               }`}
                             >
                               {l.label}
@@ -276,7 +278,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
                             <Link
                               key={pr.slug}
                               href={workItemPath(locale, pr.slug)}
-                              className="pill !py-1.5 font-semibold transition-colors hover:border-line-strong"
+                              className="tag !py-1.5 font-semibold transition-colors hover:border-line-strong"
                             >
                               {pr.name}
                             </Link>
@@ -296,14 +298,14 @@ export default function AboutView({ locale }: { locale: Locale }) {
       <section className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
         <div className="grid items-start gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           <Reveal>
-            <p className="kicker">{c.lessonsKicker}</p>
+            <p className="mono">{c.lessonsKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               {c.lessonsH2}
             </h2>
             <ol className="mt-8 space-y-4">
               {lessons.map((l, i) => (
-                <li key={l} className="card flex gap-4 p-5">
-                  <span className="font-mono text-xs text-accent">
+                <li key={l} className="panel flex gap-4 p-5">
+                  <span className="font-mono text-xs text-ember">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="leading-relaxed">{l}</span>
@@ -313,7 +315,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
           </Reveal>
 
           <Reveal delay={100} className="lg:sticky lg:top-24">
-            <div className="card card-lg overflow-hidden p-2.5" style={{ transform: "rotate(1.5deg)" }}>
+            <div className="panel panel overflow-hidden p-2.5" style={{ transform: "rotate(1.5deg)" }}>
               <div className="relative aspect-[3/4] overflow-hidden rounded-[1.6rem]">
                 <Image
                   src="/me/noe-archive.jpg"
@@ -325,7 +327,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
               </div>
             </div>
 
-            <div className="card-night card-lg mt-10 p-6 sm:p-8">
+            <div className="panel panel mt-10 p-6 sm:p-8">
               <p className="font-display text-sm font-bold text-lime-300">{c.offClockKicker}</p>
               <p className="mt-4 leading-relaxed text-white/70">{c.offClock}</p>
             </div>
@@ -334,10 +336,10 @@ export default function AboutView({ locale }: { locale: Locale }) {
       </section>
 
       {/* CV */}
-      <section id="cv" className="border-y border-line bg-paper-deep/50 scroll-mt-24">
+      <section id="cv" className="border-y border-line bg-panel-2 scroll-mt-24">
         <div className="mx-auto max-w-5xl px-5 py-20 sm:py-24">
           <Reveal className="mb-12">
-            <p className="kicker">{c.cvKicker}</p>
+            <p className="mono">{c.cvKicker}</p>
             <h2 className="font-display mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               {c.cvH2}
             </h2>
@@ -345,21 +347,21 @@ export default function AboutView({ locale }: { locale: Locale }) {
 
           {/* Experience */}
           <Reveal className="mb-14">
-            <h3 className="kicker mb-6">{c.experience}</h3>
+            <h3 className="mono mb-6">{c.experience}</h3>
             <div className="space-y-4">
               {roles.map((r) => (
-                <article key={r.title + r.period} className="card p-6 sm:p-8">
+                <article key={r.title + r.period} className="panel p-6 sm:p-8">
                   <div className="grid gap-4 sm:grid-cols-[150px_1fr]">
-                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent sm:pt-1">
+                    <p className="font-mono text-xs uppercase tracking-[0.18em] text-ember sm:pt-1">
                       {r.period}
                     </p>
                     <div>
                       <h4 className="font-display text-xl font-bold leading-tight">{r.title}</h4>
-                      <p className="mt-1 text-sm text-muted">{r.org}</p>
+                      <p className="mt-1 text-sm text-dim">{r.org}</p>
                       <ul className="mt-4 space-y-2.5">
                         {r.bullets.map((b) => (
-                          <li key={b.slice(0, 24)} className="flex gap-3 text-sm leading-relaxed text-muted">
-                            <span className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                          <li key={b.slice(0, 24)} className="flex gap-3 text-sm leading-relaxed text-dim">
+                            <span className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-ember" />
                             {b}
                           </li>
                         ))}
@@ -373,11 +375,11 @@ export default function AboutView({ locale }: { locale: Locale }) {
 
           {/* Stack */}
           <Reveal className="mb-14">
-            <h3 className="kicker mb-6">{c.stackTools}</h3>
-            <div className="card divide-y divide-line overflow-hidden">
+            <h3 className="mono mb-6">{c.stackTools}</h3>
+            <div className="panel divide-y divide-line overflow-hidden">
               {skillGroups.map((g) => (
                 <div key={g.label} className="grid gap-1 px-6 py-4 sm:grid-cols-[150px_1fr] sm:gap-4 sm:px-8">
-                  <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-accent">
+                  <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ember">
                     {g.label}
                   </p>
                   <p className="text-sm">{g.items}</p>
@@ -388,12 +390,12 @@ export default function AboutView({ locale }: { locale: Locale }) {
 
           {/* Languages */}
           <Reveal className="mb-14">
-            <h3 className="kicker mb-6">{c.languages}</h3>
+            <h3 className="mono mb-6">{c.languages}</h3>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {languages.map((l) => (
-                <div key={l.name} className="card p-5">
+                <div key={l.name} className="panel p-5">
                   <p className="font-display text-lg font-bold leading-tight">{l.name}</p>
-                  <p className="mt-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-accent">
+                  <p className="mt-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-ember">
                     {l.level}
                   </p>
                 </div>
@@ -404,29 +406,29 @@ export default function AboutView({ locale }: { locale: Locale }) {
           {/* Education + credentials */}
           <div className="grid gap-10 lg:grid-cols-2">
             <Reveal>
-              <h3 className="kicker mb-6">{c.education}</h3>
-              <ul className="card divide-y divide-line overflow-hidden">
+              <h3 className="mono mb-6">{c.education}</h3>
+              <ul className="panel divide-y divide-line overflow-hidden">
                 {education.map((e) => (
                   <li key={e.title} className="px-6 py-4 sm:px-8">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                       <p className="font-semibold leading-tight">{e.title}</p>
-                      <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-accent">
+                      <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ember">
                         {e.period}
                       </p>
                     </div>
-                    <p className="mt-1 text-sm text-muted">{e.org}</p>
+                    <p className="mt-1 text-sm text-dim">{e.org}</p>
                   </li>
                 ))}
               </ul>
             </Reveal>
 
             <Reveal delay={100}>
-              <h3 className="kicker mb-6">{c.credentials}</h3>
-              <ul className="card divide-y divide-line overflow-hidden">
+              <h3 className="mono mb-6">{c.credentials}</h3>
+              <ul className="panel divide-y divide-line overflow-hidden">
                 {credentials.map((c) => (
                   <li key={c.title} className="px-6 py-4 sm:px-8">
                     <p className="font-semibold leading-tight">{c.title}</p>
-                    <p className="mt-1 text-sm text-muted">{c.org}</p>
+                    <p className="mt-1 text-sm text-dim">{c.org}</p>
                     <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
                       {c.links.map((l) => (
                         <a
@@ -434,7 +436,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
                           href={l.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] font-semibold text-accent hover:text-accent-deep"
+                          className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] font-semibold text-ember hover:text-ember"
                         >
                           {l.label}
                           <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" aria-hidden>
@@ -452,22 +454,22 @@ export default function AboutView({ locale }: { locale: Locale }) {
           {/* Press */}
           {pressGroups.map((g, gi) => (
             <Reveal key={g.label} className="mt-14" delay={gi * 80}>
-              <h3 className="kicker mb-2">{g.label}</h3>
-              <p className="mb-6 max-w-xl text-sm text-muted">{g.blurb}</p>
-              <ul className="card divide-y divide-line overflow-hidden">
+              <h3 className="mono mb-2">{g.label}</h3>
+              <p className="mb-6 max-w-xl text-sm text-dim">{g.blurb}</p>
+              <ul className="panel divide-y divide-line overflow-hidden">
                 {g.items.map((a) => {
                   const inner = (
                     <>
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                        <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-accent">
+                        <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ember">
                           {a.outlet}
                         </span>
-                        <span className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-muted">
+                        <span className="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-dim">
                           {a.date}
                         </span>
                       </div>
                       <p className="mt-1.5 font-semibold leading-snug">{a.title}</p>
-                      <p className="mt-1 text-sm text-muted">{a.note}</p>
+                      <p className="mt-1 text-sm text-dim">{a.note}</p>
                     </>
                   );
                   return (
@@ -477,10 +479,10 @@ export default function AboutView({ locale }: { locale: Locale }) {
                           href={a.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group block px-6 py-5 transition-colors hover:bg-paper sm:px-8"
+                          className="group block px-6 py-5 transition-colors hover:bg-panel sm:px-8"
                         >
                           {inner}
-                          <span className="mt-2 inline-flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted transition-colors group-hover:text-ink">
+                          <span className="mt-2 inline-flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-dim transition-colors group-hover:text-chalk">
                             {c.open}
                             <svg viewBox="0 0 16 16" className="h-2.5 w-2.5" fill="none" aria-hidden>
                               <path d="M6 3h7v7M13 3 4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -502,7 +504,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
       {/* CTA */}
       <section className="px-3 pt-20 sm:px-5">
         <Reveal>
-          <div className="card-night relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-14 text-center sm:px-10 sm:py-16">
+          <div className="panel relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-14 text-center sm:px-10 sm:py-16">
             <div
               className="pointer-events-none absolute inset-0"
               style={{
@@ -511,13 +513,13 @@ export default function AboutView({ locale }: { locale: Locale }) {
               }}
             />
             <div className="relative">
-              <p className="kicker !text-white/50">{c.ctaKicker}</p>
+              <p className="mono !text-white/50">{c.ctaKicker}</p>
               <h2 className="font-display mx-auto mt-4 max-w-2xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
                 {c.ctaH2}
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-lg text-white/65">{c.ctaLead}</p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                <Link href={contactPath(locale)} className="btn btn-accent">
+                <Link href={contactPath(locale)} className="btn btn-ember">
                   {t.common.startProject}
                 </Link>
                 <Link href={workPath(locale)} className="btn !bg-white/10 !text-white/85 hover:!bg-white/15">

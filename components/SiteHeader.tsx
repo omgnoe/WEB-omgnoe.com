@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   aboutPath,
   contactPath,
@@ -18,6 +18,10 @@ import {
 } from "@/lib/i18n";
 import { dict } from "@/lib/ui";
 
+/**
+ * No floating pill. The header is a hairline band welded to the top of the page,
+ * because the whole layout is drawn from rules and this one should read the same.
+ */
 export default function SiteHeader({
   locale,
   pageKey,
@@ -29,118 +33,122 @@ export default function SiteHeader({
   const [open, setOpen] = useState(false);
   const t = dict(locale);
 
+  // A phone that rotates to landscape while the sheet is open should not be
+  // left with a locked body scroll.
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   const nav = [
     { href: workPath(locale), label: t.nav.work },
     { href: servicesPath(locale), label: t.nav.services },
     { href: aboutPath(locale), label: t.nav.about },
-    { href: contactPath(locale), label: t.nav.contact },
   ];
 
   const others = locales.filter((l) => l !== locale);
 
   return (
-    <header className="sticky top-0 z-50 px-3 pt-3 sm:px-5">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex h-14 items-center justify-between rounded-full border border-line bg-card/85 px-4 shadow-card backdrop-blur-xl sm:px-6">
-          <Link
-            href={homePath(locale)}
-            className="flex items-center"
-            aria-label={t.menu.home}
-            onClick={() => setOpen(false)}
-          >
-            <Image
-              src="/omgnoe-logo.png"
-              alt="omgnoe"
-              width={144}
-              height={34}
-              priority
-              className="logo-dark h-5 w-auto"
-            />
-          </Link>
-          <nav className="hidden items-center gap-7 text-sm text-muted sm:flex">
-            {nav.map((n) => (
-              <Link key={n.href} href={n.href} className="transition-colors hover:text-ink">
-                {n.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="flex items-center gap-2">
-            {/* Language switcher: same page, other language. */}
-            <div
-              className="hidden items-center gap-1 rounded-full border border-line px-1.5 py-1 sm:flex"
-              aria-label={t.menu.language}
+    <header className="sticky top-0 z-50 rule-b bg-void/85 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-[90rem] items-center gap-6 px-4 sm:px-8">
+        <Link
+          href={homePath(locale)}
+          aria-label={t.menu.home}
+          onClick={() => setOpen(false)}
+          className="flex items-center"
+        >
+          <Image
+            src="/omgnoe-logo.png"
+            alt="omgnoe"
+            width={144}
+            height={34}
+            priority
+            className="h-4 w-auto"
+          />
+        </Link>
+
+        <nav className="ml-auto hidden items-center gap-8 sm:flex">
+          {nav.map((n) => (
+            <Link key={n.href} href={n.href} className="mono text-dim transition-colors hover:text-chalk">
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div
+          className="ml-auto flex items-center gap-1 sm:ml-0 sm:border-l sm:border-line sm:pl-6"
+          aria-label={t.menu.language}
+        >
+          <span className="mono px-1 text-chalk">{LOCALE_SHORT[locale]}</span>
+          {others.map((l) => (
+            <Link
+              key={l}
+              href={pathFor(l, pageKey)}
+              hrefLang={l}
+              lang={l}
+              title={LOCALE_LABEL[l]}
+              className="mono px-1 text-faint transition-colors hover:text-chalk"
             >
-              <span className="px-1.5 text-xs font-bold text-ink">{LOCALE_SHORT[locale]}</span>
-              {others.map((l) => (
-                <Link
-                  key={l}
-                  href={pathFor(l, pageKey)}
-                  hrefLang={l}
-                  lang={l}
-                  title={LOCALE_LABEL[l]}
-                  className="rounded-full px-1.5 text-xs font-medium text-muted transition-colors hover:text-ink"
-                >
-                  {LOCALE_SHORT[l]}
-                </Link>
-              ))}
-            </div>
+              {LOCALE_SHORT[l]}
+            </Link>
+          ))}
+        </div>
+
+        {/* `.btn` carries display:inline-flex outside Tailwind's layers, so a
+            bare `hidden` on the Link would lose the cascade. Wrap it instead. */}
+        <div className="hidden sm:block">
+          <Link href={contactPath(locale)} className="btn btn-ember !py-2.5">
+            {t.nav.hire}
+          </Link>
+        </div>
+
+        <button
+          type="button"
+          aria-label={open ? t.menu.close : t.menu.open}
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+          className="grid h-9 w-9 place-items-center border border-line text-chalk sm:hidden"
+        >
+          <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" aria-hidden>
+            {open ? (
+              <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            ) : (
+              <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            )}
+          </svg>
+        </button>
+      </div>
+
+      {open && (
+        <nav className="rule-t bg-void sm:hidden">
+          {nav.map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              onClick={() => setOpen(false)}
+              className="rule-soft-b flex items-center justify-between px-4 py-4 text-chalk"
+            >
+              <span className="font-display d-md">{n.label}</span>
+              <span className="mono text-faint" aria-hidden>
+                →
+              </span>
+            </Link>
+          ))}
+          <div className="px-4 py-4">
             <Link
               href={contactPath(locale)}
-              className="btn btn-ink !px-4 !py-2 text-sm"
               onClick={() => setOpen(false)}
+              className="btn btn-ember w-full"
             >
               {t.nav.hire}
             </Link>
-            <button
-              type="button"
-              aria-label={open ? t.menu.close : t.menu.open}
-              aria-expanded={open}
-              onClick={() => setOpen((o) => !o)}
-              className="grid h-9 w-9 place-items-center rounded-full border border-line text-ink sm:hidden"
-            >
-              <svg viewBox="0 0 20 20" className="h-4.5 w-4.5" fill="none" aria-hidden>
-                {open ? (
-                  <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                ) : (
-                  <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                )}
-              </svg>
-            </button>
           </div>
-        </div>
-
-        {open && (
-          <nav className="card mt-2 overflow-hidden !rounded-3xl p-2 sm:hidden">
-            {nav.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-2xl px-4 py-3 text-base font-medium text-ink transition-colors hover:bg-paper"
-              >
-                {n.label}
-              </Link>
-            ))}
-            <div className="mt-1 flex items-center gap-2 border-t border-line px-4 pt-3 pb-1">
-              <span className="text-xs text-muted">{t.menu.language}</span>
-              {locales.map((l) => (
-                <Link
-                  key={l}
-                  href={pathFor(l, pageKey)}
-                  hrefLang={l}
-                  lang={l}
-                  onClick={() => setOpen(false)}
-                  className={`rounded-full px-2.5 py-1 text-xs font-semibold transition-colors ${
-                    l === locale ? "bg-ink text-white" : "text-muted hover:text-ink"
-                  }`}
-                >
-                  {LOCALE_SHORT[l]}
-                </Link>
-              ))}
-            </div>
-          </nav>
-        )}
-      </div>
+        </nav>
+      )}
     </header>
   );
 }

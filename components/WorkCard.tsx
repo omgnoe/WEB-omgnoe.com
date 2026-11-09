@@ -20,7 +20,7 @@ export default function WorkCard({ item, locale }: { item: WorkItem; locale: Loc
 
   return (
     <Link href={workItemPath(locale, item.slug)} className="group block h-full">
-      <article className="card card-hover relative flex h-full flex-col overflow-hidden">
+      <article className="panel panel-hover relative flex h-full flex-col overflow-hidden">
         {/* Screenshot in a browser frame */}
         <div className="p-2.5 pb-0">
           <div className="overflow-hidden rounded-[1.15rem] border border-line">
@@ -29,7 +29,7 @@ export default function WorkCard({ item, locale }: { item: WorkItem; locale: Loc
               <span className="browser-dot" />
               <span className="browser-dot" />
               {host && (
-                <span className="ml-2 truncate font-mono text-[0.65rem] text-muted">{host}</span>
+                <span className="ml-2 truncate font-mono text-[0.65rem] text-dim">{host}</span>
               )}
             </div>
             <div className="shot-frame relative aspect-[16/10] w-full">
@@ -64,7 +64,7 @@ export default function WorkCard({ item, locale }: { item: WorkItem; locale: Loc
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
               {item.logo && (
-                <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl border border-line bg-paper">
+                <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-[3px] border border-line bg-panel">
                   <Image
                     src={item.logo}
                     alt=""
@@ -76,31 +76,31 @@ export default function WorkCard({ item, locale }: { item: WorkItem; locale: Loc
               )}
               <div>
                 <h3 className="font-display text-lg font-bold leading-tight">{item.name}</h3>
-                <p className="text-xs text-muted">{item.tagline}</p>
+                <p className="text-xs text-dim">{item.tagline}</p>
               </div>
             </div>
             <span
-              className={`pill shrink-0 !text-[0.65rem] font-semibold uppercase tracking-wide ${
-                own ? "!border-transparent !bg-accent !text-white" : "!bg-paper text-muted"
+              className={`tag shrink-0 !text-[0.65rem] font-semibold uppercase tracking-wide ${
+                own ? "!border-transparent !bg-ember !text-ink" : "text-dim"
               }`}
             >
               {own ? t.common.ownProduct : t.common.clientWork}
             </span>
           </div>
 
-          <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">{item.description}</p>
+          <p className="mt-4 flex-1 text-sm leading-relaxed text-dim">{item.description}</p>
 
           <div className="mt-4 flex flex-wrap gap-1.5">
             {item.tags.slice(0, 4).map((t) => (
-              <span key={t} className="pill pill-muted !py-1 !text-[0.7rem]">
+              <span key={t} className="tag tag !py-1 !text-[0.7rem]">
                 {t}
               </span>
             ))}
           </div>
 
-          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-ink">
+          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-chalk">
             {t.common.viewCase}
-            <span className="grid h-6 w-6 place-items-center rounded-full bg-paper transition-all group-hover:bg-accent group-hover:text-white">
+            <span className="grid h-6 w-6 place-items-center rounded-full bg-panel transition-all group-hover:bg-ember group-hover:text-white">
               <svg viewBox="0 0 16 16" className="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" aria-hidden>
                 <path d="M3 8h10m0 0-4-4m4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

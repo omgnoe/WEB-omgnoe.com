@@ -1,370 +1,474 @@
 @import "tailwindcss";
 
+/**
+ * THE OPERATOR
+ * ---------------------------------------------------------------------------
+ * omgnoe.com does not look like a portfolio. It looks like a system somebody
+ * runs, because that is the claim the site is making. Machined surfaces, hairline
+ * rules edge to edge, a monospace index on everything, and one ember accent.
+ *
+ * House rule carried over from BoxBee: never bake a colour into a reusable look
+ * class that will later sit next to a Tailwind colour utility. Plain CSS outside
+ * Tailwind's layers wins over `text-*`, and that fight is always lost silently.
+ * Colour lives in utilities; these classes own structure, rhythm and motion.
+ */
+
 @theme {
-  /* Warm studio-light palette */
-  --color-paper: #f2efe8;
-  --color-paper-deep: #eae6dc;
-  --color-card: #ffffff;
-  --color-ink: #171410;
-  --color-muted: #716c61;
-  --color-line: rgba(23, 20, 16, 0.1);
-  --color-line-strong: rgba(23, 20, 16, 0.18);
+  /* Substrate */
+  --color-void: #0a0b0c;
+  --color-panel: #101214;
+  --color-panel-2: #16191c;
+  --color-panel-3: #1d2124;
 
-  --color-accent: #ff5a1f;
-  --color-accent-deep: #e64a12;
-  --color-accent-soft: #ffe9df;
+  /* Hairlines. The whole layout is built from these. */
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-line-soft: rgba(255, 255, 255, 0.055);
+  --color-line-strong: rgba(255, 255, 255, 0.2);
 
-  --color-night: #17140f;
-  --color-night-soft: #221e17;
-  --color-night-line: rgba(255, 255, 255, 0.12);
+  /* Text, warm so the black never reads blue */
+  --color-chalk: #eceae5;
+  --color-dim: #9a9b9c;
+  /* 4.8:1 on the void. #63666a looked right and failed AA at 3.41:1. */
+  --color-faint: #7e8186;
 
-  --font-sans: var(--font-instrument);
-  --font-display: var(--font-bricolage);
-  --font-mono: var(--font-geist-mono);
+  /* One accent. Ember, carried over from the old site so the brand survives. */
+  --color-ember: #ff5a1f;
+  --color-ember-deep: #e8450f;
+  --color-ember-wash: rgba(255, 90, 31, 0.12);
+  /* Ember only reaches 2.79:1 on the paper block, so small text there uses
+     this burnt variant instead, which clears AA at 5.3:1. */
+  --color-rust: #b23c10;
 
-  --radius-card: 1.75rem;
-  --radius-card-lg: 2.25rem;
+  /* Semantic only: a running system is green, never decoration. */
+  --color-live: #43d17f;
 
-  --shadow-card: 0 1px 2px rgba(23, 20, 16, 0.04), 0 10px 30px -12px rgba(23, 20, 16, 0.12);
-  --shadow-card-hover: 0 2px 4px rgba(23, 20, 16, 0.05), 0 24px 50px -16px rgba(23, 20, 16, 0.2);
-  --shadow-pop: 0 30px 70px -20px rgba(23, 20, 16, 0.35);
+  /* The one light surface on the site is the thing we want clicked. */
+  --color-paper: #f4f2ed;
+  --color-ink: #0a0b0c;
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  --radius-machined: 3px;
 }
 
 html {
   scroll-behavior: smooth;
+  background: var(--color-void);
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-void);
+  color: var(--color-chalk);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
+
+::selection {
+  background: var(--color-ember);
+  color: #fff;
+}
+
+/* ── Type ──────────────────────────────────────────────────────────────── */
 
 .font-display {
   font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
 }
 
-/* ── Surfaces ─────────────────────────────────────────────── */
-.card {
-  background: var(--color-card);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
+/* Display sizes. Each one clamps so nothing ever needs a breakpoint fix. */
+.d-hero   { font-size: clamp(2.65rem, 8.2vw, 7.5rem); }
+.d-xl     { font-size: clamp(2.1rem, 5.6vw, 4.25rem); }
+.d-lg     { font-size: clamp(1.75rem, 4vw, 2.9rem); }
+.d-md     { font-size: clamp(1.4rem, 2.6vw, 2rem); }
+
+/* The machine voice. Everything indexed, labelled or measured wears this. */
+.mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.mono-sm { font-size: 0.625rem; letter-spacing: 0.16em; }
+.mono-flat { text-transform: none; letter-spacing: 0.02em; }
+
+/* Tabular figures wherever numbers sit in a column and must not dance. */
+.tnum { font-variant-numeric: tabular-nums; }
+
+.lead {
+  font-size: clamp(1rem, 1.35vw, 1.1875rem);
+  line-height: 1.6;
 }
 
-.card-lg {
-  border-radius: var(--radius-card-lg);
-}
+/* ── Rules: the structural vocabulary ──────────────────────────────────── */
 
-.card-hover {
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease,
-    border-color 0.35s ease;
-}
-.card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: var(--color-line-strong);
-}
+.rule-t { border-top: 1px solid var(--color-line); }
+.rule-b { border-bottom: 1px solid var(--color-line); }
+.rule-l { border-left: 1px solid var(--color-line); }
+.rule-soft-b { border-bottom: 1px solid var(--color-line-soft); }
 
-.card-night {
-  background: var(--color-night);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #f4f1ea;
-  border-radius: var(--radius-card);
+/* Section header: label, then a rule that runs to the far edge, then a count. */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
 }
-
-/* Subtle top light on the page, like a lit studio wall */
-.stage {
-  position: relative;
-  isolation: isolate;
-}
-.stage::before {
+.sec-head::after {
   content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(70% 55% at 50% -5%, rgba(255, 255, 255, 0.9), transparent 70%),
-    radial-gradient(45% 40% at 88% 8%, rgba(255, 90, 31, 0.1), transparent 70%);
-  pointer-events: none;
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--color-line);
 }
 
-/* Fine dotted grid, fading out */
-.dots {
-  background-image: radial-gradient(rgba(23, 20, 16, 0.12) 1px, transparent 1px);
-  background-size: 22px 22px;
-  mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, #000 25%, transparent 72%);
+/* Faint column guides, so the page reads as drawn rather than typed. */
+.guides {
+  position: relative;
 }
-
-/* Paper grain */
-.grain::after {
+.guides::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.5;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: linear-gradient(
+    to right,
+    var(--color-line-soft) 1px,
+    transparent 1px
+  );
+  background-size: calc(100% / 6) 100%;
+  mask-image: linear-gradient(to bottom, #000, transparent 85%);
 }
 
-/* ── Type helpers ─────────────────────────────────────────── */
-.kicker {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+/* A very slight ember glow where the page starts, like a powered panel. */
+.powered {
+  position: relative;
+  isolation: isolate;
+}
+.powered::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 78% -10%, rgba(255, 90, 31, 0.13), transparent 70%),
+    radial-gradient(70% 50% at 15% -15%, rgba(255, 255, 255, 0.05), transparent 72%);
 }
 
-.underline-swipe {
-  background-image: linear-gradient(var(--color-accent), var(--color-accent));
-  background-repeat: no-repeat;
-  background-size: 100% 0.14em;
-  background-position: 0 92%;
-}
+/* ── Status ────────────────────────────────────────────────────────────── */
 
-/* ── Pills & chips ────────────────────────────────────────── */
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
+.dot {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
   border-radius: 9999px;
-  border: 1px solid var(--color-line);
-  background: var(--color-card);
-  padding: 0.3rem 0.75rem;
-  font-size: 0.75rem;
-  color: var(--color-ink);
-  white-space: nowrap;
+  flex: none;
+}
+.dot-live {
+  background: var(--color-live);
+  box-shadow: 0 0 0 0 rgba(67, 209, 127, 0.5);
+  animation: pulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(67, 209, 127, 0.45); }
+  70%  { box-shadow: 0 0 0 5px rgba(67, 209, 127, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(67, 209, 127, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dot-live { animation: none; }
 }
 
-.pill-muted {
-  background: transparent;
-  color: var(--color-muted);
-}
+/* ── Buttons: machined, not pillowy ────────────────────────────────────── */
 
-/* ── Buttons ──────────────────────────────────────────────── */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.8rem 1.45rem;
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.25s ease,
-    color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  gap: 0.55rem;
+  border-radius: var(--radius-machined);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 0.95rem 1.5rem;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease;
+  white-space: nowrap;
 }
-.btn:active {
-  transform: scale(0.97);
-}
+.btn:active { transform: translateY(1px); }
 
-.btn-ink {
-  background: var(--color-ink);
-  color: #fff;
-}
-.btn-ink:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 26px -10px rgba(23, 20, 16, 0.45);
-}
+/* Ink, not white: white on ember is only 3.12:1. Ink clears AA at 6.3:1
+   and the black-on-orange reads more like signage, which suits the page. */
+.btn-ember { background: var(--color-ember); color: var(--color-ink); }
+.btn-ember:hover { background: var(--color-ember-deep); color: #fff; }
 
-.btn-accent {
-  background: var(--color-accent);
-  color: #fff;
-}
-.btn-accent:hover {
-  transform: translateY(-2px);
-  background: var(--color-accent-deep);
-  box-shadow: 0 12px 26px -10px rgba(230, 74, 18, 0.55);
-}
+.btn-chalk { background: var(--color-paper); color: var(--color-ink); }
+.btn-chalk:hover { background: #fff; }
 
-.btn-ghost {
-  background: var(--color-card);
-  border: 1px solid var(--color-line);
-  color: var(--color-ink);
+.btn-wire {
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-chalk);
+  background: transparent;
 }
-.btn-ghost:hover {
-  border-color: var(--color-line-strong);
-  transform: translateY(-2px);
-}
+.btn-wire:hover { border-color: var(--color-chalk); background: rgba(255, 255, 255, 0.04); }
 
-/* ── Screenshot behaviours ────────────────────────────────── */
-.shot-frame {
+/* Inline text link that reads as an instruction, not decoration. */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+.link-arrow:hover { gap: 0.75rem; }
+
+/* ── The system index: the centrepiece ─────────────────────────────────── */
+
+.sysrow {
   position: relative;
-  overflow: hidden;
-  background: var(--color-paper-deep);
+  display: grid;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--color-line-soft);
+  transition: background 0.25s ease, padding 0.25s ease;
 }
+.sysrow:hover { background: rgba(255, 255, 255, 0.025); }
+
+/* The ember tick that slides in on hover, drawn from the left edge. */
+.sysrow::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  background: var(--color-ember);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.sysrow:hover::before { transform: scaleY(1); }
+
+/* Screenshot that rides the cursor across a system row. Desktop only. */
+.peek {
+  position: fixed;
+  z-index: 60;
+  width: 20rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.96);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-panel);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.9);
+}
+.peek-on { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+/* ── Ticker ────────────────────────────────────────────────────────────── */
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker 48s linear infinite;
+}
+.ticker-fast { animation-duration: 30s; }
+@media (prefers-reduced-motion: reduce) {
+  .ticker { animation: none; }
+}
+
+/* ── Measurement: the Search Console bars ──────────────────────────────── */
+
+.bar {
+  background: linear-gradient(to top, var(--color-ember-deep), var(--color-ember));
+  min-height: 1px;
+  transition: height 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--bar-delay, 0ms);
+}
+.bar-zero { background: var(--color-line); }
+
+/* ── Panels ────────────────────────────────────────────────────────────── */
+
+.panel {
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-machined);
+}
+.panel-hover {
+  transition: border-color 0.25s ease, background 0.25s ease;
+}
+.panel-hover:hover {
+  border-color: var(--color-line-strong);
+  background: var(--color-panel-2);
+}
+
+/* Screenshot frames: a thin bezel with a monospace host line, no fake dots. */
+.bezel {
+  border: 1px solid var(--color-line);
+  background: var(--color-panel-2);
+  overflow: hidden;
+}
+.bezel-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-panel-3);
+}
+.shot-frame { position: relative; overflow: hidden; background: var(--color-panel-2); }
 .shot-frame img {
   object-fit: cover;
   object-position: top;
-  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .group:hover .shot-frame img,
-.shot-frame:hover img {
-  transform: scale(1.04);
+.shot-frame:hover img { transform: scale(1.03); }
+
+/* Portrait: cold, high contrast, ember only where it counts. */
+.portrait {
+  filter: grayscale(1) contrast(1.08) brightness(0.92);
+  transition: filter 0.6s ease;
+}
+.portrait:hover { filter: grayscale(0.55) contrast(1.02) brightness(1); }
+
+/* Client logos arrive as white PNGs, which is what this substrate wants. */
+.client-logo {
+  filter: grayscale(1) brightness(0) invert(1);
+  opacity: 0.42;
+  transition: opacity 0.3s ease;
+}
+.client-logo:hover { opacity: 1; }
+
+/* ── The one light block: the contact console ──────────────────────────── */
+
+.cf-input {
+  width: 100%;
+  border: 1px solid rgba(10, 11, 12, 0.16);
+  border-radius: var(--radius-machined);
+  background: #fff;
+  color: var(--color-ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875rem;
+  padding: 0.7rem 0.85rem;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.cf-input::placeholder { color: rgba(10, 11, 12, 0.38); }
+.cf-input:focus {
+  border-color: var(--color-ember);
+  box-shadow: 0 0 0 3px var(--color-ember-wash);
+}
+/* 16px on phones so iOS Safari does not zoom the page on focus. */
+@media (max-width: 640px) {
+  .cf-input { font-size: 1rem; }
+}
+select.cf-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%230a0b0c' stroke-opacity='.55' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
 }
 
-/* Fake browser chrome bar */
-.browser-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.55rem 0.9rem;
-  border-bottom: 1px solid var(--color-line);
-  background: #faf9f5;
-}
-.browser-dot {
-  height: 0.5rem;
-  width: 0.5rem;
-  border-radius: 9999px;
-  background: rgba(23, 20, 16, 0.15);
-}
+/* ── Strips that scroll by hand ────────────────────────────────────────── */
 
-/* ── Marquee ──────────────────────────────────────────────── */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-.marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 36s linear infinite;
-}
-.marquee:hover {
-  animation-play-state: paused;
-}
-.marquee-slow {
-  animation-duration: 60s;
-}
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Hide scrollbars on manually scrollable strips */
-.no-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Click-and-drag scrolling */
-.drag-scrollable {
-  cursor: grab;
-}
+.drag-scrollable { cursor: grab; }
 .drag-scrollable.drag-scrolling {
   cursor: grabbing;
   scroll-snap-type: none;
   user-select: none;
 }
-.drag-scrollable.drag-scrolling * {
-  cursor: grabbing;
-}
+.drag-scrollable.drag-scrolling * { cursor: grabbing; }
 
-/* Trusted-by logo strip: calm by default, colour on hover */
-.trusted-logo {
-  filter: grayscale(1);
-  opacity: 0.65;
-  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
-}
-.trusted-logo:hover {
-  filter: none;
-  opacity: 1;
-  transform: scale(1.05);
-}
+/* ── Reveal ────────────────────────────────────────────────────────────── */
 
-/* ── Scroll reveal ────────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(16px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 .reveal.in {
   opacity: 1;
-  /* none (not translateY(0)) so revealed blocks stop being a containing block for position:fixed children */
+  /* `none`, never translateY(0): a transform makes this a containing block and
+     traps position:fixed children such as the lightbox. Learned the hard way. */
   transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .marquee {
-    animation: none;
-  }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* Focus state that survives on both the dark substrate and the light block. */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 2px;
+  border-radius: var(--radius-machined);
+}
+
+/* ── Inner-page helpers ────────────────────────────────────────────────── */
+
+/* Replaces the old rounded `.pill`. A tag is a label, not a button. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-machined);
+  padding: 0.3rem 0.6rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.underline-swipe {
+  background-image: linear-gradient(var(--color-ember), var(--color-ember));
+  background-repeat: no-repeat;
+  background-size: 100% 0.11em;
+  background-position: 0 92%;
+}
+
+/* Case-gallery chrome: a host line, not three fake traffic lights. */
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-panel-3);
+}
+.browser-dot {
+  height: 0.3rem;
+  width: 0.3rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.18);
 }
 
 @keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.rise {
-  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes floaty {
-  0%,
-  100% {
-    transform: translateY(0) rotate(var(--float-rot, 0deg));
-  }
-  50% {
-    transform: translateY(-9px) rotate(var(--float-rot, 0deg));
-  }
-}
-.floaty {
-  animation: floaty 6s ease-in-out infinite;
-}
-
-/* Contact form inputs on the dark card */
-.cf-input {
-  width: 100%;
-  border-radius: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-  font-size: 0.9rem;
-  padding: 0.65rem 0.9rem;
-  outline: none;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-.cf-input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
-}
-.cf-input:focus {
-  border-color: var(--color-accent);
-  background: rgba(255, 255, 255, 0.09);
-}
-/* 16px inputs on phones so iOS Safari does not auto-zoom on focus */
-@media (max-width: 640px) {
-  .cf-input {
-    font-size: 1rem;
-  }
-}
-select.cf-input {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23ffffff99' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.9rem center;
-}
-
-/* White logo asset rendered on light surfaces */
-.logo-dark {
-  filter: invert(1);
-}
-
-::selection {
-  background: var(--color-accent);
-  color: #fff;
+.rise { animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; }
 }

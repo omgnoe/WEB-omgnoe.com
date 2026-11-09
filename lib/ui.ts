@@ -143,6 +143,75 @@ export type Dict = {
     budgets: string[];
     timelines: string[];
   };
+  rail: {
+    status: string;
+    location: string;
+    local: string;
+    available: string;
+  };
+  op: {
+    heroEyebrow: string;
+    heroLine1: string;
+    heroLine2: string;
+    heroLead: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+    heroStats: { n: string; l: string }[];
+    portraitMeta: string[];
+    ticker: string[];
+
+    systemsLabel: string;
+    systemsH2: string;
+    systemsLead: string;
+    systemsLive: (n: number) => string;
+    colSystem: string;
+    colWhat: string;
+    colStatus: string;
+    statusLive: string;
+    mine: string;
+    client: string;
+    openCase: string;
+
+    searchLabel: string;
+    searchH2: string;
+    searchLead: (date: string) => string;
+    statImpressions: string;
+    statClicks: string;
+    statGrowth: string;
+    statDomains: string;
+    statTop10: string;
+    statTop3: string;
+    searchWindow: (from: string, to: string) => string;
+    searchFootnote: string;
+    curveMultiple: (n: number) => string;
+    curveFirstMonth: string;
+    curveLastMonth: string;
+    geoH3: string;
+    geoBody: string;
+    geoPoints: string[];
+
+    storyLabel: string;
+    storyH2: string;
+    storyBody: string[];
+    rankingCaption: string;
+    pressLabel: string;
+    storyCta: string;
+
+    capLabel: string;
+    capH2: string;
+    capLead: string;
+
+    howLabel: string;
+    howH2: string;
+    howSteps: { n: string; t: string; d: string }[];
+
+    contactLabel: string;
+    contactH2: string;
+    contactLead: string;
+
+    footStatus: string;
+    footSnapshot: (date: string) => string;
+  };
 };
 
 const en: Dict = {
@@ -320,6 +389,112 @@ const en: Dict = {
       "25.000 EUR or more",
     ],
     timelines: ["As soon as possible", "Within 1 to 3 months", "In 3 months or later", "Flexible"],
+  },
+  rail: {
+    status: "All systems live",
+    location: "Luxembourg",
+    local: "Local",
+    available: "Taking work",
+  },
+  op: {
+    heroEyebrow: "Noe Nei · Full-stack developer · Luxembourg",
+    heroLine1: "I don't just build",
+    heroLine2: "software. I run it.",
+    heroLead:
+      "Seven products of my own with paying customers. Eight client platforms. Apps in both stores, payments, servers, security and the support line, all from one person in Luxembourg.",
+    ctaPrimary: "Start a project",
+    ctaSecondary: "See the systems",
+    heroStats: [
+      { n: "15", l: "Systems live right now" },
+      { n: "384K", l: "Google impressions, 90 days" },
+      { n: "1", l: "Person you talk to" },
+    ],
+    portraitMeta: ["Noe Nei", "Developer / Founder", "Luxembourg"],
+    ticker: [
+      "iOS apps",
+      "Android apps",
+      "Web platforms",
+      "Online shops",
+      "Point of sale",
+      "Payments",
+      "Hosting",
+      "Cybersecurity",
+      "SEO and GEO",
+      "IT support",
+    ],
+
+    systemsLabel: "01 / Systems",
+    systemsH2: "Built, shipped, and online right now.",
+    systemsLead:
+      "My own products and client platforms. Every one of them is live, every one has a full case study. Filter by type, or point at a row to see it.",
+    systemsLive: (n) => `${n} live`,
+    colSystem: "System",
+    colWhat: "What it is",
+    colStatus: "Status",
+    statusLive: "Live",
+    mine: "Mine",
+    client: "Client",
+    openCase: "Open case study",
+
+    searchLabel: "02 / Measured",
+    searchH2: "SEO and GEO, from zero, with the receipts.",
+    searchLead: (date) =>
+      `Most people selling you search visibility show you somebody else's case study. These are my own domains, in my own Search Console, built from nothing. Pulled on ${date}.`,
+    statImpressions: "Impressions, 90 days",
+    statClicks: "Clicks, 90 days",
+    statGrowth: "vs previous 90 days",
+    statDomains: "Domains measured",
+    statTop10: "Queries in the top 10",
+    statTop3: "Queries in the top 3",
+    searchWindow: (from, to) => `Window ${from} to ${to}`,
+    searchFootnote:
+      "Source: Google Search Console, properties I own and operate. A domain's first month is the first month it was measured. Read by hand from the console, never estimated.",
+    curveMultiple: (n) => `${n}x`,
+    curveFirstMonth: "First measured month",
+    curveLastMonth: "Last full month",
+    geoH3: "And the half almost nobody does yet.",
+    geoBody:
+      "Search is moving into assistants. Being found there is a different job to ranking on Google, and it is the part I build in from the first day.",
+    geoPoints: [
+      "An llms.txt and explicit AI crawler rules, so ChatGPT, Claude and Perplexity are allowed in and know which facts to quote.",
+      "One entity graph with fixed IDs across the whole site, instead of a loose blob of schema repeated on every page.",
+      "Question pages that answer in the first sentence, because an answer buried in paragraph four gets quoted far less often.",
+      "IndexNow on every publish, so a new page is known in hours instead of waiting weeks to be crawled.",
+    ],
+
+    storyLabel: "03 / Track record",
+    storyH2: "Fifth most downloaded delivery app in Luxembourg. Then I lost all of it.",
+    storyBody: [
+      "In 2024 I built Umarket, a grocery delivery app, while working inside Wolt and watching how the market actually ran. By the second quarter it was the fifth most downloaded food delivery app in the country, behind Wolt, Wedely, Uber Eats and Takeaway.",
+      "In October my business partner took the building. By December I was at zero, with thirty thousand euros of company debt that I paid back out of my own salary.",
+      "I rebuilt as a developer. That is why I do not oversell, and why I am still there after launch.",
+    ],
+    rankingCaption:
+      "Food delivery apps in Luxembourg, Q2 2024, downloads, iOS and Android combined. Source: Sensor Tower.",
+    pressLabel: "Written about, and written by me",
+    storyCta: "Read the whole story",
+
+    capLabel: "04 / Capabilities",
+    capH2: "One person. The whole stack.",
+    capLead:
+      "From the app on your customer's phone to the server it talks to, and the Google result that sent them there. Every line below has its own page with scope, timing and an FAQ.",
+
+    howLabel: "05 / How it runs",
+    howH2: "No deck. No agency layer. No surprise invoice.",
+    howSteps: [
+      { n: "1.0", t: "Call", d: "Thirty minutes. What you want, roughly what it costs, and whether I am the right person for it." },
+      { n: "2.0", t: "Scope", d: "A written scope with a fixed price and a delivery date, before anybody builds anything." },
+      { n: "3.0", t: "Build", d: "You watch it running on a real URL from the first week, not in a presentation at the end." },
+      { n: "4.0", t: "Live", d: "I ship it, host it, secure it and keep watching it. The number you call afterwards is still mine." },
+    ],
+
+    contactLabel: "06 / Start",
+    contactH2: "Tell me what is broken, or what you want to exist.",
+    contactLead:
+      "The more detail you give me, the better my answer. Usually a reply within a day, in English, Deutsch, Français or Lëtzebuergesch.",
+
+    footStatus: "All systems online",
+    footSnapshot: (date) => `Search figures measured ${date}`,
   },
 };
 
@@ -517,6 +692,112 @@ const fr: Dict = {
       "Flexible",
     ],
   },
+  rail: {
+    status: "Tous les systèmes en ligne",
+    location: "Luxembourg",
+    local: "Heure locale",
+    available: "Disponible",
+  },
+  op: {
+    heroEyebrow: "Noe Nei · Développeur full-stack · Luxembourg",
+    heroLine1: "Je ne me contente pas de",
+    heroLine2: "construire. Je fais tourner.",
+    heroLead:
+      "Sept produits à moi avec de vrais clients payants. Huit plateformes clientes. Des applications dans les deux stores, les paiements, les serveurs, la sécurité et la ligne de support, le tout par une seule personne au Luxembourg.",
+    ctaPrimary: "Démarrer un projet",
+    ctaSecondary: "Voir les systèmes",
+    heroStats: [
+      { n: "15", l: "Systèmes en ligne" },
+      { n: "384K", l: "Impressions Google, 90 jours" },
+      { n: "1", l: "Interlocuteur unique" },
+    ],
+    portraitMeta: ["Noe Nei", "Développeur / Fondateur", "Luxembourg"],
+    ticker: [
+      "Applications iOS",
+      "Applications Android",
+      "Plateformes web",
+      "Boutiques en ligne",
+      "Caisse enregistreuse",
+      "Paiements",
+      "Hébergement",
+      "Cybersécurité",
+      "SEO et GEO",
+      "Support informatique",
+    ],
+
+    systemsLabel: "01 / Systèmes",
+    systemsH2: "Construits, livrés, et en ligne maintenant.",
+    systemsLead:
+      "Mes propres produits et les plateformes de mes clients. Tous sont en ligne, tous ont une étude de cas complète. Filtrez par type, ou pointez une ligne pour la voir.",
+    systemsLive: (n) => `${n} en ligne`,
+    colSystem: "Système",
+    colWhat: "Ce que c'est",
+    colStatus: "Statut",
+    statusLive: "En ligne",
+    mine: "À moi",
+    client: "Client",
+    openCase: "Ouvrir l'étude de cas",
+
+    searchLabel: "02 / Mesuré",
+    searchH2: "SEO et GEO, partis de zéro, chiffres à l'appui.",
+    searchLead: (date) =>
+      `La plupart de ceux qui vous vendent de la visibilité vous montrent l'étude de cas de quelqu'un d'autre. Ici ce sont mes domaines, dans ma Search Console, partis de rien. Relevé le ${date}.`,
+    statImpressions: "Impressions, 90 jours",
+    statClicks: "Clics, 90 jours",
+    statGrowth: "vs 90 jours précédents",
+    statDomains: "Domaines mesurés",
+    statTop10: "Requêtes dans le top 10",
+    statTop3: "Requêtes dans le top 3",
+    searchWindow: (from, to) => `Période du ${from} au ${to}`,
+    searchFootnote:
+      "Source : Google Search Console, propriétés que je possède et que j'exploite. Le premier mois d'un domaine est son premier mois mesuré. Relevé à la main dans la console, jamais estimé.",
+    curveMultiple: (n) => `${n}x`,
+    curveFirstMonth: "Premier mois mesuré",
+    curveLastMonth: "Dernier mois complet",
+    geoH3: "Et la moitié que presque personne ne fait encore.",
+    geoBody:
+      "La recherche passe dans les assistants. Y être trouvé est un autre métier que de se classer sur Google, et c'est la partie que j'intègre dès le premier jour.",
+    geoPoints: [
+      "Un llms.txt et des règles explicites pour les robots d'IA, pour que ChatGPT, Claude et Perplexity entrent et sachent quels faits citer.",
+      "Un seul graphe d'entités avec des identifiants fixes sur tout le site, au lieu d'un bloc de schema répété au hasard sur chaque page.",
+      "Des pages de questions qui répondent dès la première phrase, parce qu'une réponse enterrée au quatrième paragraphe est bien moins souvent citée.",
+      "IndexNow à chaque publication, pour qu'une nouvelle page soit connue en quelques heures au lieu d'attendre des semaines.",
+    ],
+
+    storyLabel: "03 / Parcours",
+    storyH2: "Cinquième application de livraison la plus téléchargée du Luxembourg. Puis j'ai tout perdu.",
+    storyBody: [
+      "En 2024 j'ai construit Umarket, une application de livraison de courses, pendant que je travaillais chez Wolt et que j'observais comment le marché tournait vraiment. Au deuxième trimestre elle était la cinquième application de livraison la plus téléchargée du pays, derrière Wolt, Wedely, Uber Eats et Takeaway.",
+      "En octobre mon associé a pris le bâtiment. En décembre j'étais à zéro, avec trente mille euros de dettes d'entreprise que j'ai remboursées sur mon propre salaire.",
+      "Je me suis reconstruit comme développeur. C'est pour cela que je ne survends rien, et que je suis toujours là après la mise en ligne.",
+    ],
+    rankingCaption:
+      "Applications de livraison au Luxembourg, T2 2024, téléchargements, iOS et Android confondus. Source : Sensor Tower.",
+    pressLabel: "Écrit sur moi, et écrit par moi",
+    storyCta: "Lire toute l'histoire",
+
+    capLabel: "04 / Compétences",
+    capH2: "Une personne. Toute la chaîne.",
+    capLead:
+      "De l'application dans la poche de votre client jusqu'au serveur qui lui répond, en passant par le résultat Google qui l'a amené. Chaque ligne ci-dessous a sa propre page avec le périmètre, les délais et une FAQ.",
+
+    howLabel: "05 / Comment ça marche",
+    howH2: "Pas de présentation. Pas d'agence au milieu. Pas de facture surprise.",
+    howSteps: [
+      { n: "1.0", t: "Appel", d: "Trente minutes. Ce que vous voulez, ce que ça coûte à peu près, et si je suis la bonne personne." },
+      { n: "2.0", t: "Cadrage", d: "Un périmètre écrit avec un prix fixe et une date de livraison, avant que quoi que ce soit ne soit construit." },
+      { n: "3.0", t: "Construction", d: "Vous le voyez tourner sur une vraie URL dès la première semaine, pas dans une présentation à la fin." },
+      { n: "4.0", t: "En ligne", d: "Je le livre, l'héberge, le sécurise et le surveille. Le numéro que vous appelez ensuite reste le mien." },
+    ],
+
+    contactLabel: "06 / Démarrer",
+    contactH2: "Dites-moi ce qui ne marche pas, ou ce que vous voulez voir exister.",
+    contactLead:
+      "Plus vous me donnez de détails, meilleure sera ma réponse. Réponse en général sous un jour, en français, anglais, allemand ou luxembourgeois.",
+
+    footStatus: "Tous les systèmes en ligne",
+    footSnapshot: (date) => `Chiffres de recherche relevés le ${date}`,
+  },
 };
 
 const de: Dict = {
@@ -707,6 +988,112 @@ const de: Dict = {
       "In 3 Monaten oder später",
       "Flexibel",
     ],
+  },
+  rail: {
+    status: "Alle Systeme laufen",
+    location: "Luxemburg",
+    local: "Ortszeit",
+    available: "Nehme Aufträge an",
+  },
+  op: {
+    heroEyebrow: "Noe Nei · Full-Stack-Entwickler · Luxemburg",
+    heroLine1: "Ich baue Software nicht",
+    heroLine2: "nur. Ich betreibe sie.",
+    heroLead:
+      "Sieben eigene Produkte mit zahlenden Kunden. Acht Kundenplattformen. Apps in beiden Stores, Zahlungen, Server, Sicherheit und die Support-Nummer, alles von einer Person in Luxemburg.",
+    ctaPrimary: "Projekt starten",
+    ctaSecondary: "Systeme ansehen",
+    heroStats: [
+      { n: "15", l: "Systeme laufen gerade" },
+      { n: "384K", l: "Google-Impressionen, 90 Tage" },
+      { n: "1", l: "Ansprechpartner" },
+    ],
+    portraitMeta: ["Noe Nei", "Entwickler / Gründer", "Luxemburg"],
+    ticker: [
+      "iOS-Apps",
+      "Android-Apps",
+      "Web-Plattformen",
+      "Onlineshops",
+      "Kassensysteme",
+      "Zahlungen",
+      "Hosting",
+      "Cybersicherheit",
+      "SEO und GEO",
+      "IT-Support",
+    ],
+
+    systemsLabel: "01 / Systeme",
+    systemsH2: "Gebaut, ausgeliefert, und gerade jetzt online.",
+    systemsLead:
+      "Meine eigenen Produkte und die Plattformen meiner Kunden. Jedes davon läuft, jedes hat eine vollständige Fallstudie. Nach Typ filtern, oder auf eine Zeile zeigen um sie zu sehen.",
+    systemsLive: (n) => `${n} live`,
+    colSystem: "System",
+    colWhat: "Was es ist",
+    colStatus: "Status",
+    statusLive: "Live",
+    mine: "Eigenes",
+    client: "Kunde",
+    openCase: "Fallstudie öffnen",
+
+    searchLabel: "02 / Gemessen",
+    searchH2: "SEO und GEO, bei null gestartet, mit Belegen.",
+    searchLead: (date) =>
+      `Die meisten, die Ihnen Sichtbarkeit verkaufen, zeigen Ihnen die Fallstudie von jemand anderem. Das hier sind meine eigenen Domains, in meiner eigenen Search Console, aus dem Nichts aufgebaut. Abgerufen am ${date}.`,
+    statImpressions: "Impressionen, 90 Tage",
+    statClicks: "Klicks, 90 Tage",
+    statGrowth: "zu den 90 Tagen davor",
+    statDomains: "Gemessene Domains",
+    statTop10: "Suchanfragen in den Top 10",
+    statTop3: "Suchanfragen in den Top 3",
+    searchWindow: (from, to) => `Zeitraum ${from} bis ${to}`,
+    searchFootnote:
+      "Quelle: Google Search Console, Properties die mir gehören und die ich betreibe. Der erste Monat einer Domain ist ihr erster gemessener Monat. Von Hand aus der Konsole abgelesen, nie geschätzt.",
+    curveMultiple: (n) => `${n}x`,
+    curveFirstMonth: "Erster gemessener Monat",
+    curveLastMonth: "Letzter volle Monat",
+    geoH3: "Und die Hälfte, die fast niemand macht.",
+    geoBody:
+      "Suche wandert in die Assistenten. Dort gefunden zu werden ist eine andere Arbeit als bei Google zu ranken, und genau den Teil baue ich vom ersten Tag an mit ein.",
+    geoPoints: [
+      "Eine llms.txt und ausdrückliche Regeln für KI-Crawler, damit ChatGPT, Claude und Perplexity hereindürfen und wissen, welche Fakten sie zitieren sollen.",
+      "Ein einziger Entitäten-Graph mit festen Kennungen über die ganze Seite, statt eines losen Schema-Blocks auf jeder einzelnen Seite.",
+      "Frageseiten, die schon im ersten Satz antworten, denn eine im vierten Absatz vergrabene Antwort wird deutlich seltener zitiert.",
+      "IndexNow bei jeder Veröffentlichung, damit eine neue Seite in Stunden bekannt ist statt wochenlang auf den Crawler zu warten.",
+    ],
+
+    storyLabel: "03 / Werdegang",
+    storyH2: "Fünftmeistgeladene Liefer-App Luxemburgs. Dann habe ich alles verloren.",
+    storyBody: [
+      "2024 habe ich Umarket gebaut, eine App für Lebensmittel-Lieferung, während ich bei Wolt arbeitete und sah, wie der Markt wirklich funktioniert. Im zweiten Quartal war sie die fünftmeistgeladene Liefer-App des Landes, hinter Wolt, Wedely, Uber Eats und Takeaway.",
+      "Im Oktober hat mein Geschäftspartner das Gebäude an sich gerissen. Im Dezember stand ich bei null, mit dreißigtausend Euro Firmenschulden, die ich aus meinem eigenen Gehalt zurückgezahlt habe.",
+      "Ich habe mich als Entwickler neu aufgebaut. Deshalb verspreche ich nichts zu viel, und deshalb bin ich nach dem Start noch da.",
+    ],
+    rankingCaption:
+      "Liefer-Apps in Luxemburg, Q2 2024, Downloads, iOS und Android zusammen. Quelle: Sensor Tower.",
+    pressLabel: "Über mich geschrieben, und von mir geschrieben",
+    storyCta: "Die ganze Geschichte lesen",
+
+    capLabel: "04 / Leistungen",
+    capH2: "Eine Person. Der ganze Stack.",
+    capLead:
+      "Von der App auf dem Handy Ihrer Kunden bis zum Server, mit dem sie spricht, und dem Google-Treffer, der sie hergebracht hat. Jede Zeile unten hat ihre eigene Seite mit Umfang, Zeitrahmen und FAQ.",
+
+    howLabel: "05 / Wie es läuft",
+    howH2: "Keine Präsentation. Keine Agentur dazwischen. Keine Überraschungsrechnung.",
+    howSteps: [
+      { n: "1.0", t: "Gespräch", d: "Dreißig Minuten. Was Sie wollen, was es ungefähr kostet, und ob ich der Richtige dafür bin." },
+      { n: "2.0", t: "Umfang", d: "Ein schriftlicher Umfang mit Festpreis und Liefertermin, bevor irgendjemand etwas baut." },
+      { n: "3.0", t: "Bau", d: "Sie sehen es ab der ersten Woche auf einer echten URL laufen, nicht am Ende in einer Präsentation." },
+      { n: "4.0", t: "Live", d: "Ich liefere, hoste, sichere und überwache es. Die Nummer, die Sie danach anrufen, ist immer noch meine." },
+    ],
+
+    contactLabel: "06 / Start",
+    contactH2: "Sagen Sie mir, was kaputt ist, oder was es geben soll.",
+    contactLead:
+      "Je mehr Details, desto besser meine Antwort. Antwort meist innerhalb eines Tages, auf Deutsch, Englisch, Französisch oder Lëtzebuergesch.",
+
+    footStatus: "Alle Systeme online",
+    footSnapshot: (date) => `Suchzahlen gemessen am ${date}`,
   },
 };
 

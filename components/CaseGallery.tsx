@@ -159,8 +159,8 @@ export default function CaseGallery({
               }}
               className={`group relative h-72 shrink-0 cursor-zoom-in snap-start overflow-hidden transition-all duration-300 hover:-translate-y-1.5 sm:h-96 ${
                 app
-                  ? "rounded-[1.9rem] border border-ink/10 bg-[#15130f] p-1.5 shadow-card hover:shadow-pop"
-                  : "flex w-[min(88vw,26rem)] flex-col rounded-2xl border border-line bg-card shadow-card hover:shadow-pop sm:w-[36rem]"
+                  ? "rounded-[18px] border border-line bg-panel-3 p-1.5"
+                  : "flex w-[min(88vw,26rem)] flex-col rounded-[3px] border border-line bg-panel sm:w-[36rem]"
               }`}
             >
               {app ? (
@@ -173,7 +173,7 @@ export default function CaseGallery({
                     <span className="browser-dot" />
                     <span className="browser-dot" />
                     <span className="browser-dot" />
-                    {host && <span className="ml-2 font-mono text-[0.68rem] text-muted">{host}</span>}
+                    {host && <span className="ml-2 font-mono text-[0.68rem] text-dim">{host}</span>}
                   </div>
                   <div className="relative min-h-0 w-full flex-1">
                     <Image src={g.src} alt={g.alt} fill sizes="(max-width: 640px) 90vw, 600px" className="object-cover object-top" />
@@ -196,7 +196,7 @@ export default function CaseGallery({
         aria-label="Scroll gallery left"
         onClick={() => nudge(-1)}
         disabled={!edges.left}
-        className="absolute -left-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-card/95 shadow-card backdrop-blur transition hover:bg-paper disabled:pointer-events-none disabled:opacity-0 md:grid"
+        className="absolute -left-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-panel/95 backdrop-blur transition hover:bg-panel disabled:pointer-events-none disabled:opacity-0 md:grid"
       >
         <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" aria-hidden>
           <path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -207,7 +207,7 @@ export default function CaseGallery({
         aria-label="Scroll gallery right"
         onClick={() => nudge(1)}
         disabled={!edges.right}
-        className="absolute -right-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-card/95 shadow-card backdrop-blur transition hover:bg-paper disabled:pointer-events-none disabled:opacity-0 md:grid"
+        className="absolute -right-3 top-1/2 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-line bg-panel/95 backdrop-blur transition hover:bg-panel disabled:pointer-events-none disabled:opacity-0 md:grid"
       >
         <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" aria-hidden>
           <path d="m6 3 5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -223,8 +223,8 @@ export default function CaseGallery({
               style={{ width: `${Math.round(edges.frac * 100)}%`, background: accent }}
             />
           </div>
-          <p className="shrink-0 text-xs text-muted sm:hidden">Swipe for more</p>
-          <p className="hidden shrink-0 text-xs text-muted sm:block">Drag, scroll or click a shot</p>
+          <p className="shrink-0 text-xs text-dim sm:hidden">Swipe for more</p>
+          <p className="hidden shrink-0 text-xs text-dim sm:block">Drag, scroll or click a shot</p>
         </div>
       )}
 

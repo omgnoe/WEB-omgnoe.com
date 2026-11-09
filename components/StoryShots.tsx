@@ -21,12 +21,12 @@ export default function StoryShots({ shots, dark = false }: { shots: Shot[]; dar
         {shots.map((s) => (
           <li key={s.src} className="shrink-0">
             <div
-              className={`relative overflow-hidden rounded-2xl border ${FRAME[s.kind]} ${
+              className={`relative overflow-hidden rounded-[3px] border ${FRAME[s.kind]}${
                 dark
                   ? "border-white/12 bg-white/5"
                   : s.kind === "logo"
-                    ? "border-line bg-card"
-                    : "border-line bg-paper-deep"
+                    ? "border-line bg-panel"
+                    : "border-line bg-panel-2"
               }`}
             >
               <Image
@@ -39,7 +39,7 @@ export default function StoryShots({ shots, dark = false }: { shots: Shot[]; dar
             </div>
             <p
               className={`mt-2 max-w-[13rem] font-mono text-[0.62rem] uppercase tracking-[0.14em] ${
-                dark ? "text-white/40" : "text-muted"
+                dark ? "text-faint" : "text-faint"
               }`}
             >
               {s.caption}

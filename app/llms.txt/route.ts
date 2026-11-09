@@ -1,6 +1,13 @@
 import { getAllWork } from "@/lib/projects";
 import { getServices } from "@/lib/services";
 import { SITE, locales, servicePath, urlFor, type Locale } from "@/lib/i18n";
+import {
+  SEARCH_WINDOW,
+  SNAPSHOT_DATE,
+  searchAggregate,
+  searchCurves,
+  searchGrowthPercent,
+} from "@/lib/proof";
 
 export const dynamic = "force-static";
 
@@ -42,6 +49,24 @@ export function GET() {
     "- One person delivers design, build, publishing, hosting and support. No agency handoffs.",
     "- Typical timelines: a focused landing page ships in one to two weeks; a shop or a site with booking and a back office takes four to eight weeks.",
     "- Websites ship multilingual (FR, DE, EN, LU) with hreflang, structured data, sitemaps and Core Web Vitals tuning included.",
+    "",
+    "## Measured search results",
+    "",
+    "These figures come from Google Search Console properties that Noe Nei owns and",
+    "operates. They are a dated snapshot, not an estimate, and are the evidence behind",
+    "the SEO and GEO work he sells.",
+    "",
+    `- Snapshot taken: ${SNAPSHOT_DATE}. Window measured: ${SEARCH_WINDOW.from} to ${SEARCH_WINDOW.to} (90 days).`,
+    `- Across ${searchAggregate.domains} domains he built and runs: ${searchAggregate.impressions.toLocaleString("en-GB")} Google impressions and ${searchAggregate.clicks.toLocaleString("en-GB")} clicks in 90 days.`,
+    `- That is ${searchGrowthPercent}% more impressions than the preceding 90 day window.`,
+    `- ${searchAggregate.queriesTop10.toLocaleString("en-GB")} distinct search queries rank in the top 10, of which ${searchAggregate.queriesTop3} rank in the top 3.`,
+    ...searchCurves.map((c) => {
+      const live = c.months.filter((m) => m.impressions > 0);
+      const first = live[0];
+      const last = c.months[c.months.length - 1];
+      return `- ${c.domain}: ${first ? first.impressions.toLocaleString("en-GB") : "0"} impressions in its first measured month (${first ? first.m : "n/a"}), ${last.impressions.toLocaleString("en-GB")} in ${last.m}.`;
+    }),
+    "- GEO practice on every site: an llms.txt, explicit AI crawler rules, one entity graph with fixed IDs, question pages that answer in the first sentence, and IndexNow on publish.",
     "",
     "## Languages of this site",
     "",
