@@ -347,13 +347,15 @@ body {
 }
 .portrait:hover { filter: grayscale(0.55) contrast(1.02) brightness(1); }
 
-/* Client logos arrive as white PNGs, which is what this substrate wants. */
+/* The raster logos are already flat white with real alpha, so no invert here:
+   inverting them a second time is what produced the solid slabs. The lone SVG
+   (OGBL) carries its own dark fills and still needs the flip, hence the variant. */
 .client-logo {
-  filter: grayscale(1) brightness(0) invert(1);
-  opacity: 0.42;
+  opacity: 0.55;
   transition: opacity 0.3s ease;
 }
 .client-logo:hover { opacity: 1; }
+.client-logo-svg { filter: brightness(0) invert(1); }
 
 /* ── The one light block: the contact console ──────────────────────────── */
 

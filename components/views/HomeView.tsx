@@ -270,14 +270,14 @@ export default function HomeView({ locale }: { locale: Locale }) {
         <section className="rule-t overflow-hidden py-14">
           <Reveal>
             <p className="mono px-4 text-center text-faint sm:px-8">{t.home.trusted}</p>
-            <AutoScrollRow className="mt-9 items-center">
+            <AutoScrollRow className="mt-9 items-stretch">
               {[0, 1].map((n) => (
-                <div key={n} className="flex shrink-0 items-center" aria-hidden={n === 1}>
+                <div key={n} className="flex shrink-0 items-stretch" aria-hidden={n === 1}>
                   {trustedBy.map((tb) => (
                     <span
                       key={`${n}-${tb.name}`}
                       title={tb.name}
-                      className="flex h-14 w-40 shrink-0 items-center justify-center px-6 sm:w-48"
+                      className="flex h-16 w-44 shrink-0 items-center justify-center border-r border-line px-7 sm:w-52"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -285,7 +285,9 @@ export default function HomeView({ locale }: { locale: Locale }) {
                         alt={`${tb.name} logo`}
                         loading="lazy"
                         style={{ maxHeight: tb.h }}
-                        className="client-logo max-h-8 w-auto max-w-full sm:max-h-10"
+                        className={`client-logo w-auto max-w-full ${
+                          tb.src.endsWith(".svg") ? "client-logo-svg" : ""
+                        }`}
                       />
                     </span>
                   ))}

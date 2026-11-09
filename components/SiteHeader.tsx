@@ -12,10 +12,10 @@ import {
   servicesPath,
   workPath,
   LOCALE_LABEL,
-  LOCALE_SHORT,
   type Locale,
   type PageKey,
 } from "@/lib/i18n";
+import FlagIcon from "@/components/FlagIcon";
 import { dict } from "@/lib/ui";
 
 /**
@@ -79,11 +79,19 @@ export default function SiteHeader({
           ))}
         </nav>
 
+        {/* Flags, not letters. The language name stays in the accessible tree
+            and in the title, because a flag alone is not a language. */}
         <div
-          className="ml-auto flex items-center gap-1 sm:ml-0 sm:border-l sm:border-line sm:pl-6"
+          className="ml-auto flex items-center gap-2.5 sm:ml-0 sm:border-l sm:border-line sm:pl-6"
           aria-label={t.menu.language}
         >
-          <span className="mono px-1 text-chalk">{LOCALE_SHORT[locale]}</span>
+          <span
+            className="flex items-center rounded-[2px] opacity-100 ring-1 ring-ember"
+            title={LOCALE_LABEL[locale]}
+          >
+            <FlagIcon locale={locale} />
+            <span className="sr-only">{LOCALE_LABEL[locale]}</span>
+          </span>
           {others.map((l) => (
             <Link
               key={l}
@@ -91,9 +99,10 @@ export default function SiteHeader({
               hrefLang={l}
               lang={l}
               title={LOCALE_LABEL[l]}
-              className="mono px-1 text-faint transition-colors hover:text-chalk"
+              className="flex items-center rounded-[2px] opacity-45 ring-1 ring-line transition-opacity hover:opacity-100"
             >
-              {LOCALE_SHORT[l]}
+              <FlagIcon locale={l} />
+              <span className="sr-only">{LOCALE_LABEL[l]}</span>
             </Link>
           ))}
         </div>
