@@ -105,7 +105,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
           <div className="grid gap-12 pt-14 pb-16 lg:grid-cols-[1.5fr_0.6fr] lg:pt-20">
             <div>
               <p className="mono text-dim">{c.kicker}</p>
-              <h1 className="font-display d-hero mt-7 max-w-[16ch] text-balance">
+              <h1 className="font-display d-hero aberrate mt-7 max-w-[16ch] text-balance">
                 <span className="block">{c.h1a}</span>
                 <span className="block text-ember">{c.h1b}</span>
               </h1>

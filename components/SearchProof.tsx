@@ -57,7 +57,7 @@ export default function SearchProof({ locale }: { locale: Locale }) {
           <div className="sec-head">
             <span className="mono text-ember">{t.op.searchLabel}</span>
           </div>
-          <h2 className="font-display d-xl mt-8 max-w-3xl text-balance">{t.op.searchH2}</h2>
+          <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance">{t.op.searchH2}</h2>
           <p className="lead mt-6 max-w-2xl text-dim">{t.op.searchLead(SNAPSHOT_DATE)}</p>
         </Reveal>
 

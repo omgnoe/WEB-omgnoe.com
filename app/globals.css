@@ -147,6 +147,7 @@ body {
   );
   background-size: calc(100% / 6) 100%;
   mask-image: linear-gradient(to bottom, #000, transparent 85%);
+  animation: drift 24s linear infinite;
 }
 
 /* A very slight ember glow where the page starts, like a powered panel. */
@@ -236,6 +237,7 @@ body {
 
 .sysrow {
   position: relative;
+  overflow: hidden;
   display: grid;
   align-items: center;
   gap: 1rem;
@@ -473,4 +475,90 @@ select.cf-input {
 .rise { animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
 @media (prefers-reduced-motion: reduce) {
   .rise { animation: none; }
+}
+
+/* ── Console atmospherics ──────────────────────────────────────────────── */
+/*
+ * The page claims to be a running system, so it should behave a little like
+ * one: a signal very slightly out of spec rather than a still document.
+ *
+ * Technique borrowed from adwire.lu and rebuilt in this palette: a sub-pixel
+ * chromatic split, an irregular flicker, and a jolt that fires for a fraction
+ * of a long cycle. All of it is cheap (no JS, no library) and all of it is off
+ * under prefers-reduced-motion.
+ *
+ * The split is pure text-shadow, so the computed text colour never changes and
+ * the contrast audit still measures what the reader actually sees.
+ */
+
+/* em, not px: a fixed 0.6px split is invisible on 92px display type and far
+   too strong on a 20px label. Scaling it with the font keeps the effect
+   constant wherever the class lands. */
+.aberrate {
+  text-shadow:
+    -0.014em 0 rgba(255, 90, 31, 0.55),
+    0.012em 0 rgba(96, 194, 255, 0.26),
+    0 0 0.06em rgba(255, 90, 31, 0.1);
+}
+
+/* Irregular stops: a loop you can count is a loop you stop believing. */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  28% { opacity: 0.78; }
+  29% { opacity: 1; }
+  63% { opacity: 0.86; }
+  64% { opacity: 1; }
+  87% { opacity: 0.92; }
+  88% { opacity: 1; }
+}
+.flicker { animation: flicker 7.5s linear infinite; }
+
+/* Fires for roughly half a percent of the cycle, once every eleven seconds. */
+@keyframes jolt {
+  0%, 100% { transform: none; }
+  91.6% { transform: translateX(1px); }
+  92.2% { transform: translateX(-1px) skewX(-0.8deg); }
+  92.8% { transform: none; }
+}
+.jolt { animation: jolt 11s linear infinite; }
+
+/* A band of light sweeping a surface, the way a CRT refreshes it. */
+@keyframes scan {
+  from { transform: translateY(-120%); }
+  to { transform: translateY(1400%); }
+}
+.scan-host { position: relative; }
+.scan-host::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 7%;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 90, 31, 0.16),
+    transparent
+  );
+}
+.scan-host:hover::after {
+  opacity: 1;
+  animation: scan 1.15s cubic-bezier(0.3, 0, 0.5, 1);
+}
+
+/* The column guides breathe very slowly, so the page is never quite static. */
+@keyframes drift {
+  from { background-position: 0 0; }
+  to { background-position: 0 240px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flicker,
+  .jolt,
+  .scan-host:hover::after { animation: none; }
+  .scan-host::after { display: none; }
+  .aberrate { text-shadow: none; }
 }

@@ -131,7 +131,7 @@ export default function SystemIndex({
                 if (i.shot && isFine()) setPeek({ src: i.shot, x: e.clientX, y: e.clientY });
               }}
               onMouseLeave={() => setPeek(null)}
-              className={`sysrow grid-cols-[2.5rem_1fr] px-1 lg:grid-cols-[3.5rem_1.1fr_1.4fr_7rem] ${
+              className={`sysrow scan-host grid-cols-[2.5rem_1fr] px-1 lg:grid-cols-[3.5rem_1.1fr_1.4fr_7rem] ${
                 idx >= MOBILE_LIMIT && !showAll ? "hidden lg:grid" : ""
               }`}
             >

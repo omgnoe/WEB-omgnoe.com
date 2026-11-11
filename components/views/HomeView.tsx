@@ -137,7 +137,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
             <div className={`pb-12 sm:max-w-[56%] ${heroPlate ? "pt-14 lg:pt-20 lg:pb-20" : "pt-12 lg:pt-16 lg:pb-16"}`}>
               <p className="mono text-dim">{t.op.heroEyebrow}</p>
 
-              <h1 className="font-display d-hero mt-7 max-w-[18ch] text-balance">
+              <h1 className="font-display d-hero aberrate mt-7 max-w-[18ch] text-balance">
                 <span className="block">{t.op.heroLine1}</span>{" "}
                 <span className="block">
                   {t.op.heroLine2.split(" ")[0]}{" "}
@@ -238,7 +238,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
           <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
             <Reveal>
               <SectionHead label={t.op.systemsLabel} />
-              <h2 className="font-display d-xl mt-8 max-w-3xl text-balance">{t.op.systemsH2}</h2>
+              <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance">{t.op.systemsH2}</h2>
               <p className="lead mt-6 max-w-2xl text-dim">{t.op.systemsLead}</p>
             </Reveal>
             <div className="mt-12">
@@ -259,7 +259,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
 
             <div className="mt-8 grid gap-14 lg:grid-cols-[1.15fr_1fr]">
               <Reveal>
-                <h2 className="font-display d-xl max-w-2xl text-balance">{t.op.storyH2}</h2>
+                <h2 className="font-display d-xl aberrate max-w-2xl text-balance">{t.op.storyH2}</h2>
                 <div className="mt-7 max-w-xl space-y-5 text-dim">
                   {t.op.storyBody.map((p) => (
                     <p key={p.slice(0, 24)}>{p}</p>
@@ -319,7 +319,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
               <SectionHead label={t.op.capLabel} />
               <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
                 <div>
-                  <h2 className="font-display d-xl max-w-2xl text-balance">{t.op.capH2}</h2>
+                  <h2 className="font-display d-xl aberrate max-w-2xl text-balance">{t.op.capH2}</h2>
                   <p className="lead mt-6 max-w-2xl text-dim">{t.op.capLead}</p>
                 </div>
                 <Link href={servicesPath(locale)} className="btn btn-wire">
@@ -333,7 +333,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
                 <Reveal key={s.slug} delay={i * 40}>
                   <Link
                     href={servicePath(locale, s.slug)}
-                    className="sysrow group grid-cols-[2.5rem_1fr] px-1 md:grid-cols-[3.5rem_1.05fr_1.5fr_2.5rem]"
+                    className="sysrow scan-host group grid-cols-[2.5rem_1fr] px-1 md:grid-cols-[3.5rem_1.05fr_1.5fr_2.5rem]"
                   >
                     <span className="mono tnum self-start pt-1 text-faint md:self-center">
                       {String(i + 1).padStart(2, "0")}
@@ -363,7 +363,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
           <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
             <Reveal>
               <SectionHead label={t.op.howLabel} />
-              <h2 className="font-display d-xl mt-8 max-w-3xl text-balance">{t.op.howH2}</h2>
+              <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance">{t.op.howH2}</h2>
             </Reveal>
 
             <ol className="mt-12 grid gap-px bg-line sm:grid-cols-2 xl:grid-cols-4">

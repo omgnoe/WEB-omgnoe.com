@@ -29,9 +29,9 @@ export default function StatusRail({ locale }: { locale: Locale }) {
   }, [locale]);
 
   return (
-    <div className="rule-b bg-void">
+    <div className="rule-b jolt bg-void">
       <div className="mx-auto flex h-8 max-w-[90rem] items-center gap-4 px-4 sm:px-8">
-        <span className="mono flex items-center gap-2 text-dim">
+        <span className="mono flicker flex items-center gap-2 text-dim">
           <span className="dot dot-live" aria-hidden />
           {t.rail.status}
         </span>
