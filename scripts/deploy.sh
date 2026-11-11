@@ -25,8 +25,12 @@ pnpm install --frozen-lockfile
 
 echo "── build ──────────────────────────────────────────"
 if ! nice -n 19 pnpm build; then
-  echo "build failed, retrying once (font fetch is the known flake)"
-  sleep 5
+  # The observed failure is Turbopack's font import map, not the network:
+  #   "next/font/google queries have exactly one entry"
+  # The server reaches fonts.googleapis.com fine (200 in ~50ms). It is a stale
+  # .next/cache, and clearing it fixes it every time. So the retry clears first.
+  echo "build failed, clearing .next/cache and retrying once"
+  rm -rf .next/cache
   if ! nice -n 19 pnpm build; then
     echo "BUILD FAILED TWICE. Service left untouched and still serving the old build."
     exit 1
