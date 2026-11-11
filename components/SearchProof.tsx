@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Glitch from "@/components/Glitch";
 import Reveal from "@/components/Reveal";
 import {
   SEARCH_WINDOW,
@@ -51,13 +52,13 @@ export default function SearchProof({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <section id="search" className="rule-t py-20 sm:py-28">
+    <section id="search" data-sec={t.op.searchLabel} className="rule-t py-20 sm:py-28">
       <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
         <Reveal>
           <div className="sec-head">
             <span className="mono text-ember">{t.op.searchLabel}</span>
           </div>
-          <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance">{t.op.searchH2}</h2>
+          <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance"><Glitch text={t.op.searchH2} /></h2>
           <p className="lead mt-6 max-w-2xl text-dim">{t.op.searchLead(SNAPSHOT_DATE)}</p>
         </Reveal>
 

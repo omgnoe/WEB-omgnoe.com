@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
+import Glitch from "@/components/Glitch";
 import Reveal from "@/components/Reveal";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import StatusRail from "@/components/StatusRail";
 import StoryRanking from "@/components/StoryRanking";
 import StoryShots from "@/components/StoryShots";
 import {
@@ -96,8 +96,7 @@ export default function AboutView({ locale }: { locale: Locale }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
-      <StatusRail locale={locale} />
-      <SiteHeader locale={locale} pageKey={{ kind: "about" }} />
+      <SiteHeader locale={locale} pageKey={{ kind: "about" }} pageLabel={t.nav.about} />
 
       {/* ── MASTHEAD ──────────────────────────────────────────────────── */}
       <section className="powered guides relative">
@@ -106,8 +105,8 @@ export default function AboutView({ locale }: { locale: Locale }) {
             <div>
               <p className="mono text-dim">{c.kicker}</p>
               <h1 className="font-display d-hero aberrate mt-7 max-w-[16ch] text-balance">
-                <span className="block">{c.h1a}</span>
-                <span className="block text-ember">{c.h1b}</span>
+                <Glitch text={c.h1a} className="block" />
+                <Glitch text={c.h1b} className="block text-ember" />
               </h1>
               <p className="lead mt-8 max-w-2xl text-dim">{c.lead}</p>
               <p className="mt-5 max-w-2xl text-sm leading-relaxed text-faint">{c.leadNote}</p>

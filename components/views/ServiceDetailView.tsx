@@ -5,7 +5,6 @@ import Reveal from "@/components/Reveal";
 import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import StatusRail from "@/components/StatusRail";
 import WorkCard from "@/components/WorkCard";
 import { getWorkLocalised } from "@/lib/projects";
 import { getServices, type Service } from "@/lib/services";
@@ -90,8 +89,7 @@ export default function ServiceDetailView({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <StatusRail locale={locale} />
-      <SiteHeader locale={locale} pageKey={{ kind: "service", canonical: s.slug }} />
+      <SiteHeader locale={locale} pageKey={{ kind: "service", canonical: s.slug }} pageLabel={s.name} />
 
       {/* HERO */}
       <section className="powered relative overflow-hidden">

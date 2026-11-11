@@ -1,7 +1,6 @@
 import Reveal from "@/components/Reveal";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import StatusRail from "@/components/StatusRail";
 import SystemIndex from "@/components/SystemIndex";
 import { getAllWork } from "@/lib/projects";
 import type { Locale } from "@/lib/i18n";
@@ -13,8 +12,7 @@ export default function WorkIndexView({ locale }: { locale: Locale }) {
 
   return (
     <main className="relative">
-      <StatusRail locale={locale} />
-      <SiteHeader locale={locale} pageKey={{ kind: "work" }} />
+      <SiteHeader locale={locale} pageKey={{ kind: "work" }} pageLabel={t.nav.work} />
 
       <section className="powered relative overflow-hidden">
         <div className="absolute inset-0" />

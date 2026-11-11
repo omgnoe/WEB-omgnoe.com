@@ -501,6 +501,66 @@ select.cf-input {
     0 0 0.06em rgba(255, 90, 31, 0.1);
 }
 
+/*
+ * The signal tears sideways, briefly, then recovers.
+ *
+ * ::before and ::after each hold a copy of the string, clipped to a band and
+ * thrown left or right in em. Roughly 0.5s out of a 7s cycle, and steps(1) on
+ * every stop so each frame snaps: a glitch that tweens is just a wobble.
+ * Neither copy paints a background, so it survives over the hero plate.
+ */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch-base { position: relative; }
+.glitch-a,
+.glitch-b {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: none;
+  user-select: none;
+  /* Hidden for the whole cycle except the few frames that tear. */
+  clip-path: inset(50% 0 50% 0);
+}
+.glitch-a {
+  color: var(--color-ember);
+  animation: slice-left 7s steps(1, end) infinite;
+  animation-delay: var(--tear-delay, 0s);
+}
+.glitch-b {
+  color: #5ec8ff;
+  animation: slice-right 7s steps(1, end) infinite;
+  animation-delay: var(--tear-delay, 0s);
+}
+
+@keyframes slice-left {
+  0%, 92%, 97.5%, 100% { clip-path: inset(50% 0 50% 0); transform: none; }
+  92.4% { clip-path: inset(8% 0 74% 0);  transform: translateX(-0.045em); }
+  93.2% { clip-path: inset(46% 0 34% 0); transform: translateX(0.03em); }
+  94.4% { clip-path: inset(22% 0 61% 0); transform: translateX(-0.07em); }
+  95.6% { clip-path: inset(70% 0 12% 0); transform: translateX(-0.025em); }
+  96.6% { clip-path: inset(36% 0 48% 0); transform: translateX(0.05em); }
+}
+@keyframes slice-right {
+  0%, 92%, 97.5%, 100% { clip-path: inset(50% 0 50% 0); transform: none; }
+  92.4% { clip-path: inset(58% 0 24% 0); transform: translateX(0.055em); }
+  93.2% { clip-path: inset(14% 0 68% 0); transform: translateX(-0.035em); }
+  94.4% { clip-path: inset(64% 0 18% 0); transform: translateX(0.08em); }
+  95.6% { clip-path: inset(30% 0 55% 0); transform: translateX(0.02em); }
+  96.6% { clip-path: inset(76% 0 8% 0);  transform: translateX(-0.06em); }
+}
+
+.aberrate {
+  animation: none;
+}
+
+section:nth-of-type(2n) .glitch { --tear-delay: 2.1s; }
+section:nth-of-type(3n) .glitch { --tear-delay: 4.3s; }
+section:nth-of-type(5n) .glitch { --tear-delay: 5.8s; }
+
 /* Irregular stops: a loop you can count is a loop you stop believing. */
 @keyframes flicker {
   0%, 100% { opacity: 1; }
@@ -561,4 +621,6 @@ select.cf-input {
   .scan-host:hover::after { animation: none; }
   .scan-host::after { display: none; }
   .aberrate { text-shadow: none; }
+  .glitch-a,
+  .glitch-b { display: none; }
 }

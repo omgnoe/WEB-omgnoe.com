@@ -3,7 +3,6 @@ import Reveal from "@/components/Reveal";
 import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import StatusRail from "@/components/StatusRail";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import { getServices } from "@/lib/services";
 import { servicePath, urlFor, type Locale } from "@/lib/i18n";
@@ -31,8 +30,7 @@ export default function ServicesIndexView({ locale }: { locale: Locale }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <StatusRail locale={locale} />
-      <SiteHeader locale={locale} pageKey={{ kind: "services" }} />
+      <SiteHeader locale={locale} pageKey={{ kind: "services" }} pageLabel={t.nav.services} />
 
       <section className="powered relative overflow-hidden">
         <div className="absolute inset-0" />

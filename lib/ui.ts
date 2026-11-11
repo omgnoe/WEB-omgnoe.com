@@ -9,7 +9,7 @@ import type { Locale } from "@/lib/i18n";
 
 export type Dict = {
   nav: { work: string; services: string; about: string; contact: string; hire: string };
-  menu: { open: string; close: string; home: string; language: string };
+  menu: { open: string; close: string; home: string; language: string; jump: string };
   common: {
     learnMore: string;
     allServices: string;
@@ -216,7 +216,7 @@ export type Dict = {
 
 const en: Dict = {
   nav: { work: "Work", services: "Services", about: "About", contact: "Contact", hire: "Hire me" },
-  menu: { open: "Open menu", close: "Close menu", home: "omgnoe, home", language: "Language" },
+  menu: { open: "Open menu", close: "Close menu", home: "omgnoe, home", language: "Language", jump: "Jump to anything" },
   common: {
     learnMore: "Learn more",
     allServices: "All services",
@@ -506,7 +506,13 @@ const fr: Dict = {
     contact: "Contact",
     hire: "Me contacter",
   },
-  menu: { open: "Ouvrir le menu", close: "Fermer le menu", home: "omgnoe, accueil", language: "Langue" },
+  menu: {
+    open: "Ouvrir le menu",
+    close: "Fermer le menu",
+    home: "omgnoe, accueil",
+    language: "Langue",
+    jump: "Aller à",
+  },
   common: {
     learnMore: "En savoir plus",
     allServices: "Tous les services",
@@ -808,7 +814,13 @@ const de: Dict = {
     contact: "Kontakt",
     hire: "Anfragen",
   },
-  menu: { open: "Menü öffnen", close: "Menü schließen", home: "omgnoe, Startseite", language: "Sprache" },
+  menu: {
+    open: "Menü öffnen",
+    close: "Menü schließen",
+    home: "omgnoe, Startseite",
+    language: "Sprache",
+    jump: "Springe zu",
+  },
   common: {
     learnMore: "Mehr erfahren",
     allServices: "Alle Leistungen",

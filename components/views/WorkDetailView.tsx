@@ -5,7 +5,6 @@ import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import Reveal from "@/components/Reveal";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import StatusRail from "@/components/StatusRail";
 import WorkCard from "@/components/WorkCard";
 import { getAllWork, type WorkItem } from "@/lib/projects";
 import { homePath, urlFor, workPath, HTML_LANG, SITE, type Locale } from "@/lib/i18n";
@@ -64,8 +63,7 @@ export default function WorkDetailView({
     <main className="relative">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <StatusRail locale={locale} />
-      <SiteHeader locale={locale} pageKey={{ kind: "workItem", slug: w.slug }} />
+      <SiteHeader locale={locale} pageKey={{ kind: "workItem", slug: w.slug }} pageLabel={w.name} />
 
       <article className="powered relative overflow-hidden">
         <div className="absolute inset-0" />

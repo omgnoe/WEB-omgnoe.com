@@ -22,11 +22,11 @@ import AutoScrollRow from "@/components/AutoScrollRow";
 import ContactForm from "@/components/ContactForm";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
 import Reveal from "@/components/Reveal";
+import Glitch from "@/components/Glitch";
 import SearchProof from "@/components/SearchProof";
 import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import StatusRail from "@/components/StatusRail";
 import StoryRanking from "@/components/StoryRanking";
 import SystemIndex from "@/components/SystemIndex";
 import { trustedBy } from "@/lib/creative";
@@ -85,7 +85,6 @@ export default function HomeView({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <StatusRail locale={locale} />
       <SiteHeader locale={locale} pageKey={{ kind: "home" }} />
 
       <main>
@@ -137,19 +136,16 @@ export default function HomeView({ locale }: { locale: Locale }) {
             <div className={`pb-12 sm:max-w-[56%] ${heroPlate ? "pt-14 lg:pt-20 lg:pb-20" : "pt-12 lg:pt-16 lg:pb-16"}`}>
               <p className="mono text-dim">{t.op.heroEyebrow}</p>
 
+              {/* The underline moved onto the glitched span as a background,
+                  so the slice copies do not have to carry a stacked bar. */}
               <h1 className="font-display d-hero aberrate mt-7 max-w-[18ch] text-balance">
-                <span className="block">{t.op.heroLine1}</span>{" "}
+                <Glitch text={t.op.heroLine1} className="block" />{" "}
                 <span className="block">
                   {t.op.heroLine2.split(" ")[0]}{" "}
-                  <span className="relative inline-block">
-                    <span className="relative z-10">
-                      {t.op.heroLine2.split(" ").slice(1).join(" ")}
-                    </span>
-                    <span
-                      className="absolute inset-x-0 bottom-[0.08em] z-0 h-[0.11em] bg-ember"
-                      aria-hidden
-                    />
-                  </span>
+                  <Glitch
+                    text={t.op.heroLine2.split(" ").slice(1).join(" ")}
+                    className="underline-swipe"
+                  />
                 </span>
               </h1>
 
@@ -234,11 +230,11 @@ export default function HomeView({ locale }: { locale: Locale }) {
         </section>
 
         {/* ── 01 SYSTEMS ───────────────────────────────────────────────── */}
-        <section id="work" className="py-20 sm:py-28">
+        <section id="work" data-sec={t.op.systemsLabel} className="py-20 sm:py-28">
           <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
             <Reveal>
               <SectionHead label={t.op.systemsLabel} />
-              <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance">{t.op.systemsH2}</h2>
+              <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance"><Glitch text={t.op.systemsH2} /></h2>
               <p className="lead mt-6 max-w-2xl text-dim">{t.op.systemsLead}</p>
             </Reveal>
             <div className="mt-12">
@@ -251,7 +247,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
         <SearchProof locale={locale} />
 
         {/* ── 03 TRACK RECORD ──────────────────────────────────────────── */}
-        <section className="rule-t py-20 sm:py-28">
+        <section data-sec={t.op.storyLabel} className="rule-t py-20 sm:py-28">
           <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
             <Reveal>
               <SectionHead label={t.op.storyLabel} />
@@ -259,7 +255,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
 
             <div className="mt-8 grid gap-14 lg:grid-cols-[1.15fr_1fr]">
               <Reveal>
-                <h2 className="font-display d-xl aberrate max-w-2xl text-balance">{t.op.storyH2}</h2>
+                <h2 className="font-display d-xl aberrate max-w-2xl text-balance"><Glitch text={t.op.storyH2} /></h2>
                 <div className="mt-7 max-w-xl space-y-5 text-dim">
                   {t.op.storyBody.map((p) => (
                     <p key={p.slice(0, 24)}>{p}</p>
@@ -313,13 +309,13 @@ export default function HomeView({ locale }: { locale: Locale }) {
         </section>
 
         {/* ── 04 CAPABILITIES ──────────────────────────────────────────── */}
-        <section id="services" className="rule-t py-20 sm:py-28">
+        <section id="services" data-sec={t.op.capLabel} className="rule-t py-20 sm:py-28">
           <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
             <Reveal>
               <SectionHead label={t.op.capLabel} />
               <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
                 <div>
-                  <h2 className="font-display d-xl aberrate max-w-2xl text-balance">{t.op.capH2}</h2>
+                  <h2 className="font-display d-xl aberrate max-w-2xl text-balance"><Glitch text={t.op.capH2} /></h2>
                   <p className="lead mt-6 max-w-2xl text-dim">{t.op.capLead}</p>
                 </div>
                 <Link href={servicesPath(locale)} className="btn btn-wire">
@@ -359,11 +355,11 @@ export default function HomeView({ locale }: { locale: Locale }) {
         </section>
 
         {/* ── 05 HOW IT RUNS + STACK ───────────────────────────────────── */}
-        <section className="rule-t py-20 sm:py-28">
+        <section data-sec={t.op.howLabel} className="rule-t py-20 sm:py-28">
           <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
             <Reveal>
               <SectionHead label={t.op.howLabel} />
-              <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance">{t.op.howH2}</h2>
+              <h2 className="font-display d-xl aberrate mt-8 max-w-3xl text-balance"><Glitch text={t.op.howH2} /></h2>
             </Reveal>
 
             <ol className="mt-12 grid gap-px bg-line sm:grid-cols-2 xl:grid-cols-4">
@@ -410,7 +406,7 @@ export default function HomeView({ locale }: { locale: Locale }) {
         </section>
 
         {/* ── 06 CONTACT: the one light surface on the whole site ──────── */}
-        <section id="contact" className="rule-t bg-paper text-ink">
+        <section id="contact" data-sec={t.op.contactLabel} className="rule-t bg-paper text-ink">
           <div className="mx-auto max-w-[90rem] px-4 py-20 sm:px-8 sm:py-28">
             <div className="grid gap-14 lg:grid-cols-[1fr_1.15fr]">
               <div>
