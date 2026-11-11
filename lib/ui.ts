@@ -73,6 +73,7 @@ export type Dict = {
     ctaLead: string;
   };
   service: {
+    howItWorks: string;
     trackRecord: string;
     whatYouGet: string;
     faqKicker: string;
@@ -299,6 +300,7 @@ const en: Dict = {
       "Describe the problem in one email. I'll tell you what it takes, what it costs and how fast it ships.",
   },
   service: {
+    howItWorks: "How it works",
     trackRecord: "Track record",
     whatYouGet: "What you get",
     faqKicker: "FAQ",
@@ -601,6 +603,7 @@ const fr: Dict = {
       "Décrivez le problème en un e-mail. Je vous dis ce que cela demande, ce que cela coûte et en combien de temps c'est livré.",
   },
   service: {
+    howItWorks: "Comment ça marche",
     trackRecord: "Références",
     whatYouGet: "Ce que vous obtenez",
     faqKicker: "FAQ",
@@ -904,6 +907,7 @@ const de: Dict = {
       "Beschreiben Sie das Problem in einer Mail. Ich sage Ihnen, was es braucht, was es kostet und wie schnell es fertig ist.",
   },
   service: {
+    howItWorks: "Wie es funktioniert",
     trackRecord: "Referenzen",
     whatYouGet: "Das bekommen Sie",
     faqKicker: "FAQ",

@@ -1,14 +1,17 @@
-import Image from "next/image";
 import Link from "next/link";
 import ObfuscatedEmail from "@/components/ObfuscatedEmail";
+import Glitch from "@/components/Glitch";
 import Reveal from "@/components/Reveal";
+import ServiceDiagram from "@/components/ServiceDiagram";
 import ServiceIcon from "@/components/ServiceIcon";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
-import WorkCard from "@/components/WorkCard";
+import SystemIndex from "@/components/SystemIndex";
+import { getDiagram } from "@/lib/diagrams";
 import { getWorkLocalised } from "@/lib/projects";
 import { getServices, type Service } from "@/lib/services";
 import {
+  contactPath,
   homePath,
   servicePath,
   servicesPath,
@@ -35,6 +38,7 @@ export default function ServiceDetailView({
     .map((slug) => getWorkLocalised(locale, slug))
     .filter((w) => w !== undefined);
   const otherServices = getServices(locale).filter((o) => o.slug !== s.slug);
+  const diagram = getDiagram(locale, s.slug);
 
   const serviceLd = {
     "@context": "https://schema.org",
@@ -92,183 +96,177 @@ export default function ServiceDetailView({
       <SiteHeader locale={locale} pageKey={{ kind: "service", canonical: s.slug }} pageLabel={s.name} />
 
       {/* HERO */}
-      <section className="powered relative overflow-hidden">
-        <div className="absolute inset-0" />
-        <div className="mx-auto max-w-6xl px-5 pb-12 pt-14 sm:pt-18">
-          <nav className="rise flex items-center gap-2 text-xs text-dim" aria-label={t.common.breadcrumb}>
-            <Link href={homePath(locale)} className="hover:text-chalk">{t.common.home}</Link>
-            <span>/</span>
-            <Link href={servicesPath(locale)} className="hover:text-chalk">{t.nav.services}</Link>
-            <span>/</span>
-            <span className="text-chalk">{s.name}</span>
+      <section className="powered guides relative overflow-hidden">
+        <div className="relative z-10 mx-auto max-w-[90rem] px-4 pb-14 pt-10 sm:px-8">
+          <nav className="mono flex items-center gap-2 text-faint" aria-label={t.common.breadcrumb}>
+            <Link href={homePath(locale)} className="transition-colors hover:text-chalk">
+              {t.common.home}
+            </Link>
+            <span aria-hidden>/</span>
+            <Link href={servicesPath(locale)} className="transition-colors hover:text-chalk">
+              {t.nav.services}
+            </Link>
+            <span aria-hidden>/</span>
+            <span className="text-dim">{s.name}</span>
           </nav>
 
-          <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
-            <div className="rise">
-              <div className="flex items-start gap-5">
-                <span
-                  className="hidden h-16 w-16 shrink-0 place-items-center rounded-[3px] bg-panel sm:grid"
-                  style={{ color: s.accent }}
-                >
-                  <ServiceIcon name={s.icon} className="h-7 w-7" />
-                </span>
-                <div>
-                  <h1 className="font-display max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
-                    {s.title}
-                  </h1>
-                  <p className="mt-4 max-w-2xl text-lg leading-relaxed text-dim">{s.short}</p>
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                <ObfuscatedEmail className="btn btn-ember" label={t.common.startConversation} />
-                <Link href={workAnchor(locale)} className="btn btn-wire">
-                  {t.common.seeWork}
-                </Link>
-              </div>
+          <div className="mt-10 flex items-start gap-5">
+            <span className="mt-2 hidden h-12 w-12 shrink-0 place-items-center border border-line bg-panel text-ember sm:grid">
+              <ServiceIcon name={s.icon} className="h-5 w-5" />
+            </span>
+            <div className="min-w-0">
+              <h1 className="font-display d-xl aberrate max-w-4xl text-balance">
+                <Glitch text={s.title} />
+              </h1>
+              <p className="lead mt-6 max-w-2xl text-dim">{s.short}</p>
             </div>
+          </div>
 
-            {s.photo && (
-              <div className="rise relative mx-auto hidden w-full max-w-xs lg:block">
-                <div className="panel panel overflow-hidden p-2" style={{ transform: "rotate(2deg)" }}>
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem]">
-                    <Image
-                      src={s.photo}
-                      alt={s.photoAlt ?? "Noe Nei"}
-                      fill
-                      priority
-                      sizes="320px"
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <Link href={contactPath(locale)} className="btn btn-ember">
+              {t.common.startConversation} <span aria-hidden>→</span>
+            </Link>
+            <Link href={workAnchor(locale)} className="btn btn-wire">
+              {t.common.seeWork}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 01 HOW IT WORKS: prose plus the mechanism drawn out */}
+      <section data-sec={`01 / ${t.service.howItWorks}`} className="rule-t py-16 sm:py-20">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
+          <Reveal>
+            <div className="sec-head">
+              <span className="mono text-ember">01 / {t.service.howItWorks}</span>
+            </div>
+          </Reveal>
+
+          <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_1.25fr]">
+            <Reveal>
+              <div className="space-y-5 text-dim">
+                {s.intro.map((p) => (
+                  <p key={p.slice(0, 30)}>{p}</p>
+                ))}
               </div>
+              <div className="rule-t mt-8 pt-6">
+                <p className="mono text-faint">{t.service.trackRecord}</p>
+                <p className="mt-3 leading-relaxed text-chalk">{s.proof}</p>
+              </div>
+            </Reveal>
+
+            {diagram && (
+              <Reveal delay={100}>
+                <ServiceDiagram diagram={diagram} />
+              </Reveal>
             )}
           </div>
         </div>
       </section>
 
-      {/* BODY */}
-      <section className="mx-auto max-w-6xl px-5 py-14">
-        <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
+      {/* 02 WHAT YOU GET */}
+      <section data-sec={`02 / ${t.service.whatYouGet}`} className="rule-t py-16 sm:py-20">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
           <Reveal>
-            <div className="space-y-5 text-lg leading-relaxed text-dim">
-              {s.intro.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-
-            <div className="panel mt-10 p-6 sm:p-8">
-              <p className="mono">{t.service.trackRecord}</p>
-              <p className="mt-3 leading-relaxed">{s.proof}</p>
+            <div className="sec-head">
+              <span className="mono text-ember">02 / {t.service.whatYouGet}</span>
             </div>
           </Reveal>
 
-          <Reveal delay={120}>
-            <div className="panel p-6 sm:p-7">
-              <p className="mono">{t.service.whatYouGet}</p>
-              <ul className="mt-5 space-y-3.5">
-                {s.deliverables.map((d) => (
-                  <li key={d} className="flex items-start gap-3 text-sm leading-relaxed">
-                    <span
-                      className="mt-1 grid h-4.5 w-4.5 shrink-0 place-items-center rounded-full"
-                      style={{ background: `${s.accent}1c`, color: s.accent }}
-                    >
-                      <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="none" aria-hidden>
-                        <path d="M2.5 6.5l2.5 2.5 4.5-5.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </span>
-                    {d}
-                  </li>
-                ))}
-              </ul>
-              <ObfuscatedEmail className="btn btn-chalk mt-7 w-full" label={t.common.getQuote} />
-            </div>
-          </Reveal>
+          <ul className="rule-t mt-10 grid gap-px bg-line md:grid-cols-2 xl:grid-cols-3">
+            {s.deliverables.map((d, i) => (
+              <Reveal key={d} delay={i * 40}>
+                <li className="flex h-full gap-4 bg-void px-5 py-5">
+                  <span className="mono tnum shrink-0 pt-0.5 text-ember">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-sm leading-relaxed text-dim">{d}</span>
+                </li>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="border-y border-line bg-panel-2">
-        <div className="mx-auto max-w-6xl px-5 py-16">
+      {/* 03 QUESTIONS */}
+      <section data-sec={`03 / ${t.service.faqKicker}`} className="rule-t py-16 sm:py-20">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
           <Reveal>
-            <p className="mono">{t.service.faqKicker}</p>
-            <h2 className="font-display mt-3 text-3xl font-bold tracking-tight">{t.service.faqH2}</h2>
+            <div className="sec-head">
+              <span className="mono text-ember">03 / {t.service.faqKicker}</span>
+            </div>
+            <h2 className="font-display d-lg mt-8 max-w-2xl text-balance">{t.service.faqH2}</h2>
           </Reveal>
-          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+
+          <dl className="rule-t mt-10">
             {s.faq.map((f, i) => (
-              <Reveal key={f.q} delay={i * 80}>
-                <div className="panel h-full p-6">
-                  <h3 className="font-display font-bold leading-snug">{f.q}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-dim">{f.a}</p>
+              <Reveal key={f.q} delay={i * 50}>
+                <div className="rule-soft-b grid gap-x-10 gap-y-3 py-6 lg:grid-cols-[1fr_1.3fr]">
+                  <dt className="font-display d-md max-w-[26ch] text-balance">{f.q}</dt>
+                  <dd className="leading-relaxed text-dim">{f.a}</dd>
                 </div>
               </Reveal>
             ))}
-          </div>
+          </dl>
         </div>
       </section>
 
-      {/* RELATED WORK */}
+      {/* 04 PROOF */}
       {related.length > 0 && (
-        <section className="mx-auto max-w-6xl px-5 py-16">
-          <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="mono">{t.service.proofKicker}</p>
-              <h2 className="font-display mt-3 text-3xl font-bold tracking-tight">
-                {t.service.proofH2}
-              </h2>
+        <section data-sec={`04 / ${t.service.proofKicker}`} className="rule-t py-16 sm:py-20">
+          <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
+            <Reveal>
+              <div className="sec-head">
+                <span className="mono text-ember">04 / {t.service.proofKicker}</span>
+              </div>
+              <div className="mt-8 flex flex-wrap items-end justify-between gap-5">
+                <h2 className="font-display d-lg max-w-2xl text-balance">{t.service.proofH2}</h2>
+                <Link href={workPath(locale)} className="btn btn-wire">
+                  {t.common.allWork}
+                </Link>
+              </div>
+            </Reveal>
+            <div className="mt-10">
+              <SystemIndex items={related} locale={locale} showTagFilter={false} />
             </div>
-            <Link href={workPath(locale)} className="btn btn-wire">
-              {t.common.allWork}
-            </Link>
-          </Reveal>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {related.slice(0, 3).map((w, i) => (
-              <Reveal key={w.slug} delay={i * 80}>
-                <WorkCard item={w} locale={locale} />
-              </Reveal>
-            ))}
           </div>
         </section>
       )}
 
       {/* OTHER SERVICES */}
-      <section className="mx-auto max-w-6xl px-5 pb-16">
-        <p className="mono mb-5">{t.service.otherServices}</p>
-        <div className="flex flex-wrap gap-2">
-          {otherServices.map((o) => (
-            <Link
-              key={o.slug}
-              href={servicePath(locale, o.slug)}
-              className="tag !py-2 font-medium transition-colors hover:border-line-strong"
-            >
-              <ServiceIcon name={o.icon} className="h-3.5 w-3.5" />
-              {o.name}
-            </Link>
-          ))}
+      <section className="rule-t py-14">
+        <div className="mx-auto max-w-[90rem] px-4 sm:px-8">
+          <p className="mono text-faint">{t.service.otherServices}</p>
+          <div className="mt-5 flex flex-wrap gap-2.5">
+            {otherServices.map((o) => (
+              <Link
+                key={o.slug}
+                href={servicePath(locale, o.slug)}
+                className="tag text-dim transition-colors hover:border-line-strong hover:text-chalk"
+              >
+                <ServiceIcon name={o.icon} className="h-3.5 w-3.5 text-ember" />
+                {o.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="px-3 sm:px-5">
-        <Reveal>
-          <div className="panel relative mx-auto max-w-6xl overflow-hidden rounded-[2.25rem] px-6 py-16 text-center">
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{ background: "radial-gradient(55% 70% at 50% 120%, rgba(255,90,31,0.3), transparent 70%)" }}
-            />
-            <h2 className="font-display relative text-3xl font-bold text-white sm:text-4xl">
-              {t.service.ctaH2(s.name)}
-            </h2>
-            <p className="relative mx-auto mt-4 max-w-md text-white/65">{t.service.ctaLead}</p>
-            <div className="relative mt-7 flex flex-wrap items-center justify-center gap-3">
-              <Link href={`${homePath(locale)}#contact`.replace("//#", "/#")} className="btn btn-ember !px-7 !py-3.5">
-                {t.common.sendInquiry}
+      {/* CTA: the one light surface, same move as the homepage */}
+      <section className="rule-t bg-paper text-ink">
+        <div className="mx-auto max-w-[90rem] px-4 py-16 sm:px-8 sm:py-24">
+          <div className="max-w-3xl">
+            <span className="mono text-rust">{t.service.otherServices}</span>
+            <h2 className="font-display d-xl mt-7 text-balance">{t.service.ctaH2(s.name)}</h2>
+            <p className="lead mt-6 max-w-xl opacity-75">{t.service.ctaLead}</p>
+            <div className="mt-9 flex flex-wrap items-center gap-6">
+              <Link href={contactPath(locale)} className="btn btn-ember">
+                {t.common.sendInquiry} <span aria-hidden>→</span>
               </Link>
-              <ObfuscatedEmail className="btn !bg-white/10 !text-white/85 font-mono !text-sm hover:!bg-white/15" />
+              <ObfuscatedEmail className="mono-flat font-mono text-sm underline decoration-rust decoration-2 underline-offset-[6px]" />
             </div>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       <SiteFooter locale={locale} />
