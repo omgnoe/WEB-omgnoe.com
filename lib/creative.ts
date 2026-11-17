@@ -17,6 +17,7 @@ export type TrustedLogo = {
  * re-run an edge-flood on these; they are already flat white with real alpha.
  */
 export const trustedBy: TrustedLogo[] = [
+  { name: "BBC", src: "/trusted/bbc.png", h: 44 },
   { name: "Wolt", src: "/trusted/wolt.png", h: 44 },
   { name: "Le Gouvernement du Grand-Duché de Luxembourg", src: "/trusted/gouvernement.png", h: 44 },
   { name: "OGBL", src: "/trusted/ogbl.svg", h: 44 },
@@ -26,6 +27,8 @@ export const trustedBy: TrustedLogo[] = [
   { name: "Vinoteca Luxembourg", src: "/trusted/vinoteca.png", h: 44 },
   { name: "Promopharm", src: "/trusted/promopharm.png", h: 44 },
   { name: "Dynapharm", src: "/trusted/dynapharm.png", h: 44 },
+  { name: "Photon", src: "/trusted/photon.png", h: 44 },
+  { name: "Auto-école Diederich", src: "/trusted/diederich.png", h: 44 },
   { name: "Luxtex", src: "/trusted/luxtex.png", h: 44 },
   { name: "DSP", src: "/trusted/dsp.png", h: 44 },
 ];

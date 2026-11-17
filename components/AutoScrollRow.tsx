@@ -41,6 +41,13 @@ export default function AutoScrollRow({
       }, 2500);
     };
 
+    // Float accumulator for the drift position. `scrollLeft` is quantised to
+    // whole CSS pixels on devicePixelRatio-1 displays, so `scrollLeft += 0.5`
+    // reads back unchanged every frame and the strip never moves. Advance the
+    // float, assign it, and let the browser round; once the float crosses the
+    // next integer the strip actually steps.
+    let pos = 0;
+
     const wrap = () => {
       const half = el.scrollWidth / 2;
       if (half <= 1) return;
@@ -50,6 +57,7 @@ export default function AutoScrollRow({
       const delta = target - el.scrollLeft;
       if (delta !== 0) {
         el.scrollLeft += delta;
+        pos += delta;
         // keep an active drag anchored across the seam
         if (dragging) startLeft += delta;
       }
@@ -57,8 +65,13 @@ export default function AutoScrollRow({
 
     const step = () => {
       if (!paused) {
-        el.scrollLeft += speed;
+        // adopt the real position after a user swipe/drag moved the strip
+        if (Math.abs(el.scrollLeft - pos) > 1.5) pos = el.scrollLeft;
+        pos += speed;
+        el.scrollLeft = pos;
         wrap();
+      } else {
+        pos = el.scrollLeft;
       }
       raf = requestAnimationFrame(step);
     };
